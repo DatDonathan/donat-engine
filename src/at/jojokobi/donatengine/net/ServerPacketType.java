@@ -1,0 +1,38 @@
+package at.jojokobi.donatengine.net;
+
+import java.util.Arrays;
+import java.util.List;
+
+import at.jojokobi.donatengine.gui.GUI;
+import at.jojokobi.donatengine.gui.GUISystem;
+import at.jojokobi.donatengine.level.Level;
+import at.jojokobi.donatengine.level.LevelArea;
+import at.jojokobi.donatengine.objects.GameObject;
+
+public interface ServerPacketType {
+	
+	public List<ServerPacket> onSpawn (Level level, GameObject object, long id);
+	
+	public List<ServerPacket> onDelete (Level level, GameObject object, long id);
+
+	public List<ServerPacket> onUpdate (Level level, GameObject object, long id);
+	
+	public default List<ServerPacket> update (Level level) {
+		return Arrays.asList();
+	}
+	
+	public default List<ServerPacket> onAddArea (Level level, LevelArea area, String id) {
+		return Arrays.asList();
+	}
+	
+	public default List<ServerPacket> onAddGUI (GUISystem system, GUI gui, long id) {
+		return Arrays.asList();
+	}
+	
+	public default List<ServerPacket> onRemoveGUI (GUISystem system, GUI gui, long id) {
+		return Arrays.asList();
+	}
+	
+	public List<ServerPacket> recreatePackets (Level level);
+	
+}
