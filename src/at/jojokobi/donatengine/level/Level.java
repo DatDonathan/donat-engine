@@ -14,6 +14,7 @@ import at.jojokobi.donatengine.net.MultiplayerBehavior;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.Hitbox;
+import at.jojokobi.donatengine.objects.ObjectComponent;
 import at.jojokobi.donatengine.objects.PlayerComponent;
 import at.jojokobi.donatengine.objects.Tile;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
@@ -261,6 +262,16 @@ public abstract class Level extends Hitbox{
 		for (GameObject obj : objects) {
 			if (clazz.isInstance(obj)) {
 				objs.add(clazz.cast(obj));
+			}
+		}
+		return objs;
+	}
+	
+	public <T extends ObjectComponent> List<GameObject> getObjectsWithComponent (Class<T> clazz) {
+		List<GameObject> objs = new ArrayList<>();
+		for (GameObject obj : objects) {
+			if (obj.getComponent(clazz) != null) {
+				objs.add(obj);
 			}
 		}
 		return objs;
