@@ -111,6 +111,9 @@ public abstract class Level extends Hitbox{
 		camera.update(delta, this);
 		particleSystem.update(delta);
 		getBehavior().update(this, handler);
+		if (getBehavior().isHost()) {
+			components.forEach(c -> c.update(this, delta));
+		}
 		for (long id : objects.keySet()) {
 			GameObject gameObject = objects.get(id);
 			if (camera.canSee(gameObject) || updateHidden) {
@@ -136,7 +139,7 @@ public abstract class Level extends Hitbox{
 			area.render(this, ctx, ressourceHandler, camera);
 		}
 		for (LevelComponent comp : components) {
-			comp.renderAfter(ctx, camera, this);
+			comp.renderBefore(ctx, camera, this);
 		}
 		List<GameObject> objects = getObjects();
 		objects.sort(camera.getComparator());
@@ -152,12 +155,11 @@ public abstract class Level extends Hitbox{
 		particleSystem.render(ctx, camera);
 		//Render object GUI
 		for (GameObject obj : objects) {
-			if (obj.isVisible()) {
-				ctx.save();
-				obj.renderGUI(ctx, camera, this);
-				ctx.restore();
-			}
+			ctx.save();
+			obj.renderGUI(ctx, camera, this);
+			ctx.restore();
 		}
+		
 		//GUI System
 		guiSystem.render(ctx, camera.getViewWidth(), camera.getViewHeight());
 		for (LevelComponent comp : components) {
@@ -176,6 +178,7 @@ public abstract class Level extends Hitbox{
 		}
 		if (getBehavior().isHost()) {
 			generate(camera);
+			components.forEach(c -> c.init(this));
 			if (getBehavior().isClient()) {
 				spawnPlayer(0, camera);
 			}

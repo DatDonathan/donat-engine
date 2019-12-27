@@ -8,6 +8,8 @@ import javafx.scene.canvas.GraphicsContext;
 
 public interface LevelComponent {
 	
+	public void init (Level level);
+	
 	public void update (Level level, double delta);
 	
 	public void renderBefore (GraphicsContext ctx, Camera cam, Level level);

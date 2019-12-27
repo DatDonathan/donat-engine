@@ -45,4 +45,9 @@ public class ChatComponent implements LevelComponent{
 		return Arrays.asList(messages);
 	}
 
+	@Override
+	public void init(Level level) {
+		
+	}
+
 }
