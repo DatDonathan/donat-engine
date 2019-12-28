@@ -119,6 +119,7 @@ public class Camera {
 //			setZ(level.getZ() + level.getLength() - getLength());
 //		}
 
+		System.out.println(x + " " + y + " " + z);
 		if (follow != null) {
 			GameObject obj = level.getObjectById(follow);
 			if (obj != null) {
