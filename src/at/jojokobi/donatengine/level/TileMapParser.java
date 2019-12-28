@@ -11,27 +11,11 @@ import at.jojokobi.donatengine.objects.GameObject;
 
 public abstract class TileMapParser {
 	
-	private int tileWidth = 32;
-	private int tileHeight = 32;
-	
 	public TileMapParser () {
 		
 	}
 	
-	public TileMapParser (int tileWidth, int tileHeight) {
-		this.tileWidth = tileWidth;
-		this.tileHeight = tileHeight;
-	}
-	
-	public abstract GameObject parse(int id, int x, int y, int z, Level level);
-
-	public int getTileWidth() {
-		return tileWidth;
-	}
-
-	public int getTileHeight() {
-		return tileHeight;
-	}
+	public abstract List<GameObject> parse(int id, double x, double y, double z);
 	
 	public static final int[][][] loadTilemap (InputStream input, int layerLength) {
 		StringBuilder text = new StringBuilder();

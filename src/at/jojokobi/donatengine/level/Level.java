@@ -192,13 +192,19 @@ public abstract class Level extends Hitbox{
 	}
 	
 	public void parseTilemap (int[][][] tilemap, TileMapParser parser, String area) {
+		parseTilemap(tilemap, parser, 32, 32, 32, area);
+	}
+
+	
+	public void parseTilemap (int[][][] tilemap, TileMapParser parser, double tileWidth, double tileHeight, double tileLength, String area) {
 		for (int y = 0; y < tilemap.length; y++) {
 			for (int z = 0; z < tilemap[y].length; z++) {
 				for (int x = 0; x < tilemap[y][z].length; x++) {
-					GameObject tile = parser.parse(tilemap[y][z][x], x, tilemap.length - 1 - y, z, this);
-					if (tile != null) {
-						tile.setArea(area);
-						spawn(tile);
+					for (GameObject tile : parser.parse(tilemap[y][z][x], x * tileWidth, (tilemap.length - 1 - y) * tileHeight, z * tileLength)) {
+						if (tile != null) {
+							tile.setArea(area);
+							spawn(tile);
+						}
 					}
 				}
 			}
