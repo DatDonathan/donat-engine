@@ -6,10 +6,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class IntProperty implements ObservableProperty<Integer>{
 	
 	private int value;
 	private boolean changed = false;
+	
+	private ListenerManager<Integer> manager = new ListenerManager<>();
+	
 
 	public IntProperty(int value) {
 		super();
@@ -18,8 +22,10 @@ public class IntProperty implements ObservableProperty<Integer>{
 
 	@Override
 	public void set(Integer t) {
+		int old = value;
 		value = t;
 		changed = true;
+		manager.notifyListeners(this, old, t);
 	}
 
 	@Override
@@ -56,7 +62,7 @@ public class IntProperty implements ObservableProperty<Integer>{
 
 	@Override
 	public void readValue(DataInput buffer) throws IOException {
-		value = buffer.readInt();
+		set(buffer.readInt());
 	}
 
 	@Override
@@ -66,6 +72,17 @@ public class IntProperty implements ObservableProperty<Integer>{
 
 	public void increment(int i) {
 		set(get() + i);
+	}
+	
+
+	@Override
+	public void addListener(Listener<Integer> listener) {
+		manager.addListener(listener);
+	}
+
+	@Override
+	public void removeListener(Listener<Integer> listener) {
+		manager.removeListener(listener);
 	}
 
 }

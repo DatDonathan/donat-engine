@@ -3,9 +3,35 @@ package at.jojokobi.donatengine.objects.properties;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ObservableProperty<T> {
+	
+	@FunctionalInterface
+	public interface Listener<T> {
+		
+		public void onChange (ObservableProperty<? extends T> prop, T oldValue, T newValue);
+		
+	}
+	
+	public class ListenerManager<T> {
+		
+		private List<Listener<T>> listeners = new ArrayList<>();
+		
+		public void addListener (Listener<T> listener) {
+			listeners.add(listener);
+		}
+		
+		public void removeListener (Listener<T> listener) {
+			listeners.remove(listener);
+		}
+		
+		public void notifyListeners (ObservableProperty<? extends T> prop, T oldValue, T newValue) {
+			listeners.forEach(l -> l.onChange(prop, oldValue, newValue));
+		}
+		
+	}
 	
 	public void set (T t);
 	
@@ -37,5 +63,9 @@ public interface ObservableProperty<T> {
 	public void readValue (DataInput buffer) throws IOException;
 	
 	public List<ObservableProperty<?>> observableProperties ();
+	
+	public void addListener (Listener<T> listener);
+	
+	public void removeListener (Listener<T> listener);
 
 }

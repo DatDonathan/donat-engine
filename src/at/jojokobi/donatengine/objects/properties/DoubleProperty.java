@@ -10,6 +10,8 @@ public class DoubleProperty implements ObservableProperty<Double>{
 	
 	private double value;
 	private boolean changed = false;
+	
+	private ListenerManager<Double> manager = new ListenerManager<>();
 
 	public DoubleProperty(long value) {
 		super();
@@ -18,8 +20,10 @@ public class DoubleProperty implements ObservableProperty<Double>{
 
 	@Override
 	public void set(Double t) {
+		double old = value;
 		value = t;
 		changed = true;
+		manager.notifyListeners(this, old, t);
 	}
 
 	@Override
@@ -56,14 +60,22 @@ public class DoubleProperty implements ObservableProperty<Double>{
 
 	@Override
 	public void readValue(DataInput buffer) throws IOException {
-		value = buffer.readDouble();
+		set(buffer.readDouble());
 	}
 
 	@Override
 	public List<ObservableProperty<?>> observableProperties() {
 		return Arrays.asList();
 	}
-	
-	
 
+	@Override
+	public void addListener(Listener<Double> listener) {
+		manager.addListener(listener);
+	}
+
+	@Override
+	public void removeListener(Listener<Double> listener) {
+		manager.removeListener(listener);
+	}
+	
 }

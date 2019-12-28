@@ -11,6 +11,8 @@ public class EnumProperty<T extends Enum<T>> implements ObservableProperty<T> {
 	private T value;
 	private boolean changed = false;
 	private Class<T> clazz;
+	
+	private ListenerManager<T> manager = new ListenerManager<>();
 
 	public EnumProperty(T value, Class<T> clazz) {
 		super();
@@ -20,8 +22,10 @@ public class EnumProperty<T extends Enum<T>> implements ObservableProperty<T> {
 
 	@Override
 	public void set(T t) {
+		T old = value;
 		value = t;
 		changed = true;
+		manager.notifyListeners(this, old, t);
 	}
 
 	@Override
@@ -58,12 +62,23 @@ public class EnumProperty<T extends Enum<T>> implements ObservableProperty<T> {
 
 	@Override
 	public void readValue(DataInput buffer) throws IOException {
-		value = clazz.getEnumConstants()[buffer.readInt()];
+		set(clazz.getEnumConstants()[buffer.readInt()]);
 	}
 
 	@Override
 	public List<ObservableProperty<?>> observableProperties() {
 		return Arrays.asList();
+	}
+
+
+	@Override
+	public void addListener(Listener<T> listener) {
+		manager.addListener(listener);
+	}
+
+	@Override
+	public void removeListener(Listener<T> listener) {
+		manager.removeListener(listener);
 	}
 
 }

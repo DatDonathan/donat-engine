@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class LongProperty implements ObservableProperty<Long>{
 	
 	private long value;
 	private boolean changed = false;
+	
+	private ListenerManager<Long> manager = new ListenerManager<>();
 
 	public LongProperty(long value) {
 		super();
@@ -18,8 +21,10 @@ public class LongProperty implements ObservableProperty<Long>{
 
 	@Override
 	public void set(Long t) {
+		long old = value;
 		value = t;
 		changed = true;
+		manager.notifyListeners(this, old, value);
 	}
 
 	@Override
@@ -56,7 +61,7 @@ public class LongProperty implements ObservableProperty<Long>{
 
 	@Override
 	public void readValue(DataInput buffer) throws IOException {
-		value = buffer.readLong();
+		set(buffer.readLong());
 	}
 
 	@Override
@@ -64,6 +69,14 @@ public class LongProperty implements ObservableProperty<Long>{
 		return Arrays.asList();
 	}
 	
-	
+	@Override
+	public void addListener(Listener<Long> listener) {
+		manager.addListener(listener);
+	}
+
+	@Override
+	public void removeListener(Listener<Long> listener) {
+		manager.removeListener(listener);
+	}
 
 }

@@ -10,6 +10,8 @@ public class StringProperty implements ObservableProperty<String>{
 	
 	private String value;
 	private boolean changed = false;
+	
+	private ListenerManager<String> manager = new ListenerManager<>();
 
 	public StringProperty(String value) {
 		super();
@@ -18,8 +20,10 @@ public class StringProperty implements ObservableProperty<String>{
 
 	@Override
 	public void set(String t) {
+		String old = value;
 		value = t;
 		changed = true;
+		manager.notifyListeners(this, old, value);
 	}
 
 	@Override
@@ -56,7 +60,7 @@ public class StringProperty implements ObservableProperty<String>{
 
 	@Override
 	public void readValue(DataInput buffer) throws IOException {
-		value = buffer.readUTF();
+		set(buffer.readUTF());
 	}
 
 	@Override
@@ -64,6 +68,14 @@ public class StringProperty implements ObservableProperty<String>{
 		return Arrays.asList();
 	}
 	
-	
+	@Override
+	public void addListener(Listener<String> listener) {
+		manager.addListener(listener);
+	}
 
+	@Override
+	public void removeListener(Listener<String> listener) {
+		manager.removeListener(listener);
+	}
+	
 }

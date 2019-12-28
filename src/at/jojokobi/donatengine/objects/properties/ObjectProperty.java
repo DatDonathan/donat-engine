@@ -12,6 +12,9 @@ public class ObjectProperty<T> implements ObservableProperty<T>{
 	
 	private T value;
 	private boolean changed = false;
+	
+	private ListenerManager<T> manager = new ListenerManager<>();
+
 
 	public ObjectProperty(T value) {
 		super();
@@ -33,8 +36,10 @@ public class ObjectProperty<T> implements ObservableProperty<T>{
 
 	@Override
 	public void set(T value) {
-		changed = true;
+		T old = this.value;
 		this.value = value;
+		changed = true;
+		manager.notifyListeners(this, old, value);
 	}
 
 	@Override
@@ -62,6 +67,16 @@ public class ObjectProperty<T> implements ObservableProperty<T>{
 	@Override
 	public List<ObservableProperty<?>> observableProperties() {
 		return Arrays.asList();
+	}
+
+	@Override
+	public void addListener(Listener<T> listener) {
+		manager.addListener(listener);
+	}
+
+	@Override
+	public void removeListener(Listener<T> listener) {
+		manager.removeListener(listener);
 	}
 
 }
