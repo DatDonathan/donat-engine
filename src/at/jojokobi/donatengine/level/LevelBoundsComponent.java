@@ -70,6 +70,12 @@ public class LevelBoundsComponent implements LevelComponent {
 			cam.setZ(pos.getZ() + size.getZ() - cam.getViewHeight());
 		}
 	}
+	
+	public boolean outsideBounds (GameObject obj) {
+		return obj.getX() < pos.getX() || obj.getY() < pos.getY() || obj.getZ() < pos.getZ() ||
+				obj.getX() + obj.getWidth() >= pos.getX() + size.getX() || obj.getY() + obj.getHeight() >= pos.getY() + size.getY() ||
+						obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ();
+	}
 
 	@Override
 	public void renderBefore(GraphicsContext ctx, Camera cam, Level level) {
