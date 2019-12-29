@@ -100,11 +100,17 @@ public class ClientGameLogic implements GameLogic{
 		level.update(delta, handler, camera);
 		
 		try {
+			int count = 0;
 			while (data.available() > 0) {
 				ServerPacket packet = BinarySerialization.getInstance().deserialize(ServerPacket.class, data);
 				synchronized (ClientGameLogic.this) {
+					System.out.println("Recieved:" + packet);
 					packet.apply(level, handler);
+					count++;
 				}
+			}
+			if (count > 0) {
+				System.out.println("Recieved " + count + " in total!");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
