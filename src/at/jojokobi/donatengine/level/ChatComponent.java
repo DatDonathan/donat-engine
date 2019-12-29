@@ -15,10 +15,6 @@ public class ChatComponent implements LevelComponent{
 	
 	private ObservableObjectProperty<ObservableList<String>> messages = new ObservableObjectProperty<ObservableList<String>>(new ObservableList<>());
 
-	@Override
-	public void update(Level level, double delta) {
-		
-	}
 	
 	public void postMessage (String message) {
 		messages.get().add(0, message);
@@ -47,6 +43,11 @@ public class ChatComponent implements LevelComponent{
 
 	@Override
 	public void init(Level level) {
+		
+	}
+
+	@Override
+	public void update(Level level, Camera cam, double delta) {
 		
 	}
 

@@ -194,7 +194,6 @@ public class ObservableList<E> implements ObservableObject, List<E>, BinarySeria
 				for (ObservableProperty<?> prop : o.observerableProperties()) {
 					//Value changed
 					if (prop.fetchChanged()) {
-						System.out.println("Property changed");
 						try (ByteArrayOutputStream arr = new ByteArrayOutputStream();
 								DataOutputStream stream = new DataOutputStream(arr)){
 							prop.writeValue(stream);

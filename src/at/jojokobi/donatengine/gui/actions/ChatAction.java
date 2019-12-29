@@ -36,7 +36,6 @@ public class ChatAction implements GUIAction {
 	@Override
 	public void perform(Level level, LevelHandler handler, long id, GUISystem system, Camera camera) {
 		level.getComponent(ChatComponent.class).postMessage(message);
-		System.out.println(message);
 	}
 
 	@Override

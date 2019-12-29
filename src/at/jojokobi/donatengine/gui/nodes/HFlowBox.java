@@ -31,7 +31,6 @@ public class HFlowBox extends Pane {
 		double y = getStyle().getPaddingTop();
 		List<Node> currRow = new ArrayList<>();
 		for (Node node : nodes) {
-			System.out.println("X: " + x);
 			x += node.getStyle().getMarginLeft();
 			if (x + node.getWidth() + node.getStyle().getMarginRight() > getWidth() - getStyle().getPaddingLeft() - getStyle().getPaddingRight() && !currRow.isEmpty()){
 				x = node.getStyle().getMarginLeft() + getStyle().getPaddingLeft();

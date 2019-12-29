@@ -30,11 +30,44 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 
 	@Override
-	public void update(Level level, double delta) {
+	public void update(Level level, Camera cam, double delta) {
 		if (blockObjects) {
 			for (GameObject obj : level.getObjects()) {
-				
+				if (obj.getX() < pos.getX()) {
+					obj.setX(pos.getX());
+				}
+				if (obj.getY() < pos.getY()) {
+					obj.setY(pos.getY());
+				}
+				if (obj.getZ() < pos.getZ()) {
+					obj.setZ(pos.getZ());
+				}
+				if (obj.getX() + obj.getWidth() >= pos.getX() + size.getX()) {
+					obj.setX(pos.getX() + size.getX() - obj.getWidth());
+				}
+				if (obj.getY() + obj.getHeight() >= pos.getY() + size.getY()) {
+					obj.setY(pos.getY() + size.getY() - obj.getHeight());
+				}
+				if (obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ()) {
+					obj.setZ(pos.getZ() + size.getZ() - obj.getLength());
+				}
 			}
+		}
+		
+		if (cam.getX() < pos.getX()) {
+			cam.setX(pos.getX());
+		}
+		if (cam.getY() < pos.getY()) {
+			cam.setY(pos.getY());
+		}
+		if (cam.getZ() < pos.getZ()) {
+			cam.setZ(pos.getZ());
+		}
+		if (cam.getX() + cam.getViewWidth() >= pos.getX() + size.getX()) {
+			cam.setX(pos.getX() + size.getX() - cam.getViewWidth());
+		}
+		if (cam.getZ() + cam.getViewHeight() >= pos.getZ() + size.getZ()) {
+			cam.setZ(pos.getZ() + size.getZ() - cam.getViewHeight());
 		}
 	}
 

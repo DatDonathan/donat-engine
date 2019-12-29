@@ -102,7 +102,6 @@ public class BoxModel extends RenderModel {
 //			ctx.drawImage(front, relX, startY + topHeight, getWidth(), frontHeight);
 //		}
 //		else {
-//			System.out.println("lul");
 //			ctx.drawImage(front, relX, startY, getWidth(), frontHeight);
 //			ctx.drawImage(top, relX, startY + frontHeight, getWidth(), topHeight);
 //		}

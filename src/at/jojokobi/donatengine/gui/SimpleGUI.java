@@ -45,7 +45,6 @@ public class SimpleGUI implements GUI{
 		parent.updateDimensions(0, 0, width, height);
 		if (input.getPrimary()) {
 			selected = parent.determineSelected(0, 0, input.getCursorX(), input.getCursorY());
-			System.out.println(selected);
 		}
 	}
 	

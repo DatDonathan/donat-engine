@@ -112,7 +112,7 @@ public abstract class Level extends Hitbox{
 		particleSystem.update(delta);
 		getBehavior().update(this, handler);
 		if (getBehavior().isHost()) {
-			components.forEach(c -> c.update(this, delta));
+			components.forEach(c -> c.update(this, camera, delta));
 		}
 		for (long id : objects.keySet()) {
 			GameObject gameObject = objects.get(id);

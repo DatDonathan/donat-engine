@@ -28,7 +28,6 @@ public class Button extends Parent {
 
 	@Override
 	public void fire() {
-		System.out.println("Fire");
 		if (onAction != null) {
 			addAction(onAction.get());
 		}
