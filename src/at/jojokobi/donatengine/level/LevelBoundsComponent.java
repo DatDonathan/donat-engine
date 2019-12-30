@@ -31,7 +31,7 @@ public class LevelBoundsComponent implements LevelComponent {
 
 	@Override
 	public void update(Level level, Camera cam, double delta) {
-		if (blockObjects) {
+		if (blockObjects && level.getBehavior().isHost()) {
 			for (GameObject obj : level.getObjects()) {
 				if (obj.getX() < pos.getX()) {
 					obj.setX(pos.getX());

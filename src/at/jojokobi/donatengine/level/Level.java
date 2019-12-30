@@ -103,7 +103,7 @@ public abstract class Level extends Hitbox{
 		return null;
 	}
 	
-	public void update (double delta, LevelHandler handler, Camera camera) {
+	public synchronized void update (double delta, LevelHandler handler, Camera camera) {
 //		if (camera.hasMoved()) {
 //			recalcObjectsInView();
 //		}
@@ -132,7 +132,7 @@ public abstract class Level extends Hitbox{
 		}
 	}
 	
-	public void render (GraphicsContext ctx, Camera camera, IRessourceHandler ressourceHandler, boolean renderInvisible) {
+	public synchronized void render (GraphicsContext ctx, Camera camera, IRessourceHandler ressourceHandler, boolean renderInvisible) {
 		ctx.clearRect(0, 0, camera.getViewWidth(), camera.getViewHeight());
 		LevelArea area = getArea(camera.getArea());
 		if (area != null) {
