@@ -1,5 +1,6 @@
 package at.jojokobi.donatengine.rendering;
 
+
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
@@ -32,61 +33,91 @@ public class BoxModel extends RenderModel {
 	public void render(GraphicsContext ctx, Camera cam, double x, double y, double z) {
 		Vector3D pos = new Vector3D(x, y, z);
 		ctx.setStroke(Color.BLACK);
-		//Left side
-		{
-			Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), 0)).round();
-			Vector2D ur = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
-			Vector2D lr = cam.toScreenPosition(pos.clone().add(0, 0, getLength())).round();
-			Vector2D ll = cam.toScreenPosition(pos.clone().add(0, 0, 0)).round();
-			
-			ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
-			ctx.drawImage(getLeft(), ul.getX(), ul.getY());
-			if (border) {
-				ctx.setEffect(null);
-				ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+		switch (cam.getPerspective().getOptimizationLevel()) {
+		case NONE:
+			//Left side
+			{
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), 0)).round();
+				Vector2D ur = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
+				Vector2D lr = cam.toScreenPosition(pos.clone().add(0, 0, getLength())).round();
+				Vector2D ll = cam.toScreenPosition(pos.clone().add(0, 0, 0)).round();
+				
+				ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
+				ctx.drawImage(getLeft(), ul.getX(), ul.getY());
+				if (border) {
+					ctx.setEffect(null);
+					ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+				}
 			}
-		}
-		//Left side
-		{
-			Vector2D ul = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), 0)).round();
-			Vector2D ur = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), getLength())).round();
-			Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), 0, getLength())).round();
-			Vector2D ll = cam.toScreenPosition(pos.clone().add(getWidth(), 0, 0)).round();
-			
-			ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
-			ctx.drawImage(getLeft(), ul.getX(), ul.getY());
-			if (border) {
-				ctx.setEffect(null);
-				ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+			//Left side
+			{
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), 0)).round();
+				Vector2D ur = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), getLength())).round();
+				Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), 0, getLength())).round();
+				Vector2D ll = cam.toScreenPosition(pos.clone().add(getWidth(), 0, 0)).round();
+				
+				ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
+				ctx.drawImage(getLeft(), ul.getX(), ul.getY());
+				if (border) {
+					ctx.setEffect(null);
+					ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+				}
 			}
-		}
-		//Front side
-		{
-			Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
-			Vector2D ur = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), getLength())).round();
-			Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), 0, getLength())).round();
-			Vector2D ll = cam.toScreenPosition(pos.clone().add(0, 0, getLength())).round();
-			
-			ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
-			ctx.drawImage(getFront(), ul.getX(), ul.getY());
-			if (border) {
-				ctx.setEffect(null);
-				ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+			//Front side
+			{
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
+				Vector2D ur = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), getLength())).round();
+				Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), 0, getLength())).round();
+				Vector2D ll = cam.toScreenPosition(pos.clone().add(0, 0, getLength())).round();
+				
+				ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
+				ctx.drawImage(getFront(), ul.getX(), ul.getY());
+				if (border) {
+					ctx.setEffect(null);
+					ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+				}
 			}
-		}
-		//Top side
-		{
-			Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), 0)).round();
-			Vector2D ur = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), 0)).round();
-			Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), getLength())).round();
-			Vector2D ll = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
-			
-			ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
-			ctx.drawImage(getTop(), ul.getX(), ul.getY());
-			if (border) {
-				ctx.setEffect(null);
-				ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+			//Top side
+			{
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), 0)).round();
+				Vector2D ur = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), 0)).round();
+				Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), getLength())).round();
+				Vector2D ll = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
+				
+				ctx.setEffect(new PerspectiveTransform(ul.getX(), ul.getY(), ur.getX(), ur.getY(), lr.getX(), lr.getY(), ll.getX(), ll.getY()));
+				ctx.drawImage(getTop(), ul.getX(), ul.getY());
+				if (border) {
+					ctx.setEffect(null);
+					ctx.strokePolygon(new double[] {ul.getX(), ur.getX(), lr.getX(), ll.getX()}, new double[] {ul.getY(), ur.getY(), lr.getY(), ll.getY()}, 4);
+				}
 			}
+			break;
+		case FULL:
+			if ((cam.getRotationX() + 45) % 180 > 90) {
+				//Top
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), 0)).round();
+				ctx.drawImage(top, ul.getX(), ul.getY());
+			}
+			else {
+				//Front
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
+				ctx.drawImage(top, ul.getX(), ul.getY());
+			}
+			break;
+		case ONLY_YZ:
+			//Top
+			{
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), 0)).round();
+				Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), getHeight(), getLength())).round();
+				ctx.drawImage(top, ul.getX(), ul.getY(), lr.getX() - ul.getX(), lr.getY() - lr.getY());
+			}
+			//Front
+			{
+				Vector2D ul = cam.toScreenPosition(pos.clone().add(0, getHeight(), getLength())).round();
+				Vector2D lr = cam.toScreenPosition(pos.clone().add(getWidth(), 0, getLength())).round();
+				ctx.drawImage(top, ul.getX(), ul.getY(), lr.getX() - ul.getX(), lr.getY() - lr.getY());
+			}
+			break;
 		}
 		
 //		double relX = x - cam.getX();

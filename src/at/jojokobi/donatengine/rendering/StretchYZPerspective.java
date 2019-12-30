@@ -15,4 +15,9 @@ public class StretchYZPerspective implements Perspective {
 		return getClass().getSimpleName();
 	}
 
+	@Override
+	public OptimizationLevel getOptimizationLevel() {
+		return OptimizationLevel.ONLY_YZ;
+	}
+
 }

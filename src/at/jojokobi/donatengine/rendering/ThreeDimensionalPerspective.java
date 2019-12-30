@@ -28,5 +28,10 @@ public class ThreeDimensionalPerspective implements Perspective {
 	public static double interpolate (double d1, double d2, double prog) {
 		return d1 * (1-prog) + d2 * prog;
 	}
+	
+	@Override
+	public OptimizationLevel getOptimizationLevel() {
+		return OptimizationLevel.NONE;
+	}
 
 }
