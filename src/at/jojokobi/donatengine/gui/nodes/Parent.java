@@ -59,7 +59,7 @@ public abstract class Parent extends Node{
 		Map<Node, Vector2D> positions = calcPositions(children);
 		for (Node node : children) {
 			Vector2D pos = positions.get(node);
-			node.updateDimensions(pos.getX(), pos.getY(), getWidth(), getHeight());
+			node.updateDimensions(pos.getX(), pos.getY(), getWidth() - getStyle().getPaddingLeft() - getStyle().getPaddingRight(), getHeight() - getStyle().getPaddingTop() - getStyle().getPaddingBottom());
 		}
 	}
 	
