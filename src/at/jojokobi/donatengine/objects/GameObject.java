@@ -446,9 +446,15 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 	public double getxMotion() {
 		return xMotion;
 	}
-
+	
 	public void setxMotion(double xMotion) {
-		changedMotion = changedMotion || xMotion != this.xMotion;
+		setxMotion(xMotion, true);
+	}
+
+	public void setxMotion(double xMotion, boolean setChange) {
+		if (setChange) {
+			changedMotion = changedMotion || xMotion != this.xMotion;
+		}
 		this.xMotion = xMotion;
 	}
 
@@ -459,23 +465,39 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 	public double getTotalYMotion() {
 		return yMotion + gravity;
 	}
-
+	
 	public void setyMotion(double yMotion) {
-		changedMotion = changedMotion || yMotion != this.yMotion;
-		this.yMotion = yMotion;
+		setyMotion(yMotion, true);
 	}
 
+	public void setyMotion(double yMotion, boolean setChange) {
+		if (setChange) {
+			changedMotion = changedMotion || yMotion != this.yMotion;
+		}
+		this.yMotion = yMotion;
+	}
+	
 	public void setTotalYMotion(double yMotion) {
-		setyMotion(yMotion);
+		setTotalYMotion(yMotion, true);
+	}
+
+	public void setTotalYMotion(double yMotion, boolean setChange) {
+		setyMotion(yMotion, setChange);
 		setGravity(0);
 	}
 
 	public double getzMotion() {
 		return zMotion;
 	}
-
+	
 	public void setzMotion(double zMotion) {
-		changedMotion = changedMotion || zMotion != this.zMotion;
+		setzMotion(zMotion, true);
+	}
+
+	public void setzMotion(double zMotion, boolean setChange) {
+		if (setChange) {
+			changedMotion = changedMotion || zMotion != this.zMotion;
+		}
 		this.zMotion = zMotion;
 	}
 
