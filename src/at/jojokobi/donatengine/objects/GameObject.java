@@ -61,10 +61,9 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 //	}
 
 	public GameObject(double x, double y, double z, String area, RenderModel renderModel) {
-		super(x, y);
+		super(x, y, z);
 //		this.level = level;
 		this.renderModel = renderModel;
-		setZ(z);
 		setArea(area);
 	}
 	

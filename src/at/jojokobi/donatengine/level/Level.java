@@ -116,7 +116,7 @@ public abstract class Level extends Hitbox{
 		}
 		for (long id : objects.keySet()) {
 			GameObject gameObject = objects.get(id);
-			if (camera.canSee(gameObject) || updateHidden) {
+			if ((camera.canSee(gameObject) || updateHidden) && gameObject.isNeedsUpdate()) {
 				behavior.onUpdate(this, gameObject, id, handler);
 				if (behavior.isHost()) {
 					gameObject.hostUpdate(this, handler, camera, delta);

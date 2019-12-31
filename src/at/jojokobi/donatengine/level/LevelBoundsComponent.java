@@ -42,15 +42,18 @@ public class LevelBoundsComponent implements LevelComponent {
 				if (obj.getZ() < pos.getZ()) {
 					obj.setZ(pos.getZ());
 				}
-				if (obj.getX() + obj.getWidth() >= pos.getX() + size.getX()) {
+				if (obj.getX() + obj.getWidth() > pos.getX() + size.getX()) {
 					obj.setX(pos.getX() + size.getX() - obj.getWidth());
 				}
-				if (obj.getY() + obj.getHeight() >= pos.getY() + size.getY()) {
+				if (obj.getY() + obj.getHeight() > pos.getY() + size.getY()) {
 					obj.setY(pos.getY() + size.getY() - obj.getHeight());
 				}
-				if (obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ()) {
+				if (obj.getZ() + obj.getLength() > pos.getZ() + size.getZ()) {
 					obj.setZ(pos.getZ() + size.getZ() - obj.getLength());
 				}
+
+//				System.out.println("X:" + (obj.getX() + obj.getWidth()) + "/" + (pos.getX() + size.getX()));
+//				System.out.println("Z:" + (obj.getZ() + obj.getLength()) + "/" + (pos.getZ() + size.getZ()));
 			}
 		}
 		

@@ -24,6 +24,7 @@ public class Tile extends GameObject{
 		setX(x);
 		setY(y);
 		setZ(z);
+		fetchMoved();
 		setCollideSolid(false);
 	}
 	
