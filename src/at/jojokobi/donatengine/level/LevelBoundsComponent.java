@@ -5,22 +5,23 @@ import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
+import at.jojokobi.donatengine.objects.properties.ObjectProperty;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.util.Vector3D;
 import javafx.scene.canvas.GraphicsContext;
 
 public class LevelBoundsComponent implements LevelComponent {
 	
-	private Vector3D pos;
-	private Vector3D size;
+	private ObjectProperty<Vector3D> pos = new ObjectProperty<Vector3D>(null);
+	private ObjectProperty<Vector3D> size = new ObjectProperty<Vector3D>(null);
 	
 	private boolean blockObjects;
 
 
 	public LevelBoundsComponent(Vector3D pos, Vector3D size, boolean blockObjects) {
 		super();
-		this.pos = pos;
-		this.size = size;
+		this.pos.set(pos);
+		this.size.set(size);
 		this.blockObjects = blockObjects;
 	}
 
@@ -31,6 +32,8 @@ public class LevelBoundsComponent implements LevelComponent {
 	
 	@Override
 	public void update(Level level, Camera cam, double delta) {
+		Vector3D pos = this.pos.get();
+		Vector3D size = this.size.get();
 		if (blockObjects && level.getBehavior().isHost()) {
 			for (GameObject obj : level.getObjects()) {
 				if (obj.getX() < pos.getX()) {
@@ -57,6 +60,8 @@ public class LevelBoundsComponent implements LevelComponent {
 
 	@Override
 	public void clientUpdate(Level level, Camera cam, double delta) {
+		Vector3D pos = this.pos.get();
+		Vector3D size = this.size.get();
 		if (cam.getX() < pos.getX()) {
 			cam.setX(pos.getX());
 		}
@@ -80,12 +85,16 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 	
 	public boolean outsideBounds (GameObject obj) {
+		Vector3D pos = this.pos.get();
+		Vector3D size = this.size.get();
 		return obj.getX() < pos.getX() || obj.getY() < pos.getY() || obj.getZ() < pos.getZ() ||
 				obj.getX() + obj.getWidth() >= pos.getX() + size.getX() || obj.getY() + obj.getHeight() >= pos.getY() + size.getY() ||
 						obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ();
 	}
 	
 	public boolean nearBounds (GameObject obj) {
+		Vector3D pos = this.pos.get();
+		Vector3D size = this.size.get();
 		return obj.getX() <= pos.getX() || obj.getY() <= pos.getY() || obj.getZ() <= pos.getZ() ||
 				obj.getX() + obj.getWidth() >= pos.getX() + size.getX() || obj.getY() + obj.getHeight() >= pos.getY() + size.getY() ||
 						obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ();
@@ -103,23 +112,23 @@ public class LevelBoundsComponent implements LevelComponent {
 
 	@Override
 	public List<ObservableProperty<?>> observableProperties() {
-		return Arrays.asList();
+		return Arrays.asList(pos, size);
 	}
 
 	public Vector3D getPos() {
-		return pos;
+		return pos.get();
 	}
 
 	public void setPos(Vector3D pos) {
-		this.pos = pos;
+		this.pos.set(pos);
 	}
 
 	public Vector3D getSize() {
-		return size;
+		return size.get();
 	}
 
 	public void setSize(Vector3D size) {
-		this.size = size;
+		this.size.set(size);
 	}
 
 	public boolean isBlockObjects() {
