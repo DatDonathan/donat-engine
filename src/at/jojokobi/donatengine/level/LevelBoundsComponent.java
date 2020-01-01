@@ -28,35 +28,35 @@ public class LevelBoundsComponent implements LevelComponent {
 	public void init(Level level) {
 		
 	}
-
+	
 	@Override
 	public void update(Level level, Camera cam, double delta) {
 		if (blockObjects && level.getBehavior().isHost()) {
 			for (GameObject obj : level.getObjects()) {
 				if (obj.getX() < pos.getX()) {
-					obj.setX(pos.getX());
+					obj.setX(pos.getX(), false);
 				}
 				if (obj.getY() < pos.getY()) {
-					obj.setY(pos.getY());
+					obj.setY(pos.getY(), false);
 				}
 				if (obj.getZ() < pos.getZ()) {
-					obj.setZ(pos.getZ());
+					obj.setZ(pos.getZ(), false);
 				}
 				if (obj.getX() + obj.getWidth() > pos.getX() + size.getX()) {
-					obj.setX(pos.getX() + size.getX() - obj.getWidth());
+					obj.setX(pos.getX() + size.getX() - obj.getWidth(), false);
 				}
 				if (obj.getY() + obj.getHeight() > pos.getY() + size.getY()) {
-					obj.setY(pos.getY() + size.getY() - obj.getHeight());
+					obj.setY(pos.getY() + size.getY() - obj.getHeight(), false);
 				}
 				if (obj.getZ() + obj.getLength() > pos.getZ() + size.getZ()) {
-					obj.setZ(pos.getZ() + size.getZ() - obj.getLength());
+					obj.setZ(pos.getZ() + size.getZ() - obj.getLength(), false);
 				}
-
-//				System.out.println("X:" + (obj.getX() + obj.getWidth()) + "/" + (pos.getX() + size.getX()));
-//				System.out.println("Z:" + (obj.getZ() + obj.getLength()) + "/" + (pos.getZ() + size.getZ()));
 			}
 		}
-		
+	}
+
+	@Override
+	public void clientUpdate(Level level, Camera cam, double delta) {
 		if (cam.getX() < pos.getX()) {
 			cam.setX(pos.getX());
 		}
@@ -73,9 +73,20 @@ public class LevelBoundsComponent implements LevelComponent {
 			cam.setZ(pos.getZ() + size.getZ() - cam.getViewHeight());
 		}
 	}
+
+	@Override
+	public void hostUpdate(Level level, Camera cam, double delta) {
+
+	}
 	
 	public boolean outsideBounds (GameObject obj) {
 		return obj.getX() < pos.getX() || obj.getY() < pos.getY() || obj.getZ() < pos.getZ() ||
+				obj.getX() + obj.getWidth() >= pos.getX() + size.getX() || obj.getY() + obj.getHeight() >= pos.getY() + size.getY() ||
+						obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ();
+	}
+	
+	public boolean nearBounds (GameObject obj) {
+		return obj.getX() <= pos.getX() || obj.getY() <= pos.getY() || obj.getZ() <= pos.getZ() ||
 				obj.getX() + obj.getWidth() >= pos.getX() + size.getX() || obj.getY() + obj.getHeight() >= pos.getY() + size.getY() ||
 						obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ();
 	}

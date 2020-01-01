@@ -10,7 +10,11 @@ public interface LevelComponent {
 	
 	public void init (Level level);
 	
+	public void hostUpdate (Level level, Camera cam, double delta);
+	
 	public void update (Level level, Camera cam, double delta);
+	
+	public void clientUpdate (Level level, Camera cam, double delta);
 	
 	public void renderBefore (GraphicsContext ctx, Camera cam, Level level);
 	

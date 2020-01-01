@@ -47,7 +47,17 @@ public class ChatComponent implements LevelComponent{
 	}
 
 	@Override
+	public void hostUpdate(Level level, Camera cam, double delta) {
+		
+	}
+
+	@Override
 	public void update(Level level, Camera cam, double delta) {
+		
+	}
+
+	@Override
+	public void clientUpdate(Level level, Camera cam, double delta) {
 		
 	}
 

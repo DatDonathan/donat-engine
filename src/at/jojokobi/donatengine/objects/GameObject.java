@@ -256,20 +256,32 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 	
 	@Override
 	public void setX(double x) {
-		super.setX(x);
-		moved = true;
+		setX(x, true);
 	}
 	
 	@Override
 	public void setY(double y) {
-		super.setY(y);
-		moved = true;
+		setY(y, true);
 	}
 	
 	@Override
 	public void setZ(double z) {
+		setZ(z , true);
+	}
+	
+	public void setX(double x, boolean setChange) {
+		super.setX(x);
+		moved = moved || setChange;
+	}
+	
+	public void setY(double y, boolean setChange) {
+		super.setY(y);
+		moved = moved || setChange;
+	}
+	
+	public void setZ(double z, boolean setChange) {
 		super.setZ(z);
-		moved = true;
+		moved = moved || setChange;
 	}
 	
 	@Override
