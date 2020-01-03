@@ -68,8 +68,9 @@ public class Vector3D extends Vector2D {
 	
 	@Override
 	public Vector3D normalize() {
+		double length = length();
 		super.normalize();
-		z /= length();
+		z /= length;
 		return this;
 	}
 	

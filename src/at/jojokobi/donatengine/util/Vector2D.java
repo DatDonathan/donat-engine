@@ -87,11 +87,12 @@ public class Vector2D implements Cloneable, BinarySerializable{
 	}
 	
 	public Vector2D normalize () {
+		double length = length();
 		if (x != 0) {
-			x /= length();
+			x /= length;
 		}
 		if (y != 0) {
-			y /= length();
+			y /= length;
 		}
 		return this;
 	}
