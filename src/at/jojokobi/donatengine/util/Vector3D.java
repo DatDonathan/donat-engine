@@ -49,6 +49,10 @@ public class Vector3D extends Vector2D {
 		return this;
 	}
 	
+	public Vector3D subtract(Vector3D vec) {
+		return subtract(vec.getX(), vec.getY(), vec.getZ());
+	}
+	
 	@Override
 	public Vector3D clone()  {
 		return new Vector3D(getX(), getY(), getZ());

@@ -43,6 +43,10 @@ public class Vector2D implements Cloneable, BinarySerializable{
 		return this;
 	}
 	
+	public Vector2D subtract (Vector2D vec) {
+		return subtract(vec.getX(), vec.getY());
+	}
+	
 	public Vector2D subtract (double x, double y) {
 		this.x -= x;
 		this.y -= y;
