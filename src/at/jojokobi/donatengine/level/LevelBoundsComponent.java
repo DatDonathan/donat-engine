@@ -71,10 +71,10 @@ public class LevelBoundsComponent implements LevelComponent {
 		if (cam.getZ() < pos.getZ()) {
 			cam.setZ(pos.getZ());
 		}
-		if (cam.getX() + cam.getViewWidth() >= pos.getX() + size.getX()) {
+		if (cam.getX() + cam.getViewWidth() > pos.getX() + size.getX()) {
 			cam.setX(pos.getX() + size.getX() - cam.getViewWidth());
 		}
-		if (cam.getZ() + cam.getViewHeight() >= pos.getZ() + size.getZ()) {
+		if (cam.getZ() + cam.getViewHeight() > pos.getZ() + size.getZ()) {
 			cam.setZ(pos.getZ() + size.getZ() - cam.getViewHeight());
 		}
 	}
@@ -88,8 +88,8 @@ public class LevelBoundsComponent implements LevelComponent {
 		Vector3D pos = this.pos.get();
 		Vector3D size = this.size.get();
 		return obj.getX() < pos.getX() || obj.getY() < pos.getY() || obj.getZ() < pos.getZ() ||
-				obj.getX() + obj.getWidth() >= pos.getX() + size.getX() || obj.getY() + obj.getHeight() >= pos.getY() + size.getY() ||
-						obj.getZ() + obj.getLength() >= pos.getZ() + size.getZ();
+				obj.getX() + obj.getWidth() > pos.getX() + size.getX() || obj.getY() + obj.getHeight() > pos.getY() + size.getY() ||
+						obj.getZ() + obj.getLength() > pos.getZ() + size.getZ();
 	}
 	
 	public boolean nearBounds (GameObject obj) {

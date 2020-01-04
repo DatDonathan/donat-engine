@@ -21,8 +21,8 @@ public class Camera {
 			int compare = 0;
 			double x1 = o1.getX() - o1.getxOffset();
 			double x2 = o2.getX() - o2.getxOffset();
-			double y1 = o1.getY() - o1.getyOffset();
-			double y2 = o2.getY() - o2.getyOffset();
+			double y1 = o1.getY() - o1.getyOffset() + o1.getHeight();
+			double y2 = o2.getY() - o2.getyOffset() + o2.getHeight();
 			double z1 = o1.getZ() - o1.getzOffset();
 			double length1 = o1.getRenderModel().getLength();
 			double z2 = o2.getZ() - o2.getzOffset();
