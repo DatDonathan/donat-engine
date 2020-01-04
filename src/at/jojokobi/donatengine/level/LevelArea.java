@@ -26,7 +26,7 @@ public class LevelArea implements BinarySerializable{
 	public void render (Level level, GraphicsContext ctx, IRessourceHandler ressourceHandler, Camera camera) {
 		Image img = ressourceHandler.getImage(background);
 		if (img != null) {
-			ctx.drawImage(img, 0, 0);
+			ctx.drawImage(img, 0, 0, camera.getViewWidth(), camera.getViewHeight());
 		}
 	}
 
