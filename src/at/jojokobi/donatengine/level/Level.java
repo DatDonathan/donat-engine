@@ -119,7 +119,7 @@ public abstract class Level extends Hitbox {
 		}
 		for (long id : objects.keySet()) {
 			GameObject gameObject = objects.get(id);
-			if ((camera.canSee(gameObject) || updateHidden) && gameObject.isNeedsUpdate()) {
+			if ((updateHidden || gameObject.isAlwaysUpdate() || camera.canSee(gameObject)) && gameObject.isNeedsUpdate()) {
 				behavior.onUpdate(this, gameObject, id, handler);
 				if (behavior.isHost()) {
 					gameObject.hostUpdate(this, handler, camera, delta);
@@ -314,8 +314,9 @@ public abstract class Level extends Hitbox {
 	}
 
 	public Vector3D calcMotion(double x, double y, double z, String area, double width, double height, double length,
-			double xMotion, double yMotion, double zMotion, List<Object> ignore) {
+			double xMotion, double yMotion, double zMotion, boolean slide, List<Object> ignore) {
 		Vector3D pos = new Vector3D();
+		boolean blocked = false;
 		// Y
 		List<GameObject> yObjs = null;
 		if (yMotion < 0) {
@@ -336,6 +337,7 @@ public abstract class Level extends Hitbox {
 				}
 			}
 			pos.setY(yObj.getY() - height);
+			blocked = true;
 		}
 		// Negative
 		else if (yMotion < 0) {
@@ -346,70 +348,79 @@ public abstract class Level extends Hitbox {
 				}
 			}
 			pos.setY(yObj.getY() + yObj.getHeight());
+			blocked = true;
 		}
-
+		
 		// X
-		List<GameObject> xObjs = null;
-		if (xMotion < 0) {
-			xObjs = getSolidInArea(x + xMotion, y, z, width - xMotion, height, length,area);
-		} else {
-			xObjs = getSolidInArea(x, y, z, width + xMotion, height, length, area);
-		}
-		xObjs.removeAll(ignore);
-		if (xObjs.isEmpty()) {
-			pos.setX(x + xMotion);
-		}
-		// Positive
-		else if (xMotion > 0) {
-			GameObject xObj = xObjs.get(0);
-			for (int i = 1; i < xObjs.size(); i++) {
-				if (xObj.getX() > xObjs.get(i).getX()) {
-					xObj = xObjs.get(i);
-				}
+		if (slide || !blocked) {
+			List<GameObject> xObjs = null;
+			if (xMotion < 0) {
+				xObjs = getSolidInArea(x + xMotion, y, z, width - xMotion, height, length,area);
+			} else {
+				xObjs = getSolidInArea(x, y, z, width + xMotion, height, length, area);
 			}
-			pos.setX(xObj.getX() - width);
-		}
-		// Negative
-		else if (xMotion < 0) {
-			GameObject xObj = xObjs.get(0);
-			for (int i = 1; i < xObjs.size(); i++) {
-				if (xObj.getX() + xObj.getWidth() < xObjs.get(i).getX() + xObjs.get(i).getWidth()) {
-					xObj = xObjs.get(i);
-				}
+			xObjs.removeAll(ignore);
+			if (xObjs.isEmpty()) {
+				pos.setX(x + xMotion);
 			}
-			pos.setX(xObj.getX() + xObj.getWidth());
+			// Positive
+			else if (xMotion > 0) {
+				GameObject xObj = xObjs.get(0);
+				for (int i = 1; i < xObjs.size(); i++) {
+					if (xObj.getX() > xObjs.get(i).getX()) {
+						xObj = xObjs.get(i);
+					}
+				}
+				pos.setX(xObj.getX() - width);
+				blocked = true;
+			}
+			// Negative
+			else if (xMotion < 0) {
+				GameObject xObj = xObjs.get(0);
+				for (int i = 1; i < xObjs.size(); i++) {
+					if (xObj.getX() + xObj.getWidth() < xObjs.get(i).getX() + xObjs.get(i).getWidth()) {
+						xObj = xObjs.get(i);
+					}
+				}
+				pos.setX(xObj.getX() + xObj.getWidth());
+				blocked = true;
+			}
 		}
 
 		// Z
-		List<GameObject> zObjs = null;
-		if (zMotion < 0) {
-			zObjs = getSolidInArea(x, y, z + zMotion, width, height, length - zMotion,area);
-		} else {
-			zObjs = getSolidInArea(x, y, z, width, height, length + zMotion, area);
-		}
-		zObjs.removeAll(ignore);
-		if (zObjs.isEmpty()) {
-			pos.setZ(z + zMotion);
-		}
-		// Positive
-		else if (zMotion > 0) {
-			GameObject zObj = zObjs.get(0);
-			for (int i = 1; i < zObjs.size(); i++) {
-				if (zObj.getZ() > zObjs.get(i).getZ()) {
-					zObj = zObjs.get(i);
-				}
+		if (slide || !blocked) {
+			List<GameObject> zObjs = null;
+			if (zMotion < 0) {
+				zObjs = getSolidInArea(x, y, z + zMotion, width, height, length - zMotion,area);
+			} else {
+				zObjs = getSolidInArea(x, y, z, width, height, length + zMotion, area);
 			}
-			pos.setZ(zObj.getZ() - length);
-		}
-		// Negative
-		else if (zMotion < 0) {
-			GameObject zObj = zObjs.get(0);
-			for (int i = 1; i < zObjs.size(); i++) {
-				if (zObj.getZ() + zObj.getLength() < zObjs.get(i).getZ() + zObjs.get(i).getLength()) {
-					zObj = zObjs.get(i);
-				}
+			zObjs.removeAll(ignore);
+			if (zObjs.isEmpty()) {
+				pos.setZ(z + zMotion);
 			}
-			pos.setZ(zObj.getZ() + zObj.getLength());
+			// Positive
+			else if (zMotion > 0) {
+				GameObject zObj = zObjs.get(0);
+				for (int i = 1; i < zObjs.size(); i++) {
+					if (zObj.getZ() > zObjs.get(i).getZ()) {
+						zObj = zObjs.get(i);
+					}
+				}
+				pos.setZ(zObj.getZ() - length);
+				blocked = true;
+			}
+			// Negative
+			else if (zMotion < 0) {
+				GameObject zObj = zObjs.get(0);
+				for (int i = 1; i < zObjs.size(); i++) {
+					if (zObj.getZ() + zObj.getLength() < zObjs.get(i).getZ() + zObjs.get(i).getLength()) {
+						zObj = zObjs.get(i);
+					}
+				}
+				pos.setZ(zObj.getZ() + zObj.getLength());
+				blocked = true;
+			}
 		}
 		return pos;
 	}
