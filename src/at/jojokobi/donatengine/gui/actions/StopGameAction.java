@@ -8,16 +8,17 @@ import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class StopGameAction implements GUIAction{
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		
 	}
 

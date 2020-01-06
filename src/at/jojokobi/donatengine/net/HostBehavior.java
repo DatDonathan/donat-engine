@@ -48,7 +48,7 @@ public class HostBehavior implements MultiplayerBehavior {
 	@Override
 	public void onUpdate(Level level, GameObject obj, long id, LevelHandler handler) {
 		for (ServerPacketType type : packetTypes) {
-			packets.addAll(type.onUpdate(level, obj, id));
+			packets.addAll(type.onUpdate(level, obj, id, handler.getSerialization()));
 		}
 	}
 
@@ -92,7 +92,7 @@ public class HostBehavior implements MultiplayerBehavior {
 	@Override
 	public void update(Level level, LevelHandler handler) {
 		for (ServerPacketType type : packetTypes) {
-			packets.addAll(type.update(level));
+			packets.addAll(type.update(level, handler.getSerialization()));
 		}
 	}
 

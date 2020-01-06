@@ -5,20 +5,22 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
+
 public class ClearChange implements ListChange{
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		
 	}
 
 	@Override
-	public <E> void apply(List<E> list) {
+	public <E> void apply(List<E> list, SerializationWrapper serialization) {
 		list.clear();
 	}
 

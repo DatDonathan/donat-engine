@@ -5,7 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 
-import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class SetChange implements ListChange {
 	
@@ -23,20 +23,20 @@ public class SetChange implements ListChange {
 	}
 	
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeInt(index);
-		BinarySerialization.getInstance().serialize(object, buffer);
+		serialization.serialize(object, buffer);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		index = buffer.readInt();
-		object = BinarySerialization.getInstance().deserialize(Object.class, buffer);
+		object = serialization.deserialize(Object.class, buffer);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <E> void apply(List<E> list) {
+	public <E> void apply(List<E> list, SerializationWrapper serialization) {
 		list.set(index, (E) object);
 	}
 

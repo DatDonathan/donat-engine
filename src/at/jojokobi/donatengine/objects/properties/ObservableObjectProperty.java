@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
+
 public class ObservableObjectProperty<T extends ObservableObject> extends ObjectProperty<T> {
 
 	public ObservableObjectProperty(T value) {
@@ -23,18 +25,18 @@ public class ObservableObjectProperty<T extends ObservableObject> extends Object
 	}
 	
 	@Override
-	public void readChanges(DataInput in) throws IOException {
-		super.readChanges(in);
+	public void readChanges(DataInput in, SerializationWrapper serialization) throws IOException {
+		super.readChanges(in, serialization);
 		if (get() != null) {
-			get().readChanges(in);
+			get().readChanges(in, serialization);
 		}
 	}
 	
 	@Override
-	public void writeChanges(DataOutput out) throws IOException {
-		super.writeChanges(out);
+	public void writeChanges(DataOutput out, SerializationWrapper serialization) throws IOException {
+		super.writeChanges(out, serialization);
 		if (get() != null) {
-			get().writeChanges(out);
+			get().writeChanges(out, serialization);
 		}
 	}
 

@@ -22,6 +22,8 @@ import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.BinarySerializationWrapper;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.netutil.server.Server;
 import at.jojokobi.netutil.server.ServerController;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,11 +34,13 @@ public class SimpleServerGameLogic implements GameLogic {
 	private boolean running = true;
 	private Server server;
 	private Map<Long, Input> inputs = new HashMap<>();
+	private SerializationWrapper serialization;
 
 	public SimpleServerGameLogic(Level level, Server server) {
 		super();
 		this.level = level;
 		this.server = server;
+		serialization = new BinarySerializationWrapper(BinarySerialization.getInstance().getIdClassFactory());
 	}
 
 	@Override
@@ -92,6 +96,11 @@ public class SimpleServerGameLogic implements GameLogic {
 			public void stop() {
 				SimpleServerGameLogic.this.stop();
 			}
+			
+			@Override
+			public SerializationWrapper getSerialization() {
+				return serialization;
+			}
 
 		};
 		level.update(delta, handler, camera);
@@ -112,7 +121,7 @@ public class SimpleServerGameLogic implements GameLogic {
 			DataInputStream data = new DataInputStream(server.getInputStream(client));
 			try {
 				while (data.available() > 0) {
-					ClientPacket packet = BinarySerialization.getInstance().deserialize(ClientPacket.class, data);
+					ClientPacket packet = serialization.deserialize(ClientPacket.class, data);
 					packet.apply(level, handler, client);
 				}
 			} catch (IOException e) {
@@ -123,7 +132,7 @@ public class SimpleServerGameLogic implements GameLogic {
 		// Send packets
 		try (DataOutputStream out = new DataOutputStream(server.getBroadcastOutputStream())) {
 			for (BinarySerializable packet : level.getBehavior().fetchPackets()) {
-				BinarySerialization.getInstance().serialize(packet, out);
+				serialization.serialize(packet, out);
 				System.out.println(packet);
 			}
 		} catch (IOException e) {
@@ -135,7 +144,7 @@ public class SimpleServerGameLogic implements GameLogic {
 			List<BinarySerializable> packets = level.getBehavior().recreateLevelPackets(level);
 			try (DataOutputStream data = new DataOutputStream(server.getOutputStream(client))) {
 				for (BinarySerializable packet : packets) {
-					BinarySerialization.getInstance().serialize(packet, data);
+					serialization.serialize(packet, data);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

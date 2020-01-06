@@ -9,12 +9,16 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
+import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.BinarySerializationWrapper;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import javafx.scene.canvas.GraphicsContext;
 
 public class SimpleGameLogic implements GameLogic{
 	
 	private Level level;
 	private boolean running = true;
+	private SerializationWrapper serializationWrapper = new BinarySerializationWrapper(BinarySerialization.getInstance().getIdClassFactory());
 
 	public SimpleGameLogic(Level level) {
 		super();
@@ -54,6 +58,11 @@ public class SimpleGameLogic implements GameLogic{
 			@Override
 			public void stop() {
 				SimpleGameLogic.this.stop();
+			}
+
+			@Override
+			public SerializationWrapper getSerialization() {
+				return serializationWrapper;
 			}
 		}, camera);
 	}

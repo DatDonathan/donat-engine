@@ -5,6 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import at.jojokobi.donatengine.serialization.BinarySerializable;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class Vector2D implements Cloneable, BinarySerializable{
 	
@@ -113,13 +114,13 @@ public class Vector2D implements Cloneable, BinarySerializable{
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeDouble(x);
 		buffer.writeDouble(y);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		x = buffer.readDouble();
 		y = buffer.readDouble();
 	}

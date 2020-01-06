@@ -10,7 +10,7 @@ import java.util.List;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
-import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class SpawnPacket implements ServerPacket {
 	
@@ -28,7 +28,7 @@ public class SpawnPacket implements ServerPacket {
 	public static final ServerPacketType PACKET_TYPE = new ServerPacketType() {
 		
 		@Override
-		public List<ServerPacket> onUpdate(Level level, GameObject object, long id) {
+		public List<ServerPacket> onUpdate(Level level, GameObject object, long id, SerializationWrapper serialization) {
 			return new ArrayList<>();
 		}
 		
@@ -66,19 +66,19 @@ public class SpawnPacket implements ServerPacket {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeLong(id);
-		BinarySerialization.getInstance().serialize(object, buffer);
+		serialization.serialize(object, buffer);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		id = buffer.readLong();
-		object = BinarySerialization.getInstance().deserialize(GameObject.class, buffer);
+		object = serialization.deserialize(GameObject.class, buffer);
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler) {
+	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
 		level.spawn(object, id);
 	}
 

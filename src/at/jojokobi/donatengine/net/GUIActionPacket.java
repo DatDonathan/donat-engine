@@ -9,7 +9,7 @@ import java.util.List;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class GUIActionPacket implements ClientPacket{
 	
@@ -39,13 +39,13 @@ public class GUIActionPacket implements ClientPacket{
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
-		BinarySerialization.getInstance().serialize(action, buffer);
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
+		serialization.serialize(action, buffer);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
-		action = BinarySerialization.getInstance().deserialize(GUIAction.class, buffer);
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
+		action = serialization.deserialize(GUIAction.class, buffer);
 	}
 
 	@Override

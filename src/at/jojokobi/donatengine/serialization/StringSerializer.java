@@ -7,12 +7,12 @@ import java.io.IOException;
 public class StringSerializer implements BinarySerializer<String> {
 
 	@Override
-	public void serialize(String t, DataOutput buffer) throws IOException {
+	public void serialize(String t, DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(t);
 	}
 
 	@Override
-	public String deserialize(DataInput buffer) throws IOException {
+	public String deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		return buffer.readUTF();
 	}
 

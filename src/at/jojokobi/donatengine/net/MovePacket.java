@@ -10,13 +10,14 @@ import java.util.List;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class MovePacket implements ServerPacket{
 	
 	public static final ServerPacketType PACKET_TYPE = new ServerPacketType() {
 		
 		@Override
-		public List<ServerPacket> onUpdate(Level level, GameObject object, long id) {
+		public List<ServerPacket> onUpdate(Level level, GameObject object, long id, SerializationWrapper serialization) {
 			return object.fetchMoved() ? Arrays.asList(new MovePacket(id, object.getX(), object.getY(), object.getZ(), object.getArea())) : new ArrayList<>();
 		}
 		
@@ -56,7 +57,7 @@ public class MovePacket implements ServerPacket{
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeLong (id);
 		buffer.writeDouble(x);
 		buffer.writeDouble(y);
@@ -65,7 +66,7 @@ public class MovePacket implements ServerPacket{
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		id = buffer.readLong();
 		x = buffer.readDouble();
 		y = buffer.readDouble();
@@ -74,7 +75,7 @@ public class MovePacket implements ServerPacket{
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler) {
+	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
 		GameObject obj = level.getObjectById(id);
 		if (obj != null) {
 			obj.setX(x);

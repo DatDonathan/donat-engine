@@ -11,14 +11,14 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
-import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class AddAreaPacket implements ServerPacket {
 	
 	public static final ServerPacketType PACKET_TYPE = new ServerPacketType() {
 		
 		@Override
-		public List<ServerPacket> onUpdate(Level level, GameObject object, long id) {
+		public List<ServerPacket> onUpdate(Level level, GameObject object, long id, SerializationWrapper serialization) {
 			return new ArrayList<>();
 		}
 		
@@ -61,19 +61,19 @@ public class AddAreaPacket implements ServerPacket {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(id);
-		BinarySerialization.getInstance().serialize(area, buffer);
+		serialization.serialize(area, buffer);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		id = buffer.readUTF();
-		area = BinarySerialization.getInstance().deserialize(LevelArea.class, buffer);
+		area = serialization.deserialize(LevelArea.class, buffer);
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler) {
+	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
 		level.addArea(id, area);
 	}
 

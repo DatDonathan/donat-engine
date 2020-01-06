@@ -11,7 +11,7 @@ import java.util.Map;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.util.Vector2D;
 
 public class AxisPacket implements ClientPacket {
@@ -47,15 +47,15 @@ public class AxisPacket implements ClientPacket {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(axis);
-		BinarySerialization.getInstance().serialize(vector, buffer);
+		serialization.serialize(vector, buffer);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		axis = buffer.readUTF();
-		vector = BinarySerialization.getInstance().deserialize(Vector2D.class, buffer);
+		vector = serialization.deserialize(Vector2D.class, buffer);
 	}
 
 	@Override

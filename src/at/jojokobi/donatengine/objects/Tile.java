@@ -2,7 +2,7 @@ package at.jojokobi.donatengine.objects;
 
 import at.jojokobi.donatengine.rendering.RenderModel;
 
-public class Tile extends GameObject{
+public abstract class Tile extends GameObject{
 
 	private final int tileWidth;
 	private final int tileHeight;

@@ -1,11 +1,7 @@
 package at.jojokobi.donatengine.net;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
-import java.io.DataInputStream;
 import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,27 +11,19 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class LevelPropertyChangedPacket implements ServerPacket {
 
 	public static final ServerPacketType PACKET_TYPE = new ServerPacketType() {
 
 		@Override
-		public List<ServerPacket> update(Level level) {
+		public List<ServerPacket> update(Level level, SerializationWrapper serialization) {
 			ArrayList<ServerPacket> packets = new ArrayList<>();
 			int i = 0;
 			for (ObservableProperty<?> property : level.observableProperties()) {
 				if (property.fetchChanged()) {
-					try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-							DataOutputStream out = new DataOutputStream(buffer)) {
-						property.writeValue(out);
-						out.flush();
-						buffer.flush();
-						byte[] value = buffer.toByteArray();
-						packets.add(new LevelPropertyChangedPacket(i, value));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					packets.add(new LevelPropertyChangedPacket(i, property.get()));
 				}
 				i++;
 			}
@@ -57,31 +45,22 @@ public class LevelPropertyChangedPacket implements ServerPacket {
 			List<ServerPacket> packets = new ArrayList<>();
 			int i = 0;
 			for (ObservableProperty<?> property : level.observableProperties()) {
-				try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-						DataOutputStream out = new DataOutputStream(buffer)) {
-					property.writeValue(out);
-					out.flush();
-					buffer.flush();
-					byte[] value = buffer.toByteArray();
-					packets.add(new LevelPropertyChangedPacket(i, value));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				packets.add(new LevelPropertyChangedPacket(i, property.get()));
 				i++;
 			}
 			return packets;
 		}
 
 		@Override
-		public List<ServerPacket> onUpdate(Level level, GameObject object, long id) {
+		public List<ServerPacket> onUpdate(Level level, GameObject object, long id, SerializationWrapper serialization) {
 			return Arrays.asList();
 		}
 	};
 
 	private int property;
-	private byte[] value;
+	private Object value;
 
-	public LevelPropertyChangedPacket(int property, byte[] value) {
+	public LevelPropertyChangedPacket(int property, Object value) {
 		super();
 		this.property = property;
 		this.value = value;
@@ -92,37 +71,26 @@ public class LevelPropertyChangedPacket implements ServerPacket {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeInt(property);
-		buffer.writeInt(value.length);
-		for (byte b : value) {
-			buffer.writeByte(b);
-		}
+		serialization.serialize(value, buffer);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		property = buffer.readInt();
-		int length = buffer.readInt();
-		value = new byte[length];
-		for (int i = 0; i < value.length; i++) {
-			value[i] = buffer.readByte();
-		}
+		value = serialization.deserialize(Object.class, buffer);
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler) {
+	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
 		if (level.observableProperties().size() > property) {
 			ObservableProperty<?> property = level.observableProperties().get(this.property);
-			try (DataInputStream out = new DataInputStream(new ByteArrayInputStream(value))) {
-				property.readValue(out);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			property.setUnsafe(value);
 		} else {
 			throw new IllegalStateException("The level has no property with the id " + property
 					+ "! Seems like the server and the client are asynchronous!");
 		}
 	}
-
+	
 }

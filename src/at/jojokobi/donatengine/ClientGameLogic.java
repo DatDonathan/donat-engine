@@ -17,6 +17,8 @@ import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.BinarySerializationWrapper;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.netutil.client.Client;
 import at.jojokobi.netutil.client.ClientController;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,6 +29,7 @@ public class ClientGameLogic implements GameLogic{
 	private boolean running = true;
 	private Client client;
 	
+	private SerializationWrapper serialization;
 	private DataInputStream data;
 	private DataOutputStream dataOut;
 
@@ -34,6 +37,7 @@ public class ClientGameLogic implements GameLogic{
 		super();
 		this.level = level;
 		this.client = client;
+		serialization = new BinarySerializationWrapper(BinarySerialization.getInstance().getIdClassFactory());
 	}
 
 	@Override
@@ -91,6 +95,11 @@ public class ClientGameLogic implements GameLogic{
 			public IRessourceHandler getRessourceHandler() {
 				return ressourceHandler;
 			}
+			
+			@Override
+			public SerializationWrapper getSerialization() {
+				return serialization;
+			}
 
 			@Override
 			public void stop() {
@@ -101,10 +110,10 @@ public class ClientGameLogic implements GameLogic{
 		
 		try {
 			while (data.available() > 0) {
-				ServerPacket packet = BinarySerialization.getInstance().deserialize(ServerPacket.class, data);
+				ServerPacket packet = serialization.deserialize(ServerPacket.class, data);
 				synchronized (ClientGameLogic.this) {
 					System.out.println("Recieved:" + packet);
-					packet.apply(level, handler);
+					packet.apply(level, handler, serialization);
 				}
 			}
 		} catch (IOException e) {
@@ -115,7 +124,7 @@ public class ClientGameLogic implements GameLogic{
 		//Send packets
 		for (BinarySerializable packet : level.getBehavior().fetchPackets()) {
 			try {
-				BinarySerialization.getInstance().serialize(packet, dataOut);
+				serialization.serialize(packet, dataOut);
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e);

@@ -8,6 +8,7 @@ import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.objects.GameObject;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public interface ServerPacketType {
 	
@@ -15,9 +16,9 @@ public interface ServerPacketType {
 	
 	public List<ServerPacket> onDelete (Level level, GameObject object, long id);
 
-	public List<ServerPacket> onUpdate (Level level, GameObject object, long id);
+	public List<ServerPacket> onUpdate (Level level, GameObject object, long id, SerializationWrapper serialization);
 	
-	public default List<ServerPacket> update (Level level) {
+	public default List<ServerPacket> update (Level level, SerializationWrapper serialization) {
 		return Arrays.asList();
 	}
 	

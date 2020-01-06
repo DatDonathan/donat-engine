@@ -13,13 +13,14 @@ import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class AddGUIPacket implements ServerPacket {
 	
 	public static final ServerPacketType PACKET_TYPE = new ServerPacketType() {
 		
 		@Override
-		public List<ServerPacket> onUpdate(Level level, GameObject object, long id) {
+		public List<ServerPacket> onUpdate(Level level, GameObject object, long id, SerializationWrapper serialization) {
 			return new ArrayList<>();
 		}
 		
@@ -62,19 +63,19 @@ public class AddGUIPacket implements ServerPacket {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(gui);
 		buffer.writeLong(id);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		gui = buffer.readUTF();
 		id = buffer.readLong();
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler) {
+	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
 		level.getGuiSystem().showGUI(gui, id);
 	}
 

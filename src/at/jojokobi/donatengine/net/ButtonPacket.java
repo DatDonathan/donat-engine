@@ -11,6 +11,7 @@ import java.util.Map;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class ButtonPacket implements ClientPacket {
 	
@@ -45,13 +46,13 @@ public class ButtonPacket implements ClientPacket {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(code);
 		buffer.writeBoolean(pressed);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		code = buffer.readUTF();
 		pressed = buffer.readBoolean();
 	}

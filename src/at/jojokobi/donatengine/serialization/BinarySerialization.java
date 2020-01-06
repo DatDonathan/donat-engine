@@ -7,11 +7,43 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import at.jojokobi.donatengine.gui.actions.ChangeGUIAction;
+import at.jojokobi.donatengine.gui.actions.ChangeLogicAction;
+import at.jojokobi.donatengine.gui.actions.ChatAction;
+import at.jojokobi.donatengine.gui.actions.StopGameAction;
+import at.jojokobi.donatengine.level.LevelArea;
+import at.jojokobi.donatengine.net.AddAreaPacket;
+import at.jojokobi.donatengine.net.AddGUIPacket;
+import at.jojokobi.donatengine.net.AxisPacket;
+import at.jojokobi.donatengine.net.ButtonPacket;
+import at.jojokobi.donatengine.net.DeletePacket;
+import at.jojokobi.donatengine.net.GUIActionPacket;
+import at.jojokobi.donatengine.net.LevelPropertyChangedPacket;
+import at.jojokobi.donatengine.net.LevelPropertyStateChangedPacket;
+import at.jojokobi.donatengine.net.MotionPacket;
+import at.jojokobi.donatengine.net.MovePacket;
+import at.jojokobi.donatengine.net.PropertyChangedPacket;
+import at.jojokobi.donatengine.net.PropertyStateChangedPacket;
+import at.jojokobi.donatengine.net.RemoveGUIPacket;
+import at.jojokobi.donatengine.net.SpawnPacket;
+import at.jojokobi.donatengine.objects.properties.AddChange;
+import at.jojokobi.donatengine.objects.properties.ClearChange;
+import at.jojokobi.donatengine.objects.properties.EntryPropertyChange;
+import at.jojokobi.donatengine.objects.properties.EntryPropertyStateChange;
+import at.jojokobi.donatengine.objects.properties.EntryStateChange;
+import at.jojokobi.donatengine.objects.properties.ObservableList;
+import at.jojokobi.donatengine.objects.properties.RemoveChange;
+import at.jojokobi.donatengine.objects.properties.RemoveIndexChange;
+import at.jojokobi.donatengine.objects.properties.SetChange;
+import at.jojokobi.donatengine.util.Vector2D;
+import at.jojokobi.donatengine.util.Vector3D;
+
 public final class BinarySerialization {
 	
 	private static BinarySerialization instance;
 	
-	private static final String NULL = "null";
+	private NameClassFactory nameClassFactory = new NameClassFactory();
+	private IDClassFactory idClassFactory = new IDClassFactory();
 	
 	public static BinarySerialization getInstance () {
 		if (instance == null) {
@@ -23,19 +55,64 @@ public final class BinarySerialization {
 	private Map<Class<?>, BinarySerializer<?>> serializers = new HashMap<>();
 	
 	private BinarySerialization () {
-		registerSerializer(String.class, new StringSerializer());
+		registerSerializer(Integer.class, new IntSerializer());
 		registerSerializer(Long.class, new LongSerializer());
+		registerSerializer(Double.class, new DoubleSerializer());
+		registerSerializer(String.class, new StringSerializer());
+		
+		idClassFactory.addClass(Integer.class);
+		idClassFactory.addClass(Long.class);
+		idClassFactory.addClass(Double.class);
+		idClassFactory.addClass(String.class);
+		
+		idClassFactory.addClass(ChangeGUIAction.class);
+		idClassFactory.addClass(ChangeLogicAction.class);
+		idClassFactory.addClass(ChatAction.class);
+		idClassFactory.addClass(StopGameAction.class);
+		
+		idClassFactory.addClass(LevelArea.class);
+		
+		idClassFactory.addClass(AddAreaPacket.class);
+		idClassFactory.addClass(AddGUIPacket.class);
+		idClassFactory.addClass(AxisPacket.class);
+		idClassFactory.addClass(ButtonPacket.class);
+		idClassFactory.addClass(DeletePacket.class);
+		idClassFactory.addClass(GUIActionPacket.class);
+		idClassFactory.addClass(LevelPropertyChangedPacket.class);
+		idClassFactory.addClass(LevelPropertyStateChangedPacket.class);
+		idClassFactory.addClass(MotionPacket.class);
+		idClassFactory.addClass(MovePacket.class);
+		idClassFactory.addClass(PropertyChangedPacket.class);
+		idClassFactory.addClass(PropertyStateChangedPacket.class);
+		idClassFactory.addClass(RemoveGUIPacket.class);
+		idClassFactory.addClass(SpawnPacket.class);
+		
+		idClassFactory.addClass(AddChange.class);
+		idClassFactory.addClass(ClearChange.class);
+		idClassFactory.addClass(EntryPropertyChange.class);
+		idClassFactory.addClass(EntryPropertyStateChange.class);
+		idClassFactory.addClass(EntryStateChange.class);
+		idClassFactory.addClass(ObservableList.class);
+		idClassFactory.addClass(RemoveChange.class);
+		idClassFactory.addClass(RemoveIndexChange.class);
+		idClassFactory.addClass(SetChange.class);
+		
+		idClassFactory.addClass(Vector2D.class);
+		idClassFactory.addClass(Vector3D.class);
+		
 	}
 	
-	public <T> T deserialize (Class<T> clazz, DataInput input) throws IOException {
-		String className = input.readUTF();
+	public <T> T deserialize (Class<T> clazz, DataInput input, SerializationWrapper serialization, ClassFactory classFact) throws IOException {
+		Class<?> objClazz = classFact.readClass(input);
 		T t = null;
-		if (!NULL.equals(className)) {
+		if (objClazz != null) {
 			try {
-				Class<?> objClazz = Class.forName(className);
 				if (serializers.containsKey(objClazz)) {
 					BinarySerializer<?> serializer = serializers.get(objClazz);
-					t = clazz.cast(serializer.deserialize(input));
+					t = clazz.cast(serializer.deserialize(input, serialization));
+				}
+				else if (objClazz.isEnum()) {
+					t = clazz.cast(objClazz.getEnumConstants()[input.readInt()]);
 				}
 				else {
 					Object obj = objClazz.getConstructor().newInstance();
@@ -43,7 +120,7 @@ public final class BinarySerialization {
 					if (clazz.isInstance(obj)) {
 						t = clazz.cast(obj);
 						if (t instanceof BinarySerializable) {
-							((BinarySerializable) t).deserialize(input);
+							((BinarySerializable) t).deserialize(input, serialization);
 						}
 						else {
 							throw new IllegalArgumentException("The serialized class is not an instance of BinarySerializeable and no BinarySerializer is defined for the class");
@@ -53,7 +130,7 @@ public final class BinarySerialization {
 						throw new ClassCastException("The serialized class in not an instance of the given class " + clazz);
 					}
 				}
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e.getMessage(), e);
 			}
@@ -61,18 +138,21 @@ public final class BinarySerialization {
 		return t;
 	}
 	
-	public void serialize (Object obj, DataOutput output) throws IOException {
+	public void serialize (Object obj, DataOutput output, SerializationWrapper serialization, ClassFactory classFact) throws IOException {
 		if (obj == null) {
-			output.writeUTF (NULL);
+			classFact.writeClass(null, output);
 		}
 		else {
-			output.writeUTF(obj.getClass().getName());
+			classFact.writeClass(obj.getClass(), output);
 			if (serializers.containsKey(obj.getClass())) {
 				BinarySerializer<?> serializer = serializers.get(obj.getClass());
-				serializer.serializeUnsafe(obj, output);
+				serializer.serializeUnsafe(obj, output, serialization);
+			}
+			else if (obj.getClass().isEnum()) {
+				output.writeInt(((Enum<?>) obj).ordinal());
 			}
 			else if (obj instanceof BinarySerializable) {
-				((BinarySerializable) obj).serialize(output);
+				((BinarySerializable) obj).serialize(output, serialization);
 			}
 			else {
 				throw new IllegalArgumentException("The class is not an instance of BinarySerializeable and no BinarySerializer is defined for the class");
@@ -82,6 +162,14 @@ public final class BinarySerialization {
 	
 	public <T> void registerSerializer (Class<T> clazz, BinarySerializer<T> serializer) {
 		serializers.put(clazz, serializer);
+	}
+
+	public NameClassFactory getNameClassFactory() {
+		return nameClassFactory;
+	}
+
+	public IDClassFactory getIdClassFactory() {
+		return idClassFactory;
 	}
 
 }

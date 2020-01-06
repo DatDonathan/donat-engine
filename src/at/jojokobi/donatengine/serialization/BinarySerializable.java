@@ -15,8 +15,8 @@ import java.io.IOException;
  */
 public interface BinarySerializable {
 
-	public void serialize (DataOutput buffer) throws IOException;
+	public void serialize (DataOutput buffer, SerializationWrapper serialization) throws IOException;
 	
-	public void deserialize (DataInput  buffer) throws IOException;
+	public void deserialize (DataInput  buffer, SerializationWrapper serialization) throws IOException;
 	
 }

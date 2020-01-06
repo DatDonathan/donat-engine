@@ -7,6 +7,7 @@ import java.io.IOException;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -31,12 +32,12 @@ public class LevelArea implements BinarySerializable{
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(background);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		background = buffer.readUTF();
 	}
 

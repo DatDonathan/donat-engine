@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
+
 
 public class IntProperty implements ObservableProperty<Integer>{
 	
@@ -46,22 +48,22 @@ public class IntProperty implements ObservableProperty<Integer>{
 	}
 
 	@Override
-	public void writeChanges(DataOutput out) throws IOException {
+	public void writeChanges(DataOutput out, SerializationWrapper serialization) throws IOException {
 		
 	}
 
 	@Override
-	public void readChanges(DataInput in) throws IOException {
+	public void readChanges(DataInput in, SerializationWrapper serialization) throws IOException {
 		
 	}
 
 	@Override
-	public void writeValue(DataOutput buffer) throws IOException {
+	public void writeValue(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeInt(value);
 	}
 
 	@Override
-	public void readValue(DataInput buffer) throws IOException {
+	public void readValue(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		set(buffer.readInt());
 	}
 

@@ -6,12 +6,12 @@ import java.io.IOException;
 
 public interface BinarySerializer<T> {
 
-	public void serialize (T t, DataOutput buffer) throws IOException;
+	public void serialize (T t, DataOutput buffer, SerializationWrapper serialization) throws IOException;
 	
-	public T deserialize (DataInput buffer) throws IOException;
+	public T deserialize (DataInput buffer, SerializationWrapper serialization) throws IOException;
 	
-	public default void serializeUnsafe (Object obj, DataOutput buffer) throws IOException {
-		serialize(getSerializingClass().cast(obj), buffer);
+	public default void serializeUnsafe (Object obj, DataOutput buffer, SerializationWrapper serialization) throws IOException {
+		serialize(getSerializingClass().cast(obj), buffer, serialization);
 	}
 	
 	public Class<T> getSerializingClass ();

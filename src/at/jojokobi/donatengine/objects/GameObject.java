@@ -14,6 +14,7 @@ import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.rendering.Image2DModel;
 import at.jojokobi.donatengine.rendering.RenderModel;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
 import javafx.scene.canvas.GraphicsContext;
@@ -605,7 +606,7 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 	}
 	
 	@Override
-	public void serialize(DataOutput buffer) throws IOException{
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException{
 		buffer.writeDouble(getX());
 		buffer.writeDouble(getY());
 		buffer.writeDouble(getZ());
@@ -615,12 +616,12 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		buffer.writeDouble(zMotion);
 		buffer.writeDouble(gravity);
 		for (ObservableProperty<?> property : observableProperties()) {
-			property.writeValue(buffer);
+			property.writeValue(buffer, serialization);
 		}
 	}
 	
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		setX(buffer.readDouble());
 		setY(buffer.readDouble());
 		setZ(buffer.readDouble());
@@ -630,7 +631,7 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		zMotion = buffer.readDouble();
 		gravity = buffer.readDouble();
 		for (ObservableProperty<?> property : observableProperties()) {
-			property.readValue(buffer);
+			property.readValue(buffer, serialization);
 		}
 	}
 

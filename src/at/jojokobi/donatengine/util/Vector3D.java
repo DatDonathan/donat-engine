@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
+
 public class Vector3D extends Vector2D {
 	
 	private double z;
@@ -99,14 +101,14 @@ public class Vector3D extends Vector2D {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
-		super.serialize(buffer);
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
+		super.serialize(buffer, serialization);
 		buffer.writeDouble(z);
 	}
 	
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
-		super.deserialize(buffer);
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
+		super.deserialize(buffer, serialization);
 		z = buffer.readDouble();
 	}
 	

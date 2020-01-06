@@ -15,20 +15,21 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class PropertyStateChangedPacket implements ServerPacket{
 	
 	public static final ServerPacketType PACKET_TYPE = new ServerPacketType() {
 		
 		@Override
-		public List<ServerPacket> onUpdate(Level level, GameObject object, long id) {
+		public List<ServerPacket> onUpdate(Level level, GameObject object, long id, SerializationWrapper serialization) {
 			ArrayList<ServerPacket> packets = new ArrayList<>();
 			int i = 0;
 			for (ObservableProperty<?> property : object.observableProperties()) {
 				if (property.stateChanged()) {
 					try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 							DataOutputStream out = new DataOutputStream(buffer)){
-						property.writeChanges(out);
+						property.writeChanges(out, serialization);
 						out.flush();
 						buffer.flush();
 						byte[] value = buffer.toByteArray();
@@ -75,7 +76,7 @@ public class PropertyStateChangedPacket implements ServerPacket{
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeLong(id);
 		buffer.writeInt(property);
 		buffer.writeInt(changes.length);
@@ -85,7 +86,7 @@ public class PropertyStateChangedPacket implements ServerPacket{
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		id = buffer.readLong();
 		property = buffer.readInt();
 		int length = buffer.readInt();
@@ -96,14 +97,14 @@ public class PropertyStateChangedPacket implements ServerPacket{
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler) {
+	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
 		GameObject obj = level.getObjectById(id);
 		
 		if (obj != null) {
 			if (obj.observableProperties().size() > property) {
 				ObservableProperty<?> property = obj.observableProperties().get (this.property);
 				try (DataInputStream out = new DataInputStream(new ByteArrayInputStream(changes))) {
-					property.readChanges(out);
+					property.readChanges(out, serialization);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

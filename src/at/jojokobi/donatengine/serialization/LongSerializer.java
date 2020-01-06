@@ -7,12 +7,12 @@ import java.io.IOException;
 public class LongSerializer implements BinarySerializer<Long> {
 
 	@Override
-	public void serialize(Long t, DataOutput buffer) throws IOException {
+	public void serialize(Long t, DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeLong(t);
 	}
 
 	@Override
-	public Long deserialize(DataInput buffer) throws IOException {
+	public Long deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		return buffer.readLong();
 	}
 

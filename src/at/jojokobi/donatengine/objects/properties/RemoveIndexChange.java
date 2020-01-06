@@ -5,6 +5,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
+
 public class RemoveIndexChange implements ListChange {
 	
 	private int index;
@@ -19,17 +21,17 @@ public class RemoveIndexChange implements ListChange {
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeInt(index);
 	}
 
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		index = buffer.readInt();
 	}
 
 	@Override
-	public <E> void apply(List<E> list) {
+	public <E> void apply(List<E> list, SerializationWrapper serialization) {
 		list.remove(index);
 	}
 	

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import at.jojokobi.donatengine.serialization.BinarySerializable;
-import at.jojokobi.donatengine.serialization.BinarySerialization;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class ObservableList<E> implements ObservableObject, List<E>, BinarySerializable {
 	
@@ -176,38 +176,19 @@ public class ObservableList<E> implements ObservableObject, List<E>, BinarySeria
 	}
 
 	@Override
-	public void writeChanges(DataOutput out) throws IOException {
-		out.writeInt(changes.size());
-		for (ListChange change : changes) {
-			BinarySerialization.getInstance().serialize(change, out);
-		}
-		changes.clear();
-	}
-
-	@Override
-	public boolean stateChanged() {
+	public void writeChanges(DataOutput out, SerializationWrapper serialization) throws IOException {
+		//Get changes
 		int i = 0;
 		for (E e : list) {
 			if (e instanceof ObservableObject) {
 				ObservableObject o = (ObservableObject) e;
 				int index = 0;
 				for (ObservableProperty<?> prop : o.observerableProperties()) {
-					//Value changed
-					if (prop.fetchChanged()) {
-						try (ByteArrayOutputStream arr = new ByteArrayOutputStream();
-								DataOutputStream stream = new DataOutputStream(arr)){
-							prop.writeValue(stream);
-							changes.add(new EntryPropertyChange(i, index, arr.toByteArray()));
-						} catch (IOException e1) {
-							e1.printStackTrace();
-							throw new RuntimeException(e1);
-						}
-					}
 					//State changed
 					if (prop.stateChanged()) {
 						try (ByteArrayOutputStream arr = new ByteArrayOutputStream();
 								DataOutputStream stream = new DataOutputStream(arr)){
-							prop.writeChanges(stream);
+							prop.writeChanges(stream, serialization);
 							changes.add(new EntryPropertyStateChange(i, index, arr.toByteArray()));
 						} catch (IOException e1) {
 							e1.printStackTrace();
@@ -219,7 +200,7 @@ public class ObservableList<E> implements ObservableObject, List<E>, BinarySeria
 				if (o.stateChanged()) {
 					try (ByteArrayOutputStream arr = new ByteArrayOutputStream();
 							DataOutputStream stream = new DataOutputStream(arr)){
-						o.writeChanges(stream);
+						o.writeChanges(stream, serialization);
 						changes.add(new EntryStateChange(i, arr.toByteArray()));
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -229,32 +210,64 @@ public class ObservableList<E> implements ObservableObject, List<E>, BinarySeria
 			}
 			i++;
 		}
-		return !changes.isEmpty();
+		out.writeInt(changes.size());
+		for (ListChange change : changes) {
+			serialization.serialize(change, out);
+		}
+		changes.clear();
 	}
 
 	@Override
-	public void readChanges(DataInput in) throws IOException {
+	public boolean stateChanged() {
+		int i = 0;
+		boolean stateChanged = false;
+		for (E e : list) {
+			if (e instanceof ObservableObject) {
+				ObservableObject o = (ObservableObject) e;
+				int index = 0;
+				for (ObservableProperty<?> prop : o.observerableProperties()) {
+					//Value changed
+					if (prop.fetchChanged()) {
+						changes.add(new EntryPropertyChange(i, index, prop.get()));
+					}
+					//State changed
+					if (prop.stateChanged()) {
+						stateChanged = true;
+					}
+					index++;
+				}
+				if (o.stateChanged()) {
+					stateChanged = true;
+				}
+			}
+			i++;
+		}
+		return stateChanged || !changes.isEmpty();
+	}
+
+	@Override
+	public void readChanges(DataInput in, SerializationWrapper serialization) throws IOException {
 		int length = in.readInt();
 		for (int i = 0; i < length; i++) {
-			ListChange change = BinarySerialization.getInstance().deserialize(ListChange.class, in);
-			change.apply(list);
+			ListChange change = serialization.deserialize(ListChange.class, in);
+			change.apply(list, serialization);
 		}
 	}
 
 	@Override
-	public void serialize(DataOutput buffer) throws IOException {
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeInt (list.size());
 		for (E e : list) {
-			BinarySerialization.getInstance().serialize(e, buffer);
+			serialization.serialize(e, buffer);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void deserialize(DataInput buffer) throws IOException {
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		int size = buffer.readInt();
 		for (int i = 0; i < size; i++) {
-			list.add((E) BinarySerialization.getInstance().deserialize(Object.class, buffer));
+			list.add((E) serialization.deserialize(Object.class, buffer));
 		}
 	}
 }
