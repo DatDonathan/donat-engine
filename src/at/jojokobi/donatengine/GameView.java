@@ -6,6 +6,7 @@ import at.jojokobi.donatengine.audio.AudioSystem;
 import at.jojokobi.donatengine.input.Axis;
 import at.jojokobi.donatengine.input.SceneInput;
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -26,6 +27,7 @@ public class GameView implements Loopable {
 	private SceneInput input;
 	private AudioSystem audioSystem = new AudioSystem();
 	private IRessourceHandler ressourceHandler;
+	private GamePresenceHandler gamePresenceHandler = new GamePresenceHandler();
 	private Camera camera;
 
 	public GameView(Stage stage, GameLogic logic, Camera camera, IRessourceHandler ressourceHandler, Map <String, KeyCode> keyBindings, Map<String, MouseButton> mouseButtonBindings,
@@ -55,6 +57,7 @@ public class GameView implements Loopable {
 			stage.setScene(scene);
 			stage.show();
 		});
+		gamePresenceHandler.init();
 		logic.start(camera);
 		AnimationTimer timer = new AnimationTimer () {
 			@Override
@@ -87,7 +90,7 @@ public class GameView implements Loopable {
 				camera.setViewWidth(stage.getScene().getWidth());
 				camera.setViewHeight(stage.getScene().getHeight());
 			}
-			logic.update(delta, camera, this::changeLogic, input, id -> audioSystem, ressourceHandler);
+			logic.update(delta, camera, this::changeLogic, input, id -> audioSystem, ressourceHandler, gamePresenceHandler);
 			input.updateBuffers();
 		}
 		catch (Exception e) {
@@ -100,6 +103,7 @@ public class GameView implements Loopable {
 	public void stop() {
 		System.out.println("Stop view");
 		logic.onStop();
+		gamePresenceHandler.end();
 		Platform.exit();
 	}
 	
@@ -116,6 +120,10 @@ public class GameView implements Loopable {
 	@Override
 	public boolean isRunning() {
 		return running;
+	}
+
+	public GamePresenceHandler getGamePresenceHandler() {
+		return gamePresenceHandler;
 	}
 	
 }

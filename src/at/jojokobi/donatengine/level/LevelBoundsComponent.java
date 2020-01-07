@@ -31,7 +31,7 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 	
 	@Override
-	public void update(Level level, Camera cam, double delta) {
+	public void update(Level level, LevelHandler handler, Camera cam, double delta) {
 		Vector3D pos = this.pos.get();
 		Vector3D size = this.size.get();
 		if (blockObjects && level.getBehavior().isHost()) {
@@ -59,7 +59,7 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 
 	@Override
-	public void clientUpdate(Level level, Camera cam, double delta) {
+	public void clientUpdate(Level level, LevelHandler handler, Camera cam, double delta) {
 		Vector3D pos = this.pos.get();
 		Vector3D size = this.size.get();
 		if (cam.getX() < pos.getX()) {
@@ -80,7 +80,7 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 
 	@Override
-	public void hostUpdate(Level level, Camera cam, double delta) {
+	public void hostUpdate(Level level, LevelHandler handler, Camera cam, double delta) {
 
 	}
 	

@@ -19,6 +19,7 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.net.ClientPacket;
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.BinarySerialization;
@@ -69,7 +70,7 @@ public class SimpleServerGameLogic implements GameLogic {
 
 	@Override
 	public void update(double delta, Camera camera, Consumer<GameLogic> logicSwitcher, Input input,
-			AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler) {
+			AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
 		LevelHandler handler = new LevelHandler() {
 
 			@Override
@@ -101,7 +102,11 @@ public class SimpleServerGameLogic implements GameLogic {
 			public SerializationWrapper getSerialization() {
 				return serialization;
 			}
-
+			
+			@Override
+			public GamePresenceHandler getGamePresenceHandler() {
+				return gamePresenceHandler;
+			}
 		};
 		level.update(delta, handler, camera);
 		// Update
