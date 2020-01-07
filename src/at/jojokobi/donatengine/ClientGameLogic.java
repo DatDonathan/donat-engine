@@ -42,7 +42,7 @@ public class ClientGameLogic implements GameLogic{
 	}
 
 	@Override
-	public void start(Camera camera) {
+	public void start(Camera camera, Consumer<GameLogic> logicSwitcher, Input input, AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
 		client.setController(new ClientController() {
 			@Override
 			public void listenTo(InputStream in) throws IOException {
@@ -64,13 +64,50 @@ public class ClientGameLogic implements GameLogic{
 //				}
 			}
 		});
+LevelHandler handler = new LevelHandler() {
+			
+			@Override
+			public AudioSystem getAudioSystem(long clientId) {
+				return audioSystemSupplier.getAudioSystem(clientId);
+			}
+			
+			@Override
+			public Input getInput(long clientId) {
+				return input;
+			}
+			
+			@Override
+			public void changeLogic(GameLogic logic) {
+				logicSwitcher.accept(logic);
+			}
+
+			@Override
+			public IRessourceHandler getRessourceHandler() {
+				return ressourceHandler;
+			}
+			
+			@Override
+			public SerializationWrapper getSerialization() {
+				return serialization;
+			}
+			
+			@Override
+			public GamePresenceHandler getGamePresenceHandler() {
+				return gamePresenceHandler;
+			}
+
+			@Override
+			public void stop() {
+				ClientGameLogic.this.stop();
+			}
+		};
 		client.start ();
 		data = new DataInputStream(client.getInputStream());
 		dataOut = new DataOutputStream(client.getOutputStream());
 		
 		level.setClientId(client.getClientId());
 		level.clear();
-		level.start(camera);
+		level.start(camera, handler);
 	}
 
 	@Override

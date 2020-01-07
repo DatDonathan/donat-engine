@@ -27,9 +27,45 @@ public class SimpleGameLogic implements GameLogic{
 	}
 
 	@Override
-	public void start(Camera camera) {
+	public void start(Camera camera, Consumer<GameLogic> logicSwitcher, Input input, AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
 		level.clear();
-		level.start(camera);
+		level.start(camera, new LevelHandler() {
+			
+			@Override
+			public AudioSystem getAudioSystem(long clientId) {
+				return audioSystemSupplier.getAudioSystem(clientId);
+			}
+			
+			@Override
+			public Input getInput(long clientId) {
+				return input;
+			}
+			
+			@Override
+			public void changeLogic(GameLogic logic) {
+				logicSwitcher.accept(logic);
+			}
+
+			@Override
+			public IRessourceHandler getRessourceHandler() {
+				return ressourceHandler;
+			}
+			
+			@Override
+			public void stop() {
+				SimpleGameLogic.this.stop();
+			}
+
+			@Override
+			public SerializationWrapper getSerialization() {
+				return serializationWrapper;
+			}
+			
+			@Override
+			public GamePresenceHandler getGamePresenceHandler() {
+				return gamePresenceHandler;
+			}
+		});
 	}
 
 	@Override

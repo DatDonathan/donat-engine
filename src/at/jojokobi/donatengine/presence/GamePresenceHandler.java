@@ -16,8 +16,9 @@ public class GamePresenceHandler {
 		platforms.forEach(p -> p.init());
 	}
 	
-	public void updatePresence (GamePresence presence) {
+	public void updatePresence (GamePresence presence, JoinListener join, JoinRequestListener joinRequest) {
 		platforms.forEach(p -> p.updatePresence(presence));
+		platforms.forEach(p -> p.setListeners(join, joinRequest));
 	}
 	
 	public void end () {

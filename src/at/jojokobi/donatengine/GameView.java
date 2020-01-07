@@ -58,7 +58,7 @@ public class GameView implements Loopable {
 			stage.show();
 		});
 		gamePresenceHandler.init();
-		logic.start(camera);
+		logic.start(camera, this::changeLogic, input, id -> audioSystem, ressourceHandler, gamePresenceHandler);
 		AnimationTimer timer = new AnimationTimer () {
 			@Override
 			public void handle(long time) {
@@ -110,7 +110,7 @@ public class GameView implements Loopable {
 	public void changeLogic (GameLogic logic) {
 		this.logic.onStop();
 		this.logic = logic;
-		logic.start(camera);
+		logic.start(camera, this::changeLogic, input, id -> audioSystem, ressourceHandler, gamePresenceHandler);
 	}
 	
 	public void stopGame () {

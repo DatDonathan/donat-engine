@@ -176,14 +176,14 @@ public abstract class Level extends Hitbox {
 		return areas.asList();
 	}
 
-	public void start(Camera camera) {
+	public void start(Camera camera, LevelHandler handler) {
 //		recalcObjectsInView();
 		if (guiSystem == null) {
 			initGuiSystem(new SimpleGUISystem(new DynamicGUIFactory()));
 		}
 		if (getBehavior().isHost()) {
 			generate(camera);
-			components.forEach(c -> c.init(this));
+			components.forEach(c -> c.init(this, handler));
 			if (getBehavior().isClient()) {
 				spawnPlayer(0, camera);
 			}

@@ -77,5 +77,25 @@ public class DiscordGamePresence implements GamePresencePlatform{
 		
 		return pre;
 	}
+
+	@Override
+	public void setListeners(JoinListener join, JoinRequestListener joinRequest) {
+		DiscordEventHandlers handlers = new DiscordEventHandlers();
+		DiscordRPC rpc = DiscordRPC.INSTANCE;
+		if (join != null) {
+			handlers.joinGame = join::onJoin;
+		}
+		if (joinRequest != null ) {
+			handlers.joinRequest = d -> {
+				if (joinRequest.onJoinRequest(new GameJoinRequest(d.username + "#" + d.discriminator, "Discord"))) {
+					rpc.Discord_Respond(d.userId, DiscordRPC.DISCORD_REPLY_YES);
+				}
+				else {
+					rpc.Discord_Respond(d.userId, DiscordRPC.DISCORD_REPLY_NO);
+				}
+			};
+		}
+		rpc.Discord_UpdateHandlers(handlers);
+	}
 	
 }

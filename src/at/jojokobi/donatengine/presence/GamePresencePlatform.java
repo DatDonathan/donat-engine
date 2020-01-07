@@ -6,6 +6,8 @@ public interface GamePresencePlatform {
 	
 	public void updatePresence (GamePresence presence);
 	
+	public void setListeners (JoinListener join, JoinRequestListener joinRequest);
+	
 	public void end ();
 
 }

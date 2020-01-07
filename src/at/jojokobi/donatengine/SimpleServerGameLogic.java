@@ -45,7 +45,8 @@ public class SimpleServerGameLogic implements GameLogic {
 	}
 
 	@Override
-	public void start(Camera camera) {
+	public void start(Camera camera, Consumer<GameLogic> logicSwitcher, Input input,
+			AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
 		server.setController(new ServerController() {
 			@Override
 			public void onConnect(long client, OutputStream out) throws IOException {
@@ -65,7 +66,43 @@ public class SimpleServerGameLogic implements GameLogic {
 		server.start();
 
 		level.clear();
-		level.start(camera);
+		level.start(camera, new LevelHandler() {
+			
+			@Override
+			public AudioSystem getAudioSystem(long clientId) {
+				return audioSystemSupplier.getAudioSystem(clientId);
+			}
+			
+			@Override
+			public Input getInput(long clientId) {
+				return input;
+			}
+			
+			@Override
+			public void changeLogic(GameLogic logic) {
+				logicSwitcher.accept(logic);
+			}
+
+			@Override
+			public IRessourceHandler getRessourceHandler() {
+				return ressourceHandler;
+			}
+			
+			@Override
+			public void stop() {
+				SimpleServerGameLogic.this.stop();
+			}
+
+			@Override
+			public SerializationWrapper getSerialization() {
+				return serialization;
+			}
+			
+			@Override
+			public GamePresenceHandler getGamePresenceHandler() {
+				return gamePresenceHandler;
+			}
+		});
 	}
 
 	@Override

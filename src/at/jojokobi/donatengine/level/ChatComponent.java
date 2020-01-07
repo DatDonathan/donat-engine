@@ -42,7 +42,7 @@ public class ChatComponent implements LevelComponent{
 	}
 
 	@Override
-	public void init(Level level) {
+	public void init(Level level, LevelHandler handler) {
 		
 	}
 
