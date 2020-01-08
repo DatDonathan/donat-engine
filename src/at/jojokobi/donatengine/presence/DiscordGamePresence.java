@@ -10,6 +10,9 @@ public class DiscordGamePresence implements GamePresencePlatform{
 	private String steamId;
 	private boolean running;
 	
+	private JoinListener join = null;
+	private JoinRequestListener joinRequest = null;
+	
 	
 	public DiscordGamePresence(String clientId, String steamId) {
 		super();
@@ -23,7 +26,24 @@ public class DiscordGamePresence implements GamePresencePlatform{
 		running = true;
 		DiscordRPC rpc = DiscordRPC.INSTANCE;
 		DiscordEventHandlers handlers = new DiscordEventHandlers();
-		handlers.ready = user -> {};
+		handlers.ready = user -> {System.out.println("RPC Ready");};
+		handlers.joinGame = s -> {
+			System.out.println("Joining " + s);
+			if (join != null) {
+				join.onJoin(s);
+			}
+		};
+		handlers.joinRequest = d -> {
+			System.out.println("Join Request from " + d.username + "#" + d.discriminator);
+			if (joinRequest != null) {
+				if (joinRequest.onJoinRequest(new GameJoinRequest(d.username + "#" + d.discriminator, "Discord"))) {
+					rpc.Discord_Respond(d.userId, DiscordRPC.DISCORD_REPLY_YES);
+				}
+				else {
+					rpc.Discord_Respond(d.userId, DiscordRPC.DISCORD_REPLY_NO);
+				}
+			}
+		};
 		rpc.Discord_Initialize(clientId, handlers, true, steamId);
 		new Thread (() -> {
 			while (running) {
@@ -79,23 +99,9 @@ public class DiscordGamePresence implements GamePresencePlatform{
 	}
 
 	@Override
-	public void setListeners(JoinListener join, JoinRequestListener joinRequest) {
-		DiscordEventHandlers handlers = new DiscordEventHandlers();
-		DiscordRPC rpc = DiscordRPC.INSTANCE;
-		if (join != null) {
-			handlers.joinGame = join::onJoin;
-		}
-		if (joinRequest != null ) {
-			handlers.joinRequest = d -> {
-				if (joinRequest.onJoinRequest(new GameJoinRequest(d.username + "#" + d.discriminator, "Discord"))) {
-					rpc.Discord_Respond(d.userId, DiscordRPC.DISCORD_REPLY_YES);
-				}
-				else {
-					rpc.Discord_Respond(d.userId, DiscordRPC.DISCORD_REPLY_NO);
-				}
-			};
-		}
-		rpc.Discord_UpdateHandlers(handlers);
+	public synchronized void setListeners(JoinListener join, JoinRequestListener joinRequest) {
+		this.join = join;
+		this.joinRequest = joinRequest;
 	}
 	
 }
