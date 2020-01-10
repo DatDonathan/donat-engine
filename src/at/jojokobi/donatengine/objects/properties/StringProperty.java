@@ -24,7 +24,9 @@ public class StringProperty implements ObservableProperty<String>{
 	public void set(String t) {
 		String old = value;
 		value = t;
-		changed = true;
+		if (!old.equals(value)) {
+			changed = true;
+		}
 		manager.notifyListeners(this, old, value);
 	}
 

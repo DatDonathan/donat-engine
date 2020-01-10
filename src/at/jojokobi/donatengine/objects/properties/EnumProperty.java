@@ -26,7 +26,9 @@ public class EnumProperty<T extends Enum<T>> implements ObservableProperty<T> {
 	public void set(T t) {
 		T old = value;
 		value = t;
-		changed = true;
+		if (old != value) {
+			changed = true;
+		}
 		manager.notifyListeners(this, old, t);
 	}
 

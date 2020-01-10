@@ -15,7 +15,7 @@ public class DoubleProperty implements ObservableProperty<Double>{
 	
 	private ListenerManager<Double> manager = new ListenerManager<>();
 
-	public DoubleProperty(long value) {
+	public DoubleProperty(double value) {
 		super();
 		this.value = value;
 	}
@@ -24,7 +24,9 @@ public class DoubleProperty implements ObservableProperty<Double>{
 	public void set(Double t) {
 		double old = value;
 		value = t;
-		changed = true;
+		if (old != value) {
+			changed = true;
+		}
 		manager.notifyListeners(this, old, t);
 	}
 

@@ -58,6 +58,7 @@ public final class BinarySerialization {
 		registerSerializer(Integer.class, new IntSerializer());
 		registerSerializer(Long.class, new LongSerializer());
 		registerSerializer(Double.class, new DoubleSerializer());
+		registerSerializer(Boolean.class, new BooleanSerializer());
 		registerSerializer(String.class, new StringSerializer());
 		
 		idClassFactory.addClass(Integer.class);

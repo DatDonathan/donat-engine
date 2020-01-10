@@ -8,23 +8,21 @@ import java.util.List;
 
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
-
-public class IntProperty implements ObservableProperty<Integer>{
+public class BooleanProperty implements ObservableProperty<Boolean>{
 	
-	private int value;
+	private boolean value;
 	private boolean changed = false;
 	
-	private ListenerManager<Integer> manager = new ListenerManager<>();
-	
+	private ListenerManager<Boolean> manager = new ListenerManager<>();
 
-	public IntProperty(int value) {
+	public BooleanProperty(boolean value) {
 		super();
 		this.value = value;
 	}
 
 	@Override
-	public void set(Integer t) {
-		int old = value;
+	public void set(Boolean t) {
+		Boolean old = value;
 		value = t;
 		if (old != value) {
 			changed = true;
@@ -33,7 +31,7 @@ public class IntProperty implements ObservableProperty<Integer>{
 	}
 
 	@Override
-	public Integer get() {
+	public Boolean get() {
 		return value;
 	}
 
@@ -61,12 +59,12 @@ public class IntProperty implements ObservableProperty<Integer>{
 
 	@Override
 	public void writeValue(DataOutput buffer, SerializationWrapper serialization) throws IOException {
-		buffer.writeInt(value);
+		buffer.writeBoolean(value);
 	}
 
 	@Override
 	public void readValue(DataInput buffer, SerializationWrapper serialization) throws IOException {
-		set(buffer.readInt());
+		set(buffer.readBoolean());
 	}
 
 	@Override
@@ -74,19 +72,14 @@ public class IntProperty implements ObservableProperty<Integer>{
 		return Arrays.asList();
 	}
 
-	public void increment(int i) {
-		set(get() + i);
-	}
-	
-
 	@Override
-	public void addListener(Listener<Integer> listener) {
+	public void addListener(Listener<Boolean> listener) {
 		manager.addListener(listener);
 	}
 
 	@Override
-	public void removeListener(Listener<Integer> listener) {
+	public void removeListener(Listener<Boolean> listener) {
 		manager.removeListener(listener);
 	}
-
+	
 }
