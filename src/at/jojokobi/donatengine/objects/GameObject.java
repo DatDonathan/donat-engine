@@ -605,6 +605,46 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		return properties;
 	}
 	
+	public <T extends GameObject> List<T> getObjectsInDirection (Level level,Vector3D dir, double distance, Class<T> clazz) {
+		double startX = getX();
+		double startY = getY();
+		double startZ = getZ();
+		double width = distance;
+		double height = distance;
+		double length = distance;
+		if (dir.getX() < 0) {
+			startX -= distance;
+			height = getHeight();
+			length = getLength();
+		}
+		else if (dir.getX() > 0) {
+			startX += getWidth();
+			height = getHeight();
+			length = getLength();
+		}
+		if (dir.getY() < 0) {
+			startY -= distance;
+			width = getWidth();
+			length = getLength();
+		}
+		else if (dir.getY() > 0) {
+			startY += getHeight();
+			width = getWidth();
+			length = getLength();
+		}
+		if (dir.getZ() < 0) {
+			startZ -= distance;
+			width = getWidth();
+			height = getHeight();
+		}
+		else if (dir.getZ() > 0) {
+			startZ += getLength();
+			width = getWidth();
+			height = getHeight();
+		}
+		return level.getObjectsInArea(startX, startY, startZ, width, height, length, getArea(), clazz);
+	}
+	
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException{
 		buffer.writeDouble(getX());

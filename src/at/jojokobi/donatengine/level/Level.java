@@ -235,6 +235,17 @@ public abstract class Level extends Hitbox {
 //		}
 //		return objects;
 //	}
+	
+	public <T extends GameObject> List<T> getObjectsInArea(double x, double y, double z, double width, double height, double length,
+			String area, Class<T> clazz) {
+		List<T> objects = new ArrayList<>();
+		for (T object : getInstances(clazz)) {
+			if (object.isColliding(x, y, z, width, height, length, area)) {
+				objects.add(object);
+			}
+		}
+		return objects;
+	}
 
 	public List<GameObject> getObjectsInArea(double x, double y, double z, double width, double height, double length,
 			String area) {
