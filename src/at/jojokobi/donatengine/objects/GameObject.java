@@ -605,6 +605,18 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		return properties;
 	}
 	
+	public Vector3D getPosition() {
+		return new Vector3D(getX(), getY(), getZ());
+	}
+	
+	public Vector3D getMotion() {
+		return new Vector3D(xMotion, yMotion, zMotion);
+	}
+	
+	public Vector3D getTotalMotion() {
+		return new Vector3D(xMotion, getTotalYMotion(), zMotion);
+	}
+	
 	public <T extends GameObject> List<T> getObjectsInDirection (Level level,Vector3D dir, double distance, Class<T> clazz) {
 		double startX = getX();
 		double startY = getY();
