@@ -613,6 +613,10 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		return new Vector3D(xMotion, yMotion, zMotion);
 	}
 	
+	public Vector3D getSize() {
+		return new Vector3D(getWidth(), getHeight(), getLength());
+	}
+	
 	public Vector3D getTotalMotion() {
 		return new Vector3D(xMotion, getTotalYMotion(), zMotion);
 	}

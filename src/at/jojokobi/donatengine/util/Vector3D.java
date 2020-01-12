@@ -76,7 +76,9 @@ public class Vector3D extends Vector2D {
 	public Vector3D normalize() {
 		double length = length();
 		super.normalize();
-		z /= length;
+		if (z != 0) {
+			z /= length;
+		}
 		return this;
 	}
 	
@@ -110,6 +112,11 @@ public class Vector3D extends Vector2D {
 	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		super.deserialize(buffer, serialization);
 		z = buffer.readDouble();
+	}
+
+	public Vector3D add(Vector3D vector) {
+		add(vector.getX(), vector.getY(), vector.getZ());
+		return this;
 	}
 	
 }
