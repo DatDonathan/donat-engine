@@ -83,7 +83,7 @@ public class Vector3D extends Vector2D {
 	}
 	
 	@Override
-	public Vector2D multiply(double m) {
+	public Vector3D multiply(double m) {
 		super.multiply(m);
 		z *= m;
 		return this;
