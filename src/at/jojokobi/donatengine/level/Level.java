@@ -444,7 +444,7 @@ public abstract class Level extends Hitbox {
 	 * @param id
 	 */
 	public void spawn(GameObject obj, long id) {
-		if (getId(obj) < 0) {
+		if (obj != null && getId(obj) < 0) {
 //			if (!(obj instanceof Tile) || (getTileAt(((Tile) obj).getTileX(), ((Tile) obj).getTileY(), ((Tile) obj).getTileZ(), obj.getArea()) == null)) {
 //				objects.put(nextId++, obj);
 			objects.add(obj, id);
@@ -456,7 +456,7 @@ public abstract class Level extends Hitbox {
 
 	public long spawn(GameObject obj) {
 		long id = -1;
-		if (getId(obj) < 0) {
+		if (obj != null && getId(obj) < 0) {
 //			if (!(obj instanceof Tile) || (getTileAt(((Tile) obj).getTileX(), ((Tile) obj).getTileY(), ((Tile) obj).getTileZ(), obj.getArea()) == null)) {
 //				objects.put(nextId++, obj);
 			id = objects.add(obj);
@@ -501,8 +501,9 @@ public abstract class Level extends Hitbox {
 
 	public void remove(GameObject obj) {
 		long id = getId(obj);
-		objects.remove(id);
-		behavior.onDelete(this, obj, id);
+		if (objects.remove(id) != null) {
+			behavior.onDelete(this, obj, id);
+		}
 //		renderObjects.remove(obj);
 	}
 
