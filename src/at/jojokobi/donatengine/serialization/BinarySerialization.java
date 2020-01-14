@@ -64,6 +64,7 @@ public final class BinarySerialization {
 		idClassFactory.addClass(Integer.class);
 		idClassFactory.addClass(Long.class);
 		idClassFactory.addClass(Double.class);
+		idClassFactory.addClass(Boolean.class);
 		idClassFactory.addClass(String.class);
 		
 		idClassFactory.addClass(ChangeGUIAction.class);
