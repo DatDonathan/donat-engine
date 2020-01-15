@@ -250,7 +250,7 @@ public abstract class Level extends Hitbox {
 	public List<GameObject> getObjectsInArea(double x, double y, double z, double width, double height, double length,
 			String area) {
 		List<GameObject> objects = new ArrayList<>();
-		for (GameObject object : this.objects) {
+		for (GameObject object : getObjects()) {
 			if (object.isColliding(x, y, z, width, height, length, area)) {
 				objects.add(object);
 			}
@@ -287,7 +287,7 @@ public abstract class Level extends Hitbox {
 
 	public <T> List<T> getInstances(Class<T> clazz) {
 		List<T> objs = new ArrayList<>();
-		for (GameObject obj : objects) {
+		for (GameObject obj : getObjects()) {
 			if (clazz.isInstance(obj)) {
 				objs.add(clazz.cast(obj));
 			}
@@ -297,7 +297,7 @@ public abstract class Level extends Hitbox {
 
 	public <T extends ObjectComponent> List<GameObject> getObjectsWithComponent(Class<T> clazz) {
 		List<GameObject> objs = new ArrayList<>();
-		for (GameObject obj : objects) {
+		for (GameObject obj : getObjects()) {
 			if (obj.getComponent(clazz) != null) {
 				objs.add(obj);
 			}
@@ -555,7 +555,7 @@ public abstract class Level extends Hitbox {
 
 	public GameObject getPlayer(long client) {
 		GameObject player = null;
-		for (GameObject obj : objects) {
+		for (GameObject obj : getObjects()) {
 			if (obj.getComponent(PlayerComponent.class) != null
 					&& obj.getComponent(PlayerComponent.class).getClient() == client) {
 				player = obj;
