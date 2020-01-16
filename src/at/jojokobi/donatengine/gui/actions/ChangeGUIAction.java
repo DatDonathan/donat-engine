@@ -13,12 +13,18 @@ import at.jojokobi.donatengine.serialization.SerializationWrapper;
 public class ChangeGUIAction implements GUIAction{
 	
 	private String type;
+	private Object data;
 
-	public ChangeGUIAction(String type) {
+	public ChangeGUIAction(String type, Object data) {
 		super();
 		this.type = type;
+		this.data = data;
 	}
 
+	public ChangeGUIAction(String type) {
+		this(type, null);
+	}
+	
 	public ChangeGUIAction() {
 		this("");
 	}
@@ -26,17 +32,19 @@ public class ChangeGUIAction implements GUIAction{
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(type);
+		serialization.serialize(data, buffer);
 	}
 
 	@Override
 	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		type = buffer.readUTF();
+		data = serialization.deserialize(Object.class, buffer);
 	}
 
 	@Override
 	public void perform(Level level, LevelHandler handler, long id, GUISystem system, Camera camera) {
 		system.removeGUI(id);
-		system.showGUI(type);
+		system.showGUI(type, data);
 	}
 
 	@Override

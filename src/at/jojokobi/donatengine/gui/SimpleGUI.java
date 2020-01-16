@@ -1,6 +1,7 @@
 package at.jojokobi.donatengine.gui;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.gui.nodes.Node;
@@ -16,35 +17,44 @@ public class SimpleGUI implements GUI{
 	boolean started = false;
 	private Node selected;
 	private String type;
+	private Object data;
+	private Predicate<Long> showPredicate;
 	
-	public SimpleGUI(Parent parent, String type) {
+	public SimpleGUI(Parent parent, String type, Object data, Predicate<Long> showPredicate) {
 		super();
 		this.parent = parent;
 		this.type = type;
+		this.showPredicate = showPredicate;
 		selected = parent;
 		style.reset();
 	}
+	
+	public SimpleGUI(Parent parent, String type, Object data) {
+		this(parent, type, data, l -> true);
+	}
 
 	@Override
-	public void render(GraphicsContext ctx, double width, double height) {
-		if (started) {
+	public void render(long clientId, GraphicsContext ctx, double width, double height) {
+		if (started && showPredicate.test(clientId)) {
 			parent.render(0, 0, ctx);
 		}
 	}
 
 	@Override
-	public void update(GUISystem system, Input input, double width, double height, double delta) {
-		if (!started) {
+	public void update(long clientId, GUISystem system, Input input, double width, double height, double delta) {
+		if (showPredicate.test(clientId)) {
+			if (!started) {
+				parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
+				parent.updateDimensions(0, 0, width, height);
+				parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
+				started  = true;
+			}
+			parent.update(input, delta);
 			parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
 			parent.updateDimensions(0, 0, width, height);
-			parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
-			started  = true;
-		}
-		parent.update(input, delta);
-		parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
-		parent.updateDimensions(0, 0, width, height);
-		if (input.getPrimary()) {
-			selected = parent.determineSelected(0, 0, input.getCursorX(), input.getCursorY());
+			if (input.getPrimary()) {
+				selected = parent.determineSelected(0, 0, input.getCursorX(), input.getCursorY());
+			}
 		}
 	}
 	
@@ -60,6 +70,11 @@ public class SimpleGUI implements GUI{
 	@Override
 	public String getType() {
 		return type;
+	}
+	
+	@Override
+	public Object getData() {
+		return data;
 	}
 
 }

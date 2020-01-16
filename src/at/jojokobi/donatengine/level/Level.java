@@ -166,7 +166,7 @@ public abstract class Level extends Hitbox {
 		}
 
 		// GUI System
-		guiSystem.render(ctx, camera.getViewWidth(), camera.getViewHeight());
+		guiSystem.render(clientId, ctx, camera.getViewWidth(), camera.getViewHeight());
 		for (LevelComponent comp : components) {
 			comp.renderAfter(ctx, camera, this);
 		}

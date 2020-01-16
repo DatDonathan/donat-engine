@@ -38,33 +38,35 @@ public class AddGUIPacket implements ServerPacket {
 		public List<ServerPacket> recreatePackets(Level level) {
 			List<ServerPacket> packets = new ArrayList<>();
 			for (Map.Entry<Long, GUI> entry : level.getGUIs().entrySet()) {
-				packets.add(new AddGUIPacket(entry.getValue().getType(), entry.getKey()));
+				packets.add(new AddGUIPacket(entry.getValue().getType(), entry.getValue().getData(), entry.getKey()));
 			}
 			return packets;
 		}
 		
 		@Override
 		public List<ServerPacket> onAddGUI(GUISystem system, GUI gui, long id) {
-			return Arrays.asList(new AddGUIPacket(gui.getType(), id));
+			return Arrays.asList(new AddGUIPacket(gui.getType(), gui.getData(), id));
 		};
 	};
 	
 	private String gui;
+	private Object data;
 	private long id;
 
-	public AddGUIPacket(String gui, long id) {
+	public AddGUIPacket(String gui, Object data, long id) {
 		super();
 		this.gui = gui;
 		this.id = id;
 	}
 	
 	public AddGUIPacket() {
-		this("", 0);
+		this("", null, 0);
 	}
 
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(gui);
+		serialization.serialize(data, buffer);
 		buffer.writeLong(id);
 	}
 
@@ -72,11 +74,12 @@ public class AddGUIPacket implements ServerPacket {
 	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		gui = buffer.readUTF();
 		id = buffer.readLong();
+		data = serialization.deserialize(Object.class, buffer);
 	}
 
 	@Override
 	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
-		level.getGuiSystem().showGUI(gui, id);
+		level.getGuiSystem().showGUI(gui, data, id);
 	}
 
 }

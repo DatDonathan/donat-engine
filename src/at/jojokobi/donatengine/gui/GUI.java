@@ -8,11 +8,13 @@ import javafx.scene.canvas.GraphicsContext;
 
 public interface GUI {
 	
-	public void render (GraphicsContext ctx, double width, double height);
+	public void render (long clientId, GraphicsContext ctx, double width, double height);
 	
-	public void update (GUISystem system, Input input, double width, double height, double delta);
+	public void update (long clientId, GUISystem system, Input input, double width, double height, double delta);
 	
 	public String getType ();
+	
+	public Object getData ();
 	
 	public List<GUIAction> fetchActions ();
 

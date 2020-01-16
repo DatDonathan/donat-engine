@@ -2,19 +2,18 @@ package at.jojokobi.donatengine.gui;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class DynamicGUIFactory implements GUIFactory {
 
-	private Map<String, Supplier<GUI>> map = new HashMap<>();
+	private Map<String, GUIType<?>> map = new HashMap<>();
 
 	@Override
-	public GUI createGUI(String id) {
-		return map.get(id).get();
+	public GUI createGUI(String id, Object data) {
+		return map.get(id).createGUIUnsafe(data);
 	}
 	
-	public void registerGUI (String id, Supplier<GUI> supplier) {
-		map.put(id, supplier);
+	public void registerGUI (String id, GUIType<?> type) {
+		map.put(id, type);
 	}
 	
 }

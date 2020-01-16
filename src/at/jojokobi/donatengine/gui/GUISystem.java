@@ -22,19 +22,19 @@ public interface GUISystem {
 
 	/**
 	 * 
-	 * @param gui	The GUI - Type to be shown added
+	 * @param gui	The GUI - Type to be shown
 	 * @return		The ID of the gui
 	 */
-	public void showGUI (String type);
+	public void showGUI (String type, Object data);
 	
 	/**
 	 * 
 	 * WARNING: Do not use this function. For internal use only
 	 * 
-	 * @param gui	The GUI - Type to be shown added
+	 * @param gui	The GUI - Type to be shown
 	 * @param id	The ID of the gui
 	 */
-	public void showGUI (String type, long id);
+	public void showGUI (String type, Object data, long id);
 	
 	/**
 	 * 
@@ -48,7 +48,7 @@ public interface GUISystem {
 	
 	public Map<Long, GUI> getGUIs ();
 	
-	public void render (GraphicsContext ctx, double width, double height);
+	public void render (long clientId, GraphicsContext ctx, double width, double height);
 	
 	public List<Pair<Long, GUIAction>> update (Level level, double width, double height, LevelHandler handler, Camera camera, double delta);
 	

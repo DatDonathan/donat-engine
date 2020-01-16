@@ -41,9 +41,9 @@ public class SimpleGUISystem implements GUISystem {
 	}
 
 	@Override
-	public void render(GraphicsContext ctx, double width, double height) {
+	public void render(long clientId, GraphicsContext ctx, double width, double height) {
 		for (Long id : guis.keySet()) {
-			guis.get(id).render(ctx, width, height);
+			guis.get(id).render(clientId, ctx, width, height);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class SimpleGUISystem implements GUISystem {
 		List<Pair<Long, GUIAction>> actions = new ArrayList<>();
 		for (Long id : guis.keySet()) {
 			GUI gui = guis.get(id);
-			gui.update(this, handler.getInput(), width, height, delta);
+			gui.update(level.getClientId(), this, handler.getInput(), width, height, delta);
 			for (GUIAction action : gui.fetchActions()) {
 				if (action.executeOnClient()) {
 					action.perform(level, handler, id, this, camera);
@@ -71,15 +71,15 @@ public class SimpleGUISystem implements GUISystem {
 	}
 
 	@Override
-	public void showGUI(String type) {
-		GUI gui = factory.createGUI(type);
+	public void showGUI(String type, Object data) {
+		GUI gui = factory.createGUI(type, data);
 		long id = guis.add(gui);
 		listeners.forEach(l -> l.onAddGUI(this, gui, id));
 	}
 
 	@Override
-	public void showGUI(String type, long id) {
-		GUI gui = factory.createGUI(type);
+	public void showGUI(String type, Object data, long id) {
+		GUI gui = factory.createGUI(type, data);
 		guis.add(gui, id);
 		listeners.forEach(l -> l.onAddGUI(this, gui, id));
 	}
