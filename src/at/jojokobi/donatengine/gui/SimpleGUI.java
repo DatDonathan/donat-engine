@@ -1,7 +1,6 @@
 package at.jojokobi.donatengine.gui;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.gui.nodes.Node;
@@ -18,31 +17,27 @@ public class SimpleGUI implements GUI{
 	private Node selected;
 	private String type;
 	private Object data;
-	private Predicate<Long> showPredicate;
+	private long client;
 	
-	public SimpleGUI(Parent parent, String type, Object data, Predicate<Long> showPredicate) {
+	public SimpleGUI(Parent parent, String type, Object data, long client) {
 		super();
 		this.parent = parent;
 		this.type = type;
-		this.showPredicate = showPredicate;
+		this.client = client;
 		selected = parent;
 		style.reset();
-	}
-	
-	public SimpleGUI(Parent parent, String type, Object data) {
-		this(parent, type, data, l -> true);
 	}
 
 	@Override
 	public void render(long clientId, GraphicsContext ctx, double width, double height) {
-		if (started && showPredicate.test(clientId)) {
+		if (started && client == clientId) {
 			parent.render(0, 0, ctx);
 		}
 	}
 
 	@Override
 	public void update(long clientId, GUISystem system, Input input, double width, double height, double delta) {
-		if (showPredicate.test(clientId)) {
+		if (client == clientId) {
 			if (!started) {
 				parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
 				parent.updateDimensions(0, 0, width, height);
@@ -75,6 +70,11 @@ public class SimpleGUI implements GUI{
 	@Override
 	public Object getData() {
 		return data;
+	}
+
+	@Override
+	public long getClient() {
+		return client;
 	}
 
 }

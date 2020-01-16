@@ -25,7 +25,7 @@ public interface GUISystem {
 	 * @param gui	The GUI - Type to be shown
 	 * @return		The ID of the gui
 	 */
-	public void showGUI (String type, Object data);
+	public void showGUI (String type, Object data, long client);
 	
 	/**
 	 * 
@@ -34,7 +34,7 @@ public interface GUISystem {
 	 * @param gui	The GUI - Type to be shown
 	 * @param id	The ID of the gui
 	 */
-	public void showGUI (String type, Object data, long id);
+	public void showGUI (String type, Object data, long id, long client);
 	
 	/**
 	 * 

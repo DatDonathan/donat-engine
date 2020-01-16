@@ -93,6 +93,14 @@ public abstract class Parent extends Node{
 		children.add(node);
 	}
 	
+	protected void removeChild (Node node) {
+		children.remove(node);
+	}
+	
+	protected void clear () {
+		children.clear();
+	}
+	
 	public Map<Node, Vector2D> calcPositions (List<Node> nodes) {
 		Map<Node, Vector2D> positions = new HashMap<Node, Vector2D> ();
 		for (Node node : nodes) {

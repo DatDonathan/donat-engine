@@ -8,8 +8,8 @@ public class DynamicGUIFactory implements GUIFactory {
 	private Map<String, GUIType<?>> map = new HashMap<>();
 
 	@Override
-	public GUI createGUI(String id, Object data) {
-		return map.get(id).createGUIUnsafe(data);
+	public GUI createGUI(String id, Object data, long client) {
+		return map.get(id).createGUIUnsafe(data, client);
 	}
 	
 	public void registerGUI (String id, GUIType<?> type) {

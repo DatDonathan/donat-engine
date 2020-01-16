@@ -43,8 +43,9 @@ public class ChangeGUIAction implements GUIAction{
 
 	@Override
 	public void perform(Level level, LevelHandler handler, long id, GUISystem system, Camera camera) {
+		long client = system.getGUI(id).getClient();
 		system.removeGUI(id);
-		system.showGUI(type, data);
+		system.showGUI(type, data, client);
 	}
 
 	@Override

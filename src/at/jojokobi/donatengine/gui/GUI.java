@@ -17,5 +17,7 @@ public interface GUI {
 	public Object getData ();
 	
 	public List<GUIAction> fetchActions ();
+	
+	public long getClient();
 
 }

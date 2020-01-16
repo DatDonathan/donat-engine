@@ -71,15 +71,15 @@ public class SimpleGUISystem implements GUISystem {
 	}
 
 	@Override
-	public void showGUI(String type, Object data) {
-		GUI gui = factory.createGUI(type, data);
+	public void showGUI(String type, Object data, long client) {
+		GUI gui = factory.createGUI(type, data, client);
 		long id = guis.add(gui);
 		listeners.forEach(l -> l.onAddGUI(this, gui, id));
 	}
 
 	@Override
-	public void showGUI(String type, Object data, long id) {
-		GUI gui = factory.createGUI(type, data);
+	public void showGUI(String type, Object data, long id, long client) {
+		GUI gui = factory.createGUI(type, data, client);
 		guis.add(gui, id);
 		listeners.forEach(l -> l.onAddGUI(this, gui, id));
 	}
