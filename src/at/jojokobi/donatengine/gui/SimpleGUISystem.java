@@ -54,11 +54,13 @@ public class SimpleGUISystem implements GUISystem {
 			GUI gui = guis.get(id);
 			gui.update(level.getClientId(), this, handler.getInput(), width, height, delta);
 			for (GUIAction action : gui.fetchActions()) {
-				if (action.executeOnClient()) {
-					action.perform(level, handler, id, this, camera);
-				}
-				else {
-					actions.add(new Pair<Long, GUIAction>(id, action));
+				if (action != null) {
+					if (action.executeOnClient()) {
+						action.perform(level, handler, id, this, camera);
+					}
+					else {
+						actions.add(new Pair<Long, GUIAction>(id, action));
+					}
 				}
 			}
 		}

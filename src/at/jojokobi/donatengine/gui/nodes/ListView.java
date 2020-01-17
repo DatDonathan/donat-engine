@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import at.jojokobi.donatengine.gui.PercentualDimension;
+import at.jojokobi.donatengine.gui.style.FitHeightDimension;
 import at.jojokobi.donatengine.gui.style.FixedStyle;
 import at.jojokobi.donatengine.input.Input;
 import at.jojokobi.donatengine.util.Vector2D;
@@ -44,6 +45,20 @@ public class ListView<T> extends Parent{
 	public void onType(String ch) {
 		
 	}
+	
+	@Override
+	public Map<Node, Vector2D> calcPositions(List<Node> nodes) {
+		Map<Node, Vector2D> positions = new HashMap<>();
+		double y = getStyle().getPaddingTop();
+		for (Node node : nodes) {
+			y += node.getStyle().getMarginTop();
+			Vector2D pos = new Vector2D(0, y);
+			y+= node.getHeight();
+			y += node.getStyle().getMarginBottom();
+			positions.put(node, pos);
+		}
+		return positions;
+	}
 
 }
 
@@ -57,6 +72,7 @@ class ListItem<T> extends Parent {
 		this.value = t;
 		addChild(this.text);
 		setWidthDimension(new PercentualDimension(1));
+		setHeightDimension(new FitHeightDimension());
 		addStyle(s -> true, new FixedStyle().setPadding(5));
 		addStyle(s -> s.isSelected(), new FixedStyle().setFill(Color.LIGHTBLUE));
 	}
