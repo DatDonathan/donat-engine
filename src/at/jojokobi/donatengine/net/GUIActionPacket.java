@@ -40,11 +40,13 @@ public class GUIActionPacket implements ClientPacket{
 
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
+		buffer.writeLong(id);
 		serialization.serialize(action, buffer);
 	}
 
 	@Override
 	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
+		id = buffer.readLong();
 		action = serialization.deserialize(GUIAction.class, buffer);
 	}
 

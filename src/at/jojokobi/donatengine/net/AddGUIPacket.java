@@ -66,8 +66,8 @@ public class AddGUIPacket implements ServerPacket {
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
 		buffer.writeUTF(gui);
-		serialization.serialize(data, buffer);
 		buffer.writeLong(id);
+		serialization.serialize(data, buffer);
 	}
 
 	@Override
