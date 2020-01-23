@@ -52,7 +52,9 @@ public class GUIActionPacket implements ClientPacket{
 
 	@Override
 	public void apply(Level level, LevelHandler handler, long client) {
-		action.perform(level, handler, id, level.getGuiSystem(), null);
+		if (level.getGuiSystem().getGUI(id) != null) {
+			action.perform(level, handler, id, level.getGuiSystem(), null);
+		}
 	}
 
 }
