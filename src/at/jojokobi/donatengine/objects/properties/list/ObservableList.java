@@ -1,4 +1,4 @@
-package at.jojokobi.donatengine.objects.properties;
+package at.jojokobi.donatengine.objects.properties.list;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -12,6 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import at.jojokobi.donatengine.objects.properties.ListChange;
+import at.jojokobi.donatengine.objects.properties.ObservableObject;
+import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 

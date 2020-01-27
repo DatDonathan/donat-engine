@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
-import at.jojokobi.donatengine.objects.properties.ObservableList;
 import at.jojokobi.donatengine.objects.properties.ObservableObjectProperty;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
+import at.jojokobi.donatengine.objects.properties.list.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;

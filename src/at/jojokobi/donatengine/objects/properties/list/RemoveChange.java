@@ -1,25 +1,24 @@
-package at.jojokobi.donatengine.objects.properties;
+package at.jojokobi.donatengine.objects.properties.list;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 
+import at.jojokobi.donatengine.objects.properties.ListChange;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
-public class AddChange implements ListChange {
-
-	private int index;
+public class RemoveChange implements ListChange {
+	
 	private Object obj;
 
-	public AddChange(int index, Object obj) {
+	public RemoveChange(Object obj) {
 		super();
-		this.index = index;
 		this.obj = obj;
 	}
-
-	public AddChange() {
-
+	
+	public RemoveChange() {
+		
 	}
 
 	@Override
@@ -32,10 +31,9 @@ public class AddChange implements ListChange {
 		obj = serialization.deserialize(Object.class, buffer);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <E> void apply(List<E> list, SerializationWrapper serialization) {
-		list.add(index, (E) obj);
+		list.remove(obj);
 	}
-
+	
 }

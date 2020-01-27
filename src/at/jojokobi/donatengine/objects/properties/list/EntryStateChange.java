@@ -1,4 +1,4 @@
-package at.jojokobi.donatengine.objects.properties;
+package at.jojokobi.donatengine.objects.properties.list;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInput;
@@ -7,6 +7,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 
+import at.jojokobi.donatengine.objects.properties.ListChange;
+import at.jojokobi.donatengine.objects.properties.ObservableObject;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class EntryStateChange implements ListChange{
