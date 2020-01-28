@@ -5,7 +5,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
 
-import at.jojokobi.donatengine.objects.properties.ListChange;
 import at.jojokobi.donatengine.objects.properties.ObservableObject;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 

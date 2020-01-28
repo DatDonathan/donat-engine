@@ -1,4 +1,4 @@
-package at.jojokobi.donatengine.objects.properties;
+package at.jojokobi.donatengine.objects.properties.list;
 
 import java.util.List;
 

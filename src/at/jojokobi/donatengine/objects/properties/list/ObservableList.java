@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import at.jojokobi.donatengine.objects.properties.ListChange;
 import at.jojokobi.donatengine.objects.properties.ObservableObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
@@ -269,6 +268,7 @@ public class ObservableList<E> implements ObservableObject, List<E>, BinarySeria
 	@Override
 	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
 		int size = buffer.readInt();
+		list.clear();
 		for (int i = 0; i < size; i++) {
 			list.add((E) serialization.deserialize(Object.class, buffer));
 		}

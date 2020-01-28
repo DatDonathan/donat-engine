@@ -1,13 +1,13 @@
-package at.jojokobi.donatengine.objects.properties.list;
+package at.jojokobi.donatengine.objects.properties.map;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
-public class ClearChange implements ListChange{
+public class ClearChange implements MapChange{
 
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
@@ -20,8 +20,8 @@ public class ClearChange implements ListChange{
 	}
 
 	@Override
-	public <E> void apply(List<E> list, SerializationWrapper serialization) {
-		list.clear();
+	public <K, V> void apply(Map<K, V> map, SerializationWrapper serialization) {
+		map.clear();
 	}
-
+	
 }

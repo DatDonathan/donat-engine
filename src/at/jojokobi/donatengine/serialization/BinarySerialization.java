@@ -35,6 +35,8 @@ import at.jojokobi.donatengine.objects.properties.list.ObservableList;
 import at.jojokobi.donatengine.objects.properties.list.RemoveChange;
 import at.jojokobi.donatengine.objects.properties.list.RemoveIndexChange;
 import at.jojokobi.donatengine.objects.properties.list.SetChange;
+import at.jojokobi.donatengine.objects.properties.map.ObservableMap;
+import at.jojokobi.donatengine.objects.properties.map.PutChange;
 import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
 
@@ -98,6 +100,10 @@ public final class BinarySerialization {
 		idClassFactory.addClass(RemoveChange.class);
 		idClassFactory.addClass(RemoveIndexChange.class);
 		idClassFactory.addClass(SetChange.class);
+		idClassFactory.addClass(ObservableMap.class);
+		idClassFactory.addClass(at.jojokobi.donatengine.objects.properties.map.ClearChange.class);
+		idClassFactory.addClass(PutChange.class);
+		idClassFactory.addClass(at.jojokobi.donatengine.objects.properties.map.RemoveChange.class);
 		
 		idClassFactory.addClass(Vector2D.class);
 		idClassFactory.addClass(Vector3D.class);
