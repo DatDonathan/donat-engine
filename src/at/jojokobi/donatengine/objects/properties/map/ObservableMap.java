@@ -3,6 +3,7 @@ package at.jojokobi.donatengine.objects.properties.map;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,12 +13,13 @@ import java.util.Set;
 
 import at.jojokobi.donatengine.objects.properties.ObservableObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
+import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
-public class ObservableMap<K, V> implements ObservableObject, Map<K, V>{
+public class ObservableMap<K, V> implements ObservableObject, BinarySerializable, Map<K, V>{
 	
 	private Map<K, V> map;
-	List<MapChange> changes;
+	private List<MapChange> changes = new ArrayList<>();
 
 	public ObservableMap(Map<K, V> map) {
 		super();
@@ -126,6 +128,24 @@ public class ObservableMap<K, V> implements ObservableObject, Map<K, V>{
 	public boolean stateChanged() {
 		// TODO Observables in map
 		return !changes.isEmpty();
+	}
+
+	@Override
+	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
+		buffer.writeInt(map.size());
+		for (var e : map.entrySet()) {
+			serialization.serialize(e.getKey(), buffer);
+			serialization.serialize(e.getValue(), buffer);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void deserialize(DataInput buffer, SerializationWrapper serialization) throws IOException {
+		int size = buffer.readInt();
+		for (int i = 0; i < size; i++) {
+			map.put((K) serialization.deserialize(Object.class, buffer), (V) serialization.deserialize(Object.class, buffer));
+		}
 	}
 
 }

@@ -135,9 +135,10 @@ public final class BinarySerialization {
 						}
 					}
 					else {
-						throw new ClassCastException("The serialized class " + clazz.getClass() + " in not an instance of the given class " + clazz);
+						throw new ClassCastException("The serialized class " + obj.getClass() + " in not an instance of the given class " + clazz);
 					}
 				}
+				System.out.println(objClazz);
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e.getMessage(), e);
@@ -163,7 +164,7 @@ public final class BinarySerialization {
 				((BinarySerializable) obj).serialize(output, serialization);
 			}
 			else {
-				throw new IllegalArgumentException("The class is not an instance of BinarySerializeable and no BinarySerializer is defined for the class");
+				throw new IllegalArgumentException("The class " + obj.getClass() + " is not an instance of BinarySerializeable and no BinarySerializer is defined for the class");
 			}
 		}
 	}

@@ -27,6 +27,7 @@ public class LevelPropertyStateChangedPacket implements ServerPacket {
 			int i = 0;
 			for (ObservableProperty<?> property : level.observableProperties()) {
 				if (property.stateChanged()) {
+					System.out.println(level.observableProperties() + " " + property + " " + property.get() + " " + i);
 					try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 							DataOutputStream out = new DataOutputStream(buffer)) {
 						property.writeChanges(out, serialization);
@@ -37,8 +38,8 @@ public class LevelPropertyStateChangedPacket implements ServerPacket {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					i++;
 				}
+				i++;
 			}
 			return packets;
 		}
@@ -100,6 +101,7 @@ public class LevelPropertyStateChangedPacket implements ServerPacket {
 	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
 		if (level.observableProperties().size() > property) {
 			ObservableProperty<?> property = level.observableProperties().get(this.property);
+			System.out.println(level.observableProperties() + " " + property + " " + property.get() + " " + this.property);
 			try (DataInputStream out = new DataInputStream(new ByteArrayInputStream(changes))) {
 				property.readChanges(out, serialization);
 			} catch (IOException e) {
