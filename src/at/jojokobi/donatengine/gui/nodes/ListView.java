@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 public class ListView<T> extends Parent{
 	
 	private Supplier<List<T>> supplier;
+	private List<T> temp;
 	
 	public ListView(Supplier<List<T>> supplier) {
 		super();
@@ -25,9 +26,12 @@ public class ListView<T> extends Parent{
 	public void update(Input input, double delta) {
 		super.update(input, delta);
 		List<T> list = supplier.get();
-		clear();
-		for (T t : list) {
-			addChild(new ListItem<>(t));
+		if (!list.equals(temp)) {
+			clear();
+			for (T t : list) {
+				addChild(new ListItem<>(t));
+			}
+			temp = list;
 		}
 	}
 
@@ -52,7 +56,7 @@ public class ListView<T> extends Parent{
 		double y = getStyle().getPaddingTop();
 		for (Node node : nodes) {
 			y += node.getStyle().getMarginTop();
-			Vector2D pos = new Vector2D(0, y);
+			Vector2D pos = new Vector2D(getWidth()/2 - node.getWidth()/2, y);
 			y+= node.getHeight();
 			y += node.getStyle().getMarginBottom();
 			positions.put(node, pos);
