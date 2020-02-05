@@ -84,7 +84,7 @@ public class AddGUIPacket implements ServerPacket {
 
 	@Override
 	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
-		level.getGuiSystem().showGUI(gui, data, client, id);
+		level.getGuiSystem().showGUI(gui, data, id, client);
 	}
 
 }
