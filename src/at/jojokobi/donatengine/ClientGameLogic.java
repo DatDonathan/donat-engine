@@ -155,7 +155,6 @@ LevelHandler handler = new LevelHandler() {
 			while (data.available() > 0) {
 				ServerPacket packet = serialization.deserialize(ServerPacket.class, data);
 				synchronized (ClientGameLogic.this) {
-					System.out.println("Recieved:" + packet);
 					packet.apply(level, handler, serialization);
 				}
 			}

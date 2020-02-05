@@ -138,7 +138,6 @@ public final class BinarySerialization {
 						throw new ClassCastException("The serialized class " + obj.getClass() + " in not an instance of the given class " + clazz);
 					}
 				}
-				System.out.println(objClazz);
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
 				throw new RuntimeException(e.getMessage(), e);

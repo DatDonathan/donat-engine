@@ -175,7 +175,6 @@ public class SimpleServerGameLogic implements GameLogic {
 		try (DataOutputStream out = new DataOutputStream(server.getBroadcastOutputStream())) {
 			for (BinarySerializable packet : level.getBehavior().fetchPackets()) {
 				serialization.serialize(packet, out);
-				System.out.println(packet);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
