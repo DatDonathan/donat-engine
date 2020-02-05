@@ -56,4 +56,6 @@ public interface GUISystem {
 	
 	public void removeListener (Listener listener);
 	
+	public void clear ();
+	
 }

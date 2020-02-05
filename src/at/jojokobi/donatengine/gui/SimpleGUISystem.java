@@ -101,4 +101,11 @@ public class SimpleGUISystem implements GUISystem {
 		return guis.get(id);
 	}
 
+	@Override
+	public void clear() {
+		for (long id : guis.keySet()) {
+			removeGUI(id);
+		}
+	}
+
 }
