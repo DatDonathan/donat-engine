@@ -1,6 +1,5 @@
 package at.jojokobi.donatengine.objects;
 
-import at.jojokobi.donatengine.rendering.RenderModel;
 
 public abstract class Tile extends GameObject{
 
@@ -13,8 +12,8 @@ public abstract class Tile extends GameObject{
 //		this(x, y, z, tileWidth, tileHeight, tileLength, new Image2DModel(image));
 //	}
 	
-	public Tile(double x, double y, double z, String area, int tileWidth, int tileHeight, int tileLength, RenderModel renderModel) {
-		super(x, y, z, area, renderModel);
+	public Tile(double x, double y, double z, String area, int tileWidth, int tileHeight, int tileLength, String renderTag) {
+		super(x, y, z, area, renderTag);
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.tileLength = tileLength;

@@ -6,7 +6,7 @@ import java.util.List;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import javafx.scene.canvas.GraphicsContext;
+import at.jojokobi.donatengine.rendering.RenderData;
 
 public class BrakeMotionComponent implements ObjectComponent {
 	
@@ -86,16 +86,6 @@ public class BrakeMotionComponent implements ObjectComponent {
 		
 	}
 
-	@Override
-	public void renderBefore(GameObject object, GraphicsContext ctx, Camera cam, Level level) {
-
-	}
-
-	@Override
-	public void renderAfter(GameObject object, GraphicsContext ctx, Camera cam, Level level) {
-		
-	}
-
 	public double getBrakeX() {
 		return brakeX;
 	}
@@ -147,6 +137,18 @@ public class BrakeMotionComponent implements ObjectComponent {
 	@Override
 	public List<ObservableProperty<?>> observableProperties() {
 		return Arrays.asList();
+	}
+
+	@Override
+	public void renderBefore(GameObject object, List<RenderData> data, Camera cam, Level level) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void renderAfter(GameObject object, List<RenderData> data, Camera cam, Level level) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

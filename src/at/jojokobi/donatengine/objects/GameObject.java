@@ -11,14 +11,13 @@ import at.jojokobi.donatengine.input.ClickDirection;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import at.jojokobi.donatengine.rendering.Image2DModel;
-import at.jojokobi.donatengine.rendering.RenderModel;
+import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.ModelRenderData;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.util.Position;
 import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
 public abstract class GameObject extends Hitbox implements BinarySerializable{
 
@@ -32,7 +31,7 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 
 //	private Level level;
 //	private Image image;
-	private RenderModel renderModel;
+	private String renderTag = "";
 
 	private boolean solid = false;
 	private boolean visible = true;
@@ -61,10 +60,10 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 //		this(x, y, 0, level, image);
 //	}
 
-	public GameObject(double x, double y, double z, String area, RenderModel renderModel) {
+	public GameObject(double x, double y, double z, String area, String renderTag) {
 		super(x, y, z);
 //		this.level = level;
-		this.renderModel = renderModel;
+		this.renderTag = renderTag;
 		setArea(area);
 	}
 	
@@ -122,7 +121,7 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		components.forEach((c) -> c.clientUpdate(this, level, handler, camera, delta));
 	}
 	
-	public void renderGUI (GraphicsContext ctx, Camera cam, Level level) {
+	public void renderGUI (List<RenderData> data, Camera cam, Level level) {
 		
 	}
 
@@ -316,20 +315,15 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		return !objs.isEmpty();
 	}
 
-	public void render(GraphicsContext ctx, Camera cam, Level level) {
-		ctx.save();
-		components.forEach((c) -> c.renderBefore(this, ctx, cam, level));
-		ctx.restore();
+	public void render(List<RenderData> data, Camera cam, Level level) {
+		components.forEach((c) -> c.renderBefore(this, data, cam, level));
+
 		
-		ctx.save();
-		if (renderModel != null) {
-			getRenderModel().render(ctx, cam, getX() - getxOffset(), getY() - getyOffset(), getZ() - getzOffset());
+		if (renderTag != null) {
+			data.add(new ModelRenderData(new Position(getPosition(), getArea()), renderTag));
 		}
-		ctx.restore();
 		
-		ctx.save();
-		components.forEach((c) -> c.renderAfter(this, ctx, cam, level));
-		ctx.restore();
+		components.forEach((c) -> c.renderAfter(this, data, cam, level));
 //		switch (cam.getPerspective()) {
 //		case X_Y_TOP_DOWN:
 //			if (cam.isColliding(getX() - getxOffset(), getY() - getyOffset(), getZ() - getzOffset(), getImage().getWidth(), getImage().getHeight(), getLength())) {
@@ -397,28 +391,20 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		return direction;
 	}
 
-	@Deprecated
-	public Image getImage() {
-		return ((Image2DModel) renderModel).getImage();
-	}
-
-	@Deprecated
-	protected void setImage(Image image) {
-		this.renderModel = new Image2DModel(image);
-	}
-
-	public RenderModel getRenderModel() {
-		return renderModel;
-	}
-
-	public void setRenderModel(RenderModel renderModel) {
-		this.renderModel = renderModel;
-	}
+	
 //
 //	public Level getLevel() {
 //		return level;
 //	}
 	
+	public String getRenderTag() {
+		return renderTag;
+	}
+
+	public void setRenderTag(String renderTag) {
+		this.renderTag = renderTag;
+	}
+
 	public boolean fetchMoved () {
 		boolean moved = this.moved;
 		this.moved = false;

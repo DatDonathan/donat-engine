@@ -5,7 +5,7 @@ import java.util.List;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import javafx.scene.canvas.GraphicsContext;
+import at.jojokobi.donatengine.rendering.RenderData;
 
 public interface ObjectComponent {
 	
@@ -19,9 +19,9 @@ public interface ObjectComponent {
 
 	public void hostUpdate (GameObject object, Level level, LevelHandler handler, Camera camera, double delta);
 	
-	public void renderBefore (GameObject object, GraphicsContext ctx, Camera cam, Level level);
+	public void renderBefore (GameObject object, List<RenderData> data, Camera cam, Level level);
 	
-	public void renderAfter (GameObject object, GraphicsContext ctx, Camera cam, Level level);
+	public void renderAfter (GameObject object, List<RenderData> data, Camera cam, Level level);
 	
 	public List<ObservableProperty<?>> observableProperties ();
 	

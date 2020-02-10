@@ -7,7 +7,7 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.properties.LongProperty;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import javafx.scene.canvas.GraphicsContext;
+import at.jojokobi.donatengine.rendering.RenderData;
 
 public class PlayerComponent implements ObjectComponent{
 	
@@ -33,22 +33,22 @@ public class PlayerComponent implements ObjectComponent{
 	}
 
 	@Override
-	public void renderBefore(GameObject object, GraphicsContext ctx, Camera cam, Level level) {
-		
-	}
-
-	@Override
-	public void renderAfter(GameObject object, GraphicsContext ctx, Camera cam, Level level) {
-		
-	}
-
-	@Override
 	public void update(GameObject object, Level level, LevelHandler handler, Camera camera, double delta) {
 		
 	}
 
 	@Override
 	public void clientUpdate(GameObject object, Level level, LevelHandler handler, Camera camera, double delta) {
+		
+	}
+
+	@Override
+	public void renderBefore(GameObject object, List<RenderData> data, Camera cam, Level level) {
+		
+	}
+
+	@Override
+	public void renderAfter(GameObject object, List<RenderData> data, Camera cam, Level level) {
 		
 	}
 
