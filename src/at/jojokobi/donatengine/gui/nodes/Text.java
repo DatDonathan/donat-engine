@@ -1,6 +1,6 @@
 package at.jojokobi.donatengine.gui.nodes;
 
-import at.jojokobi.donatengine.gui.style.FixedStyle;
+import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Rect;
 import javafx.scene.canvas.GraphicsContext;
 

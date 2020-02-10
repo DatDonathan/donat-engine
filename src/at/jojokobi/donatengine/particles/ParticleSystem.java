@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
-import javafx.scene.canvas.GraphicsContext;
+import at.jojokobi.donatengine.rendering.RenderData;
 
 public class ParticleSystem {
 
@@ -23,10 +23,10 @@ public class ParticleSystem {
 		}
 	}
 	
-	public void render (GraphicsContext ctx, Camera camera) {
+	public void render (List<RenderData> data, Camera camera) {
 		for (Particle particle : particles) {
 //			if (camera.isColliding(particle.getX(), particle.getY(), 0, 0)) {
-				particle.render(ctx, camera);
+				particle.render(data, camera);
 //			}
 		}
 	}

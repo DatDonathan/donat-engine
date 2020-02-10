@@ -1,7 +1,7 @@
 package at.jojokobi.donatengine.gui.nodes;
 
-import at.jojokobi.donatengine.gui.style.FixedStyle;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.style.FixedStyle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 

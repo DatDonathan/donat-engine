@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import at.jojokobi.donatengine.gui.PercentualDimension;
-import at.jojokobi.donatengine.gui.style.FitHeightDimension;
-import at.jojokobi.donatengine.gui.style.FixedStyle;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.style.FitHeightDimension;
+import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Vector2D;
 import javafx.scene.paint.Color;
 

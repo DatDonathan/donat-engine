@@ -1,11 +1,15 @@
 package at.jojokobi.donatengine.particles;
 
+import java.util.List;
+
 import at.jojokobi.donatengine.objects.Camera;
-import at.jojokobi.donatengine.util.Vector2D;
+import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.TextRenderData;
+import at.jojokobi.donatengine.style.Color;
+import at.jojokobi.donatengine.style.FixedStyle;
+import at.jojokobi.donatengine.style.Font;
+import at.jojokobi.donatengine.util.Position;
 import at.jojokobi.donatengine.util.Vector3D;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 public class TextParticle extends Particle{
 	
@@ -13,8 +17,8 @@ public class TextParticle extends Particle{
 	private String text;
 	private Font font;
 	
-	public TextParticle(double x, double y, double z, Color color, String text, Font font) {
-		super(x, y, z);
+	public TextParticle(double x, double y, double z, String area, Color color, String text, Font font) {
+		super(x, y, z, area);
 		this.color = color;
 		this.text = text;
 		this.font = font;
@@ -27,11 +31,8 @@ public class TextParticle extends Particle{
 	}
 
 	@Override
-	public void render(GraphicsContext ctx, Camera cam) {
-		ctx.setFill(color);
-		ctx.setFont(font);
-		Vector2D pos = cam.toScreenPosition(new Vector3D(getX(), getY(), getZ()));
-		ctx.fillText(text, pos.getX(), pos.getY());
+	public void render(List<RenderData> data, Camera cam) {
+		data.add(new TextRenderData(new Position(new Vector3D(getX(), getY(), getZ()), getArea()), new FixedStyle().reset().setFont(font).setFontColor(color), text));
 	}
 
 

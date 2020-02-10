@@ -1,18 +1,20 @@
 package at.jojokobi.donatengine.particles;
 
+import java.util.List;
+
 import at.jojokobi.donatengine.objects.Camera;
-import at.jojokobi.donatengine.util.Vector2D;
+import at.jojokobi.donatengine.rendering.ImageRenderData;
+import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.util.Position;
 import at.jojokobi.donatengine.util.Vector3D;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
 public class ImageParticle extends Particle{
 	
-	private Image image;
+	private String tag;
 
-	public ImageParticle(double x, double y, double z, Image image) {
-		super(x, y, z);
-		this.image = image;
+	public ImageParticle(double x, double y, double z, String area, String tag) {
+		super(x, y, z, area);
+		this.tag = tag;
 	}
 
 	@Override
@@ -21,11 +23,8 @@ public class ImageParticle extends Particle{
 	}
 
 	@Override
-	public void render(GraphicsContext ctx, Camera cam) {
-		Vector2D pos = cam.toScreenPosition(new Vector3D(getX(), getY(), getZ()));
-		ctx.setGlobalAlpha(1 - getTimer()/getLifetime());
-		ctx.drawImage(image, pos.getX() - image.getWidth()/2, pos.getY() - image.getHeight()/2);
-		ctx.setGlobalAlpha(1);
+	public void render(List<RenderData> data, Camera cam) {
+		data.add(new ImageRenderData(new Position(new Vector3D(getX(), getY(), getZ()), getArea()), tag, -1, -1, -1));
 	}
 
 

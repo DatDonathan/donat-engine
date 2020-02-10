@@ -1,4 +1,4 @@
-package at.jojokobi.donatengine.gui.style;
+package at.jojokobi.donatengine.style;
 
 import at.jojokobi.donatengine.gui.nodes.Node;
 

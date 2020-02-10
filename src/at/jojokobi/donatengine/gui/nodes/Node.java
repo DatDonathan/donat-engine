@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
-import at.jojokobi.donatengine.gui.style.Dimension;
-import at.jojokobi.donatengine.gui.style.FitHeightDimension;
-import at.jojokobi.donatengine.gui.style.FitWidthDimension;
-import at.jojokobi.donatengine.gui.style.FixedStyle;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.style.Dimension;
+import at.jojokobi.donatengine.style.FitHeightDimension;
+import at.jojokobi.donatengine.style.FitWidthDimension;
+import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Pair;
 import at.jojokobi.donatengine.util.Rect;
 import javafx.scene.canvas.GraphicsContext;

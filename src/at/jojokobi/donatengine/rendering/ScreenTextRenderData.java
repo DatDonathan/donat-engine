@@ -1,6 +1,6 @@
 package at.jojokobi.donatengine.rendering;
 
-import at.jojokobi.donatengine.gui.style.FixedStyle;
+import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Vector2D;
 
 public class ScreenTextRenderData extends ScreenPositonedRenderData {

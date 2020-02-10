@@ -1,7 +1,7 @@
 package at.jojokobi.donatengine.gui;
 
 import at.jojokobi.donatengine.gui.nodes.Node;
-import at.jojokobi.donatengine.gui.style.Dimension;
+import at.jojokobi.donatengine.style.Dimension;
 
 public class PercentualDimension implements Dimension {
 

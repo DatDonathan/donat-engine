@@ -1,16 +1,13 @@
-package at.jojokobi.donatengine.gui.style;
+package at.jojokobi.donatengine.style;
 
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 
 public class FixedStyle {
 
 	private Font font;
-	private Paint fill;
-	private Paint border;
-	private Paint fontColor;
-	private Paint fontBorder;
+	private Color fill;
+	private Color border;
+	private Color fontColor;
+	private Color fontBorder;
 	private Double fontBorderStrength;
 	private Double borderRadius;
 	private Double borderStrength;
@@ -24,7 +21,7 @@ public class FixedStyle {
 	private Double marginBottom;
 
 	public FixedStyle reset() {
-		font = new Font(12);
+		font = new Font(12, "System");
 		fill = Color.TRANSPARENT;
 		border = Color.TRANSPARENT;
 		fontColor = Color.BLACK;
@@ -41,11 +38,11 @@ public class FixedStyle {
 		return font;
 	}
 
-	public Paint getFill() {
+	public Color getFill() {
 		return fill;
 	}
 
-	public Paint getBorder() {
+	public Color getBorder() {
 		return border;
 	}
 
@@ -58,12 +55,12 @@ public class FixedStyle {
 		return this;
 	}
 
-	public FixedStyle setFill(Paint fill) {
+	public FixedStyle setFill(Color fill) {
 		this.fill = fill;
 		return this;
 	}
 
-	public FixedStyle setBorder(Paint border) {
+	public FixedStyle setBorder(Color border) {
 		this.border = border;
 		return this;
 	}
@@ -82,11 +79,11 @@ public class FixedStyle {
 		return this;
 	}
 
-	public Paint getFontColor() {
+	public Color getFontColor() {
 		return fontColor;
 	}
 
-	public Paint getFontBorder() {
+	public Color getFontBorder() {
 		return fontBorder;
 	}
 
@@ -94,12 +91,12 @@ public class FixedStyle {
 		return fontBorderStrength;
 	}
 
-	public FixedStyle setFontColor(Paint fontColor) {
+	public FixedStyle setFontColor(Color fontColor) {
 		this.fontColor = fontColor;
 		return this;
 	}
 
-	public FixedStyle setFontBorder(Paint fontBorder) {
+	public FixedStyle setFontBorder(Color fontBorder) {
 		this.fontBorder = fontBorder;
 		return this;
 	}

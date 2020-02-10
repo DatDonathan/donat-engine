@@ -5,8 +5,8 @@ import java.util.List;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.gui.nodes.Node;
 import at.jojokobi.donatengine.gui.nodes.Parent;
-import at.jojokobi.donatengine.gui.style.FixedStyle;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.style.FixedStyle;
 import javafx.scene.canvas.GraphicsContext;
 
 public class SimpleGUI implements GUI{

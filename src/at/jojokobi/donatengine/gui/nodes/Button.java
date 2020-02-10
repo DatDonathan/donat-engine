@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
-import at.jojokobi.donatengine.gui.style.FixedStyle;
+import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Vector2D;
 import javafx.scene.paint.Color;
 

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
-import at.jojokobi.donatengine.gui.style.FixedStyle;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Rect;
 import at.jojokobi.donatengine.util.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
