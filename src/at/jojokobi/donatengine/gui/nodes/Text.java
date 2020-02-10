@@ -1,8 +1,12 @@
 package at.jojokobi.donatengine.gui.nodes;
 
+import java.util.List;
+
+import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.ScreenTextRenderData;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Rect;
-import javafx.scene.canvas.GraphicsContext;
+import at.jojokobi.donatengine.util.Vector2D;
 
 public class Text extends Node {
 	
@@ -16,14 +20,15 @@ public class Text extends Node {
 	}
 	
 	@Override
-	public void render(double dx, double dy, GraphicsContext ctx) {
-		super.render(dx, dy, ctx);
-		ctx.setFont(getStyle().getFont());
-		ctx.setFill(getStyle().getFontColor());
-		ctx.setStroke(getStyle().getFontBorder());
-		ctx.setLineWidth(getStyle().getFontBorderStrength());
-		ctx.fillText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
-		ctx.strokeText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
+	public void render(double dx, double dy, List<RenderData> data) {
+		super.render(dx, dy, data);
+//		ctx.setFont(getStyle().getFont());
+//		ctx.setFill(getStyle().getFontColor());
+//		ctx.setStroke(getStyle().getFontBorder());
+//		ctx.setLineWidth(getStyle().getFontBorderStrength());
+//		ctx.fillText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
+//		ctx.strokeText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
+		data.add(new ScreenTextRenderData(new Vector2D(getX(), getY()), text, getStyle()));
 	}
 
 	public String getText() {
@@ -37,6 +42,7 @@ public class Text extends Node {
 	@Override
 	public void updateStyle(double mouseX, double mouseY, Node selected, FixedStyle parent) {
 		super.updateStyle(mouseX, mouseY, selected, parent);
+		//TODO use Engine Font Calculator
 		javafx.scene.text.Text text = new javafx.scene.text.Text(this.text);
 		text.setFont(getStyle().getFont());
 		textWidth = text.getLayoutBounds().getWidth();

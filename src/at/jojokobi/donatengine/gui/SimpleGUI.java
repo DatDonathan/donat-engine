@@ -6,8 +6,8 @@ import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.gui.nodes.Node;
 import at.jojokobi.donatengine.gui.nodes.Parent;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.style.FixedStyle;
-import javafx.scene.canvas.GraphicsContext;
 
 public class SimpleGUI implements GUI{
 	
@@ -29,9 +29,9 @@ public class SimpleGUI implements GUI{
 	}
 
 	@Override
-	public void render(long clientId, GraphicsContext ctx, double width, double height) {
+	public void render(long clientId, List<RenderData> data, double width, double height) {
 		if (started && client == clientId) {
-			parent.render(0, 0, ctx);
+			parent.render(0, 0, data);
 		}
 	}
 

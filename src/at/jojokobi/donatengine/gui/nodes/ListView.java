@@ -7,10 +7,10 @@ import java.util.function.Supplier;
 
 import at.jojokobi.donatengine.gui.PercentualDimension;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.style.Color;
 import at.jojokobi.donatengine.style.FitHeightDimension;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Vector2D;
-import javafx.scene.paint.Color;
 
 public class ListView<T> extends Parent{
 	
@@ -78,7 +78,7 @@ class ListItem<T> extends Parent {
 		setWidthDimension(new PercentualDimension(1));
 		setHeightDimension(new FitHeightDimension());
 		addStyle(s -> true, new FixedStyle().setPadding(5));
-		addStyle(s -> s.isSelected(), new FixedStyle().setFill(Color.LIGHTBLUE));
+		addStyle(s -> s.isSelected(), new FixedStyle().setFill(Color.CYAN));
 	}
 
 	@Override

@@ -7,9 +7,12 @@ import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.properties.ObservableObjectProperty;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.objects.properties.list.ObservableList;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.ScreenTextRenderData;
+import at.jojokobi.donatengine.style.Color;
+import at.jojokobi.donatengine.style.FixedStyle;
+import at.jojokobi.donatengine.style.Font;
+import at.jojokobi.donatengine.util.Vector2D;
 
 public class ChatComponent implements LevelComponent{
 	
@@ -21,17 +24,16 @@ public class ChatComponent implements LevelComponent{
 	}
 
 	@Override
-	public void renderBefore(GraphicsContext ctx, Camera cam, Level level) {
+	public void renderBefore(List<RenderData> data, Camera cam, Level level) {
 		
 	}
 
 	@Override
-	public void renderAfter(GraphicsContext ctx, Camera cam, Level level) {
-		ctx.setFont(new Font("Consolas", 12));
-		ctx.setFill(Color.BLACK);
+	public void renderAfter(List<RenderData> data, Camera cam, Level level) {
+		Font font = new Font(16, "Consolas");
 		int i = 0;
 		for (String string : messages.get()) {
-			ctx.fillText(string, 5, cam.getViewHeight() - 5 - i * 16);
+			data.add(new ScreenTextRenderData(new Vector2D(5, cam.getViewHeight() - 5 - i * 16), string, new FixedStyle().reset().setFont(font).setFontColor(Color.BLACK)));
 			i++;
 		}
 	}

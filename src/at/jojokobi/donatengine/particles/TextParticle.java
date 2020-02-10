@@ -35,5 +35,4 @@ public class TextParticle extends Particle{
 		data.add(new TextRenderData(new Position(new Vector3D(getX(), getY(), getZ()), getArea()), new FixedStyle().reset().setFont(font).setFontColor(color), text));
 	}
 
-
 }

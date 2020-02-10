@@ -8,22 +8,20 @@ import java.util.Map;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Rect;
 import at.jojokobi.donatengine.util.Vector2D;
-import javafx.scene.canvas.GraphicsContext;
 
 public abstract class Parent extends Node{
 	
 	private List<Node> children = new ArrayList<>();
 
 	@Override
-	public void render (double dx, double dy, GraphicsContext ctx) {
-		super.render(dx, dy, ctx);
+	public void render (double dx, double dy, List<RenderData> data) {
+		super.render(dx, dy, data);
 		for (Node node : children) {
-			ctx.save();
-			node.render(dx + getX(), dy + getY(), ctx);
-			ctx.restore();
+			node.render(dx + getX(), dy + getY(), data);
 		}
 	}
 	

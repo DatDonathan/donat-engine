@@ -8,11 +8,11 @@ import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.util.KeyedContainer;
 import at.jojokobi.donatengine.util.KeyedHashContainer;
 import at.jojokobi.donatengine.util.LongKeySupplier;
 import at.jojokobi.donatengine.util.Pair;
-import javafx.scene.canvas.GraphicsContext;
 
 public class SimpleGUISystem implements GUISystem {
 	
@@ -41,9 +41,9 @@ public class SimpleGUISystem implements GUISystem {
 	}
 
 	@Override
-	public void render(long clientId, GraphicsContext ctx, double width, double height) {
+	public void render(long clientId, List<RenderData> data, double width, double height) {
 		for (Long id : guis.keySet()) {
-			guis.get(id).render(clientId, ctx, width, height);
+			guis.get(id).render(clientId, data, width, height);
 		}
 	}
 

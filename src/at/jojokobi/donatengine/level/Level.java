@@ -19,6 +19,7 @@ import at.jojokobi.donatengine.objects.PlayerComponent;
 import at.jojokobi.donatengine.objects.Tile;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.particles.ParticleSystem;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.util.KeyedContainer;
 import at.jojokobi.donatengine.util.KeyedHashContainer;
@@ -26,7 +27,7 @@ import at.jojokobi.donatengine.util.LongKeySupplier;
 import at.jojokobi.donatengine.util.Pair;
 import at.jojokobi.donatengine.util.StringKeySupplier;
 import at.jojokobi.donatengine.util.Vector3D;
-import javafx.scene.canvas.GraphicsContext;
+
 
 public abstract class Level extends Hitbox {
 //	
@@ -136,39 +137,34 @@ public abstract class Level extends Hitbox {
 		}
 	}
 
-	public synchronized void render(GraphicsContext ctx, Camera camera, IRessourceHandler ressourceHandler,
+	public synchronized void render(List<RenderData> data, Camera camera, IRessourceHandler ressourceHandler,
 			boolean renderInvisible) {
-		ctx.clearRect(0, 0, camera.getViewWidth(), camera.getViewHeight());
 		LevelArea area = getArea(camera.getArea());
 		if (area != null) {
-			area.render(this, ctx, ressourceHandler, camera);
+			area.render(this, data, ressourceHandler, camera);
 		}
 		for (LevelComponent comp : components) {
-			comp.renderBefore(ctx, camera, this);
+			comp.renderBefore(data, camera, this);
 		}
 		List<GameObject> objects = getObjects();
 		objects.sort(camera.getComparator());
 		// Render objects
 		for (GameObject obj : objects) {
 			if (camera.canSee(obj) && (obj.isVisible() || renderInvisible)) {
-				ctx.save();
-				obj.render(ctx, camera, this);
-				ctx.restore();
+				obj.render(data, camera, this);
 			}
 		}
 		// Render Particles
-		particleSystem.render(ctx, camera);
+		particleSystem.render(data, camera);
 		// Render object GUI
 		for (GameObject obj : objects) {
-			ctx.save();
-			obj.renderGUI(ctx, camera, this);
-			ctx.restore();
+			obj.renderGUI(data, camera, this);
 		}
 
 		// GUI System
-		guiSystem.render(clientId, ctx, camera.getViewWidth(), camera.getViewHeight());
+		guiSystem.render(clientId, data, camera.getViewWidth(), camera.getViewHeight());
 		for (LevelComponent comp : components) {
-			comp.renderAfter(ctx, camera, this);
+			comp.renderAfter(data, camera, this);
 		}
 	}
 

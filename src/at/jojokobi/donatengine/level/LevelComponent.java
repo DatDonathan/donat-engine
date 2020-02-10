@@ -4,7 +4,7 @@ import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import javafx.scene.canvas.GraphicsContext;
+import at.jojokobi.donatengine.rendering.RenderData;
 
 public interface LevelComponent {
 	
@@ -16,9 +16,9 @@ public interface LevelComponent {
 	
 	public void clientUpdate (Level level, LevelHandler handler, Camera cam, double delta);
 	
-	public void renderBefore (GraphicsContext ctx, Camera cam, Level level);
+	public void renderBefore (List<RenderData> data, Camera cam, Level level);
 	
-	public void renderAfter (GraphicsContext ctx, Camera cam, Level level);
+	public void renderAfter (List<RenderData> data, Camera cam, Level level);
 	
 	public default void onConnectPlayer (Camera cam, Level level, long id) {
 		

@@ -3,13 +3,14 @@ package at.jojokobi.donatengine.level;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.rendering.BackgroundRenderData;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
 public class LevelArea implements BinarySerializable{
 	
@@ -24,11 +25,8 @@ public class LevelArea implements BinarySerializable{
 		this.background = background;
 	}
 
-	public void render (Level level, GraphicsContext ctx, IRessourceHandler ressourceHandler, Camera camera) {
-		Image img = ressourceHandler.getImage(background);
-		if (img != null) {
-			ctx.drawImage(img, 0, 0, camera.getViewWidth(), camera.getViewHeight());
-		}
+	public void render (Level level, List<RenderData> data, IRessourceHandler ressourceHandler, Camera camera) {
+		data.add(new BackgroundRenderData(background));
 	}
 
 	@Override

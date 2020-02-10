@@ -7,8 +7,8 @@ import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.properties.ObjectProperty;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.util.Vector3D;
-import javafx.scene.canvas.GraphicsContext;
 
 public class LevelBoundsComponent implements LevelComponent {
 	
@@ -101,12 +101,12 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 
 	@Override
-	public void renderBefore(GraphicsContext ctx, Camera cam, Level level) {
+	public void renderBefore(List<RenderData> data, Camera cam, Level level) {
 		
 	}
 
 	@Override
-	public void renderAfter(GraphicsContext ctx, Camera cam, Level level) {
+	public void renderAfter(List<RenderData> data, Camera cam, Level level) {
 		
 	}
 

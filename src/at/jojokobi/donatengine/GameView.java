@@ -4,7 +4,7 @@ import java.util.Map;
 
 import at.jojokobi.donatengine.audio.AudioSystem;
 import at.jojokobi.donatengine.input.Axis;
-import at.jojokobi.donatengine.input.SceneInput;
+import at.jojokobi.donatengine.javafx.input.SceneInput;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;

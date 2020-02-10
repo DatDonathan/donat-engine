@@ -7,8 +7,8 @@ import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.util.Pair;
-import javafx.scene.canvas.GraphicsContext;
 
 public interface GUISystem {
 	
@@ -48,7 +48,7 @@ public interface GUISystem {
 	
 	public Map<Long, GUI> getGUIs ();
 	
-	public void render (long clientId, GraphicsContext ctx, double width, double height);
+	public void render (long clientId, List<RenderData> data, double width, double height);
 	
 	public List<Pair<Long, GUIAction>> update (Level level, double width, double height, LevelHandler handler, Camera camera, double delta);
 	
