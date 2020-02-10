@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.function.Consumer;
 
 import at.jojokobi.donatengine.audio.AudioSystem;
@@ -15,6 +16,7 @@ import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.net.ServerPacket;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.BinarySerialization;
@@ -22,7 +24,6 @@ import at.jojokobi.donatengine.serialization.BinarySerializationWrapper;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.netutil.client.Client;
 import at.jojokobi.netutil.client.ClientController;
-import javafx.scene.canvas.GraphicsContext;
 
 public class ClientGameLogic implements GameLogic{
 	
@@ -201,8 +202,8 @@ LevelHandler handler = new LevelHandler() {
 	}
 
 	@Override
-	public void render(GraphicsContext ctx, Camera camera, IRessourceHandler ressourceHandler) {
-		level.render(ctx, camera, ressourceHandler, false);
+	public void render(List<RenderData> data, Camera camera, IRessourceHandler ressourceHandler) {
+		level.render(data, camera, ressourceHandler, false);
 	}
 
 }

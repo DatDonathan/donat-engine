@@ -1,5 +1,6 @@
 package at.jojokobi.donatengine;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import at.jojokobi.donatengine.audio.AudioSystem;
@@ -9,11 +10,11 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
+import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerialization;
 import at.jojokobi.donatengine.serialization.BinarySerializationWrapper;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
-import javafx.scene.canvas.GraphicsContext;
 
 public class SimpleGameLogic implements GameLogic{
 	
@@ -126,8 +127,8 @@ public class SimpleGameLogic implements GameLogic{
 	}
 
 	@Override
-	public void render(GraphicsContext ctx, Camera camera, IRessourceHandler ressourceHandler) {
-		level.render(ctx, camera, ressourceHandler, false);
+	public void render(List<RenderData> data, Camera camera, IRessourceHandler ressourceHandler) {
+		level.render(data, camera, ressourceHandler, false);
 	}
 	
 }
