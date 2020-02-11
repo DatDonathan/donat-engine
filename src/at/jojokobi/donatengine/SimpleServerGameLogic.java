@@ -16,6 +16,7 @@ import at.jojokobi.donatengine.input.MapInputHandler;
 import at.jojokobi.donatengine.input.SimpleInput;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.net.ClientPacket;
+import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
@@ -107,6 +108,12 @@ public class SimpleServerGameLogic implements GameLogic {
 	@Override
 	public void render(List<RenderData> data) {
 		level.render(data, false);
+	}
+	
+
+	@Override
+	public Camera getCamera() {
+		return level.getCamera();
 	}
 
 }

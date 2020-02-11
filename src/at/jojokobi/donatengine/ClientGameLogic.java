@@ -11,6 +11,7 @@ import at.jojokobi.donatengine.event.StopEvent;
 import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.net.ServerPacket;
+import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
@@ -89,6 +90,11 @@ public class ClientGameLogic implements GameLogic{
 	@Override
 	public void render(List<RenderData> data) {
 		level.render(data, false);
+	}
+
+	@Override
+	public Camera getCamera() {
+		return level.getCamera();
 	}
 
 }

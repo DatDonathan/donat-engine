@@ -2,6 +2,7 @@ package at.jojokobi.donatengine;
 
 import java.util.List;
 
+import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.rendering.RenderData;
 
 public interface GameLogic {
@@ -13,5 +14,7 @@ public interface GameLogic {
 	public void render (List<RenderData> data);
 	
 	public void stop (Game game);
+	
+	public Camera getCamera ();
 	
 }
