@@ -8,7 +8,6 @@ import java.util.List;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.rendering.BackgroundRenderData;
 import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
@@ -25,7 +24,7 @@ public class LevelArea implements BinarySerializable{
 		this.background = background;
 	}
 
-	public void render (Level level, List<RenderData> data, IRessourceHandler ressourceHandler, Camera camera) {
+	public void render (Level level, List<RenderData> data, Camera camera) {
 		data.add(new BackgroundRenderData(background));
 	}
 

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
@@ -97,7 +97,7 @@ public class PropertyStateChangedPacket implements ServerPacket{
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
+	public void apply(Level level, Game game, SerializationWrapper serialization) {
 		GameObject obj = level.getObjectById(id);
 		
 		if (obj != null) {

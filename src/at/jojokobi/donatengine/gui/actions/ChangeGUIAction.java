@@ -4,10 +4,9 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class ChangeGUIAction implements GUIAction{
@@ -42,7 +41,7 @@ public class ChangeGUIAction implements GUIAction{
 	}
 
 	@Override
-	public void perform(Level level, LevelHandler handler, long id, GUISystem system, Camera camera) {
+	public void perform(Level level, Game game, long id, GUISystem system) {
 		long client = system.getGUI(id).getClient();
 		system.removeGUI(id);
 		system.showGUI(type, data, client);

@@ -1,97 +1,43 @@
 package at.jojokobi.donatengine;
 
-import java.util.Map;
-
 import at.jojokobi.donatengine.audio.AudioSystem;
-import at.jojokobi.donatengine.javafx.input.Axis;
-import at.jojokobi.donatengine.javafx.input.SceneInput;
+import at.jojokobi.donatengine.input.Input;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.ressources.IRessourceHandler;
-import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
-public class GameView implements Loopable {
+public class Game implements Loopable {
 	
-	private Stage stage;
-	private Canvas canvas;
 	private boolean running = true;
 	private GameLogic logic;
-	private SceneInput input;
-	private AudioSystem audioSystem = new AudioSystem();
-	private IRessourceHandler ressourceHandler;
+	private Input localInput;
+	private AudioSystem audioSystem;
 	private GamePresenceHandler gamePresenceHandler = new GamePresenceHandler();
+	private SerializationWrapper serialization;
 	private Camera camera;
-
-	public GameView(Stage stage, GameLogic logic, Camera camera, IRessourceHandler ressourceHandler, Map <String, KeyCode> keyBindings, Map<String, MouseButton> mouseButtonBindings,
-			Map<String, Axis> axisBindings) {
-		super();
-		this.stage = stage;
-		this.logic = logic;
-		this.ressourceHandler = ressourceHandler;
-		this.canvas = new Canvas(camera.getViewWidth(), camera.getViewHeight());
-		this.camera = camera;
-		this.input = new SceneInput(keyBindings, mouseButtonBindings, axisBindings);
-	}
-
+	
 	long lastTime = System.nanoTime();
 	long lastUpdate = System.nanoTime();
 	int fpsCount = 0;
-	
-	public void setTitle (String title) {
-		stage.setTitle(title);
+
+	public Game(GameLogic logic, Camera camera) {
+		super();
+		this.logic = logic;
+		this.camera = camera;
 	}
 	
 	@Override
 	public void start() {
-		Platform.runLater(() -> {
-			Scene scene = new Scene(new BorderPane(canvas));
-			input.registerEvents(scene);
-			stage.setScene(scene);
-			stage.show();
-		});
 		gamePresenceHandler.init();
-		logic.start(camera, this::changeLogic, input, id -> audioSystem, ressourceHandler, gamePresenceHandler);
-		AnimationTimer timer = new AnimationTimer () {
-			@Override
-			public void handle(long time) {
-				canvas.setWidth(stage.getWidth());
-				canvas.setHeight(stage.getHeight());
-				lastUpdate = time;
-				// Calc FPS
-				if (System.nanoTime() >= lastTime + 1000000000) {
-					System.out.println("FPS: " + fpsCount);
-					fpsCount = 0;
-					lastTime = System.nanoTime();
-				} else {
-					fpsCount++;
-				}
-				GraphicsContext ctx = canvas.getGraphicsContext2D();
-				logic.render(ctx, camera, ressourceHandler);
-			}
-		};
-		timer.start();
+		logic.start(camera, this);
 	}
 
 	@Override
 	public void update(double delta) {
 		try {
-			if (!logic.isRunning()) {
-				stopGame();
-			}
-			if (stage.getScene() != null) {
-				camera.setViewWidth(stage.getScene().getWidth());
-				camera.setViewHeight(stage.getScene().getHeight());
-			}
-			logic.update(delta, camera, this::changeLogic, input, id -> audioSystem, ressourceHandler, gamePresenceHandler);
-			input.updateBuffers();
+			logic.update(delta, camera, this);
+			localInput.updateBuffers();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -102,15 +48,15 @@ public class GameView implements Loopable {
 	@Override
 	public void stop() {
 		System.out.println("Stop view");
-		logic.onStop();
+		logic.stop(camera, this);
 		gamePresenceHandler.end();
-		Platform.exit();
+		
 	}
 	
 	public void changeLogic (GameLogic logic) {
-		this.logic.onStop();
+		this.logic.stop(camera, this);
 		this.logic = logic;
-		logic.start(camera, this::changeLogic, input, id -> audioSystem, ressourceHandler, gamePresenceHandler);
+		logic.start(camera, this);
 	}
 	
 	public void stopGame () {
@@ -124,6 +70,14 @@ public class GameView implements Loopable {
 
 	public GamePresenceHandler getGamePresenceHandler() {
 		return gamePresenceHandler;
+	}
+
+	public SerializationWrapper getSerialization() {
+		return serialization;
+	}
+
+	public Input getLocalInput() {
+		return localInput;
 	}
 	
 }

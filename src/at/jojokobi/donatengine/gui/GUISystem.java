@@ -3,10 +3,9 @@ package at.jojokobi.donatengine.gui;
 import java.util.List;
 import java.util.Map;
 
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.util.Pair;
 
@@ -50,7 +49,7 @@ public interface GUISystem {
 	
 	public void render (long clientId, List<RenderData> data, double width, double height);
 	
-	public List<Pair<Long, GUIAction>> update (Level level, double width, double height, LevelHandler handler, Camera camera, double delta);
+	public List<Pair<Long, GUIAction>> update (Level level, double width, double height, UpdateEvent event);
 	
 	public void addListener (Listener listener);
 	

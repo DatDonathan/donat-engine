@@ -3,6 +3,7 @@ package at.jojokobi.donatengine.level;
 import java.util.Arrays;
 import java.util.List;
 
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.properties.ObjectProperty;
@@ -26,12 +27,7 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 
 	@Override
-	public void init(Level level, LevelHandler handler) {
-		
-	}
-	
-	@Override
-	public void update(Level level, LevelHandler handler, Camera cam, double delta) {
+	public void update(Level level, UpdateEvent event) {
 		Vector3D pos = this.pos.get();
 		Vector3D size = this.size.get();
 		if (blockObjects && level.getBehavior().isHost()) {
@@ -59,7 +55,8 @@ public class LevelBoundsComponent implements LevelComponent {
 	}
 
 	@Override
-	public void clientUpdate(Level level, LevelHandler handler, Camera cam, double delta) {
+	public void clientUpdate(Level level, UpdateEvent event) {
+		Camera cam = level.getCamera();
 		Vector3D pos = this.pos.get();
 		Vector3D size = this.size.get();
 		if (cam.getX() < pos.getX()) {
@@ -77,11 +74,6 @@ public class LevelBoundsComponent implements LevelComponent {
 		if (cam.getZ() + cam.getViewHeight() > pos.getZ() + size.getZ()) {
 			cam.setZ(pos.getZ() + size.getZ() - cam.getViewHeight());
 		}
-	}
-
-	@Override
-	public void hostUpdate(Level level, LevelHandler handler, Camera cam, double delta) {
-
 	}
 	
 	public boolean outsideBounds (GameObject obj) {

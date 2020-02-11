@@ -8,18 +8,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import at.jojokobi.donatengine.Game;
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
+import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class ButtonPacket implements ClientPacket {
 	
 	public static final ClientPacketType PACKET_TYPE = new ClientPacketType() {
 		@Override
-		public List<ClientPacket> onUpdate(Level level, LevelHandler handler) {
+		public List<ClientPacket> onUpdate(Level level, UpdateEvent event) {
 			List<ClientPacket> packets = new ArrayList<>();
-			Map<String, Boolean> changes = handler.getInput().fetchChangedButtons();
+			Map<String, Boolean> changes = event.getGame().getLocalInput().fetchChangedButtons();
 			for (var e : changes.entrySet()) {
 				packets.add(new ButtonPacket(e.getKey (), e.getValue()));
 			}
@@ -58,7 +60,7 @@ public class ButtonPacket implements ClientPacket {
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler, long client) {
+	public void apply(Level level, Game game, InputHandler handler, long client) {
 		handler.getInput(client).setButton(code, pressed);
 	}
 

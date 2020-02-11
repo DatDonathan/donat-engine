@@ -5,11 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import at.jojokobi.donatengine.event.StartEvent;
+import at.jojokobi.donatengine.event.StopEvent;
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.DynamicGUIFactory;
 import at.jojokobi.donatengine.gui.GUI;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.gui.SimpleGUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
+import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.net.MultiplayerBehavior;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
@@ -20,7 +24,6 @@ import at.jojokobi.donatengine.objects.Tile;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.particles.ParticleSystem;
 import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.ressources.IRessourceHandler;
 import at.jojokobi.donatengine.util.KeyedContainer;
 import at.jojokobi.donatengine.util.KeyedHashContainer;
 import at.jojokobi.donatengine.util.LongKeySupplier;
@@ -79,6 +82,7 @@ public abstract class Level extends Hitbox {
 	private GUISystem guiSystem;
 	private MultiplayerBehavior behavior;
 	private long clientId = 0;
+	private Camera camera;
 
 //	private long nextId = 1;
 
@@ -103,45 +107,43 @@ public abstract class Level extends Hitbox {
 		return null;
 	}
 
-	public synchronized void update(double delta, LevelHandler handler, Camera camera) {
+	public void update(UpdateEvent event, InputHandler input) {
 //		if (camera.hasMoved()) {
 //			recalcObjectsInView();
 //		}
 //		camera.update(delta);
-		camera.update(delta, this);
-		particleSystem.update(delta);
-		getBehavior().update(this, handler);
+		camera.update(event.getDelta(), this);
+		particleSystem.update(event.getDelta());
+		getBehavior().update(this, event);
 		if (getBehavior().isHost()) {
-			components.forEach(c -> c.hostUpdate(this, handler, camera, delta));
+			components.forEach(c -> c.hostUpdate(this, event));
 		}
-		components.forEach(c -> c.update(this, handler, camera, delta));
+		components.forEach(c -> c.update(this, event));
 		if (getBehavior().isClient()) {
-			components.forEach(c -> c.clientUpdate(this, handler, camera, delta));
+			components.forEach(c -> c.clientUpdate(this, event));
 		}
 		for (long id : objects.keySet()) {
 			GameObject gameObject = objects.get(id);
 			if ((updateHidden || gameObject.isAlwaysUpdate() || camera.canSee(gameObject)) && gameObject.isNeedsUpdate()) {
-				behavior.onUpdate(this, gameObject, id, handler);
+				behavior.onUpdate(this, gameObject, id, event);
 				if (behavior.isHost()) {
-					gameObject.hostUpdate(this, handler, camera, delta);
+					gameObject.hostUpdate(this, event);
 				}
-				gameObject.update(this, handler, camera, delta);
+				gameObject.update(this, event);
 				if (behavior.isClient()) {
-					gameObject.clientUpdate(this, handler, camera, delta);
+					gameObject.clientUpdate(this, event);
 				}
 			}
 		}
-		for (Pair<Long, GUIAction> action : guiSystem.update(this, camera.getViewWidth(), camera.getViewHeight(),
-				handler, camera, delta)) {
-			behavior.processGUIAction(this, handler, camera, action.getKey(), action.getValue());
+		for (Pair<Long, GUIAction> action : guiSystem.update(this, camera.getViewWidth(), camera.getViewHeight(), event)) {
+			behavior.processGUIAction(this, event.getGame(), action.getKey(), action.getValue());
 		}
 	}
 
-	public synchronized void render(List<RenderData> data, Camera camera, IRessourceHandler ressourceHandler,
-			boolean renderInvisible) {
+	public synchronized void render(List<RenderData> data, Camera camera, boolean renderInvisible) {
 		LevelArea area = getArea(camera.getArea());
 		if (area != null) {
-			area.render(this, data, ressourceHandler, camera);
+			area.render(this, data, camera);
 		}
 		for (LevelComponent comp : components) {
 			comp.renderBefore(data, camera, this);
@@ -172,14 +174,14 @@ public abstract class Level extends Hitbox {
 		return areas.asList();
 	}
 
-	public void start(Camera camera, LevelHandler handler) {
+	public void start(StartEvent event) {
 //		recalcObjectsInView();
 		if (guiSystem == null) {
 			initGuiSystem(new SimpleGUISystem(new DynamicGUIFactory()));
 		}
 		if (getBehavior().isHost()) {
 			generate(camera);
-			components.forEach(c -> c.init(this, handler));
+			components.forEach(c -> c.init(this, event));
 			if (getBehavior().isClient()) {
 				spawnPlayer(0, camera);
 			}
@@ -564,7 +566,7 @@ public abstract class Level extends Hitbox {
 		return particleSystem;
 	}
 
-	public void end() {
+	public void stop(StopEvent event) {
 
 	}
 
@@ -620,6 +622,14 @@ public abstract class Level extends Hitbox {
 			properties.addAll(comp.observableProperties());
 		}
 		return properties;
+	}
+
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
 	}
 
 }

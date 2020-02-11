@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import at.jojokobi.donatengine.audio.AudioSystem;
 import at.jojokobi.donatengine.audio.AudioSystemSupplier;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.Camera;
@@ -19,7 +20,6 @@ import at.jojokobi.donatengine.serialization.SerializationWrapper;
 public class SimpleGameLogic implements GameLogic{
 	
 	private Level level;
-	private boolean running = true;
 	private SerializationWrapper serializationWrapper = new BinarySerializationWrapper(BinarySerialization.getInstance().getIdClassFactory());
 
 	public SimpleGameLogic(Level level) {
@@ -28,7 +28,7 @@ public class SimpleGameLogic implements GameLogic{
 	}
 
 	@Override
-	public void start(Camera camera, Consumer<GameLogic> logicSwitcher, Input input, AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
+	public void start(InputHandler input, Game game) {
 		level.clear();
 		level.start(camera, new LevelHandler() {
 			
@@ -70,7 +70,7 @@ public class SimpleGameLogic implements GameLogic{
 	}
 
 	@Override
-	public void update(double delta, Camera camera, Consumer<GameLogic> logicSwitcher, Input input, AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
+	public void update(double delta, InputHandler input, Game game) {
 		level.update(delta, new LevelHandler() {
 			
 			@Override
@@ -109,26 +109,15 @@ public class SimpleGameLogic implements GameLogic{
 			}
 		}, camera);
 	}
-
+	
 	@Override
-	public void onStop() {
-		System.out.println("Stopping");
+	public void stop(InputHandler input, Game game) {
 		level.end();
 	}
 	
 	@Override
-	public void stop() {
-		running = false;
-	}
-
-	@Override
-	public boolean isRunning() {
-		return running;
-	}
-
-	@Override
-	public void render(List<RenderData> data, Camera camera, IRessourceHandler ressourceHandler) {
-		level.render(data, camera, ressourceHandler, false);
+	public void render(List<RenderData> data) {
+		level.render(data, camera, false);
 	}
 	
 }

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import at.jojokobi.donatengine.Game;
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.GUI;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
-import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 
@@ -46,9 +46,9 @@ public class HostBehavior implements MultiplayerBehavior {
 	}
 
 	@Override
-	public void onUpdate(Level level, GameObject obj, long id, LevelHandler handler) {
+	public void onUpdate(Level level, GameObject obj, long id, UpdateEvent event) {
 		for (ServerPacketType type : packetTypes) {
-			packets.addAll(type.onUpdate(level, obj, id, handler.getSerialization()));
+			packets.addAll(type.onUpdate(level, obj, id, event.getGame().getSerialization()));
 		}
 	}
 
@@ -90,9 +90,9 @@ public class HostBehavior implements MultiplayerBehavior {
 	}
 
 	@Override
-	public void update(Level level, LevelHandler handler) {
+	public void update(Level level, UpdateEvent event) {
 		for (ServerPacketType type : packetTypes) {
-			packets.addAll(type.update(level, handler.getSerialization()));
+			packets.addAll(type.update(level, event.getGame().getSerialization()));
 		}
 	}
 
@@ -104,8 +104,8 @@ public class HostBehavior implements MultiplayerBehavior {
 	}
 
 	@Override
-	public void processGUIAction(Level level, LevelHandler handler, Camera camera, long id, GUIAction action) {
-		action.perform(level, handler, id, level.getGuiSystem(), camera);
+	public void processGUIAction(Level level, Game game, long id, GUIAction action) {
+		action.perform(level, game, id, level.getGuiSystem());
 	}
 
 	@Override

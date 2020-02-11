@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.util.KeyedContainer;
 import at.jojokobi.donatengine.util.KeyedHashContainer;
@@ -48,15 +47,15 @@ public class SimpleGUISystem implements GUISystem {
 	}
 
 	@Override
-	public List<Pair<Long, GUIAction>> update(Level level, double width, double height, LevelHandler handler, Camera camera, double delta) {
+	public List<Pair<Long, GUIAction>> update(Level level, double width, double height, UpdateEvent event) {
 		List<Pair<Long, GUIAction>> actions = new ArrayList<>();
 		for (Long id : guis.keySet()) {
 			GUI gui = guis.get(id);
-			gui.update(level.getClientId(), this, handler.getInput(), width, height, delta);
+			gui.update(level.getClientId(), this, event.getGame().getLocalInput(), width, height, event.getDelta());
 			for (GUIAction action : gui.fetchActions()) {
 				if (action != null) {
 					if (action.executeOnClient()) {
-						action.perform(level, handler, id, this, camera);
+						action.perform(level, event.getGame(), id, this);
 					}
 					else {
 						actions.add(new Pair<Long, GUIAction>(id, action));

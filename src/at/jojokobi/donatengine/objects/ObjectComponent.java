@@ -2,8 +2,8 @@ package at.jojokobi.donatengine.objects;
 
 import java.util.List;
 
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.rendering.RenderData;
 
@@ -13,11 +13,11 @@ public interface ObjectComponent {
 		
 	}
 	
-	public void update (GameObject object, Level level, LevelHandler handler, Camera camera, double delta);
+	public void update (GameObject object, Level level, UpdateEvent event);
 
-	public void clientUpdate (GameObject object, Level level, LevelHandler handler, Camera camera, double delta);
+	public void clientUpdate (GameObject object, Level level, UpdateEvent event);
 
-	public void hostUpdate (GameObject object, Level level, LevelHandler handler, Camera camera, double delta);
+	public void hostUpdate (GameObject object, Level level, UpdateEvent event);
 	
 	public void renderBefore (GameObject object, List<RenderData> data, Camera cam, Level level);
 	

@@ -8,10 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.gui.GUI;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
@@ -83,7 +83,7 @@ public class AddGUIPacket implements ServerPacket {
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler, SerializationWrapper serialization) {
+	public void apply(Level level, Game game, SerializationWrapper serialization) {
 		level.getGuiSystem().showGUI(gui, data, id, client);
 	}
 

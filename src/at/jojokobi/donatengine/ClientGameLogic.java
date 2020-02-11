@@ -10,7 +10,9 @@ import java.util.function.Consumer;
 
 import at.jojokobi.donatengine.audio.AudioSystem;
 import at.jojokobi.donatengine.audio.AudioSystemSupplier;
+import at.jojokobi.donatengine.event.StartEvent;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.net.ServerPacket;
@@ -28,7 +30,6 @@ import at.jojokobi.netutil.client.ClientController;
 public class ClientGameLogic implements GameLogic{
 	
 	private Level level;
-	private boolean running = true;
 	private Client client;
 	
 	private SerializationWrapper serialization;
@@ -43,7 +44,7 @@ public class ClientGameLogic implements GameLogic{
 	}
 
 	@Override
-	public void start(Camera camera, Consumer<GameLogic> logicSwitcher, Input input, AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
+	public void start(Game game) {
 		client.setController(new ClientController() {
 			@Override
 			public void listenTo(InputStream in) throws IOException {
@@ -112,7 +113,7 @@ LevelHandler handler = new LevelHandler() {
 	}
 
 	@Override
-	public void update(double delta, Camera camera, Consumer<GameLogic> logicSwitcher, Input input, AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
+	public void update(double delta, Game game) {
 		LevelHandler handler = new LevelHandler() {
 			
 			@Override
@@ -182,7 +183,7 @@ LevelHandler handler = new LevelHandler() {
 	}
 
 	@Override
-	public void onStop() {
+	public void stop(Game game) {
 		level.end();
 		try {
 			client.close();
@@ -190,20 +191,10 @@ LevelHandler handler = new LevelHandler() {
 			e.printStackTrace();
 		}
 	}
-	
-	@Override
-	public void stop() {
-		running = false;
-	}
 
 	@Override
-	public boolean isRunning() {
-		return running;
-	}
-
-	@Override
-	public void render(List<RenderData> data, Camera camera, IRessourceHandler ressourceHandler) {
-		level.render(data, camera, ressourceHandler, false);
+	public void render(List<RenderData> data) {
+		level.render(data, camera, false);
 	}
 
 }

@@ -3,6 +3,7 @@ package at.jojokobi.donatengine.objects;
 import java.util.Arrays;
 import java.util.List;
 
+import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
@@ -14,7 +15,7 @@ import javafx.scene.paint.Color;
 public class ShadowComponent implements ObjectComponent{
 
 	@Override
-	public void hostUpdate(GameObject object, Level level, LevelHandler handler, Camera camera, double delta) {
+	public void hostUpdate(GameObject object, Level level, Game game, double delta) {
 		
 	}
 
@@ -50,12 +51,12 @@ public class ShadowComponent implements ObjectComponent{
 	}
 
 	@Override
-	public void update(GameObject object, Level level, LevelHandler handler, Camera camera, double delta) {
+	public void update(GameObject object, Level level, Game game, double delta) {
 		
 	}
 
 	@Override
-	public void clientUpdate(GameObject object, Level level, LevelHandler handler, Camera camera, double delta) {
+	public void clientUpdate(GameObject object, Level level, Game game, double delta) {
 		
 	}
 

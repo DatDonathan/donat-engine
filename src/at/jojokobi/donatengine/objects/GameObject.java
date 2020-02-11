@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.input.ClickDirection;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.rendering.ModelRenderData;
@@ -99,26 +99,26 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 //		return collided;
 //	}
 
-	public void hostUpdate(Level level, LevelHandler handler, Camera camera, double delta) {
-		components.forEach((c) -> c.hostUpdate(this, level, handler, camera, delta));
+	public void hostUpdate(Level level, UpdateEvent event) {
+		components.forEach((c) -> c.hostUpdate(this, level, event));
 	}
 	
-	public void update(Level level, LevelHandler handler, Camera camera, double delta) {
+	public void update(Level level, UpdateEvent event) {
 		if (isPhysics()) {
 			if (!onGround(level)) {
-				gravity += getGravityPerSecond() * delta;
+				gravity += getGravityPerSecond() * event.getDelta();
 			} else {
 				gravity = 0;
 			}
 		}
 		if (xMotion != 0 || getTotalYMotion() != 0 || zMotion != 0) {
-			move(xMotion, getTotalYMotion(), zMotion, delta, level);
+			move(xMotion, getTotalYMotion(), zMotion, event.getDelta(), level);
 		}
-		components.forEach((c) -> c.update(this, level, handler, camera, delta));
+		components.forEach((c) -> c.update(this, level, event));
 	}
 	
-	public void clientUpdate(Level level, LevelHandler handler, Camera camera, double delta) {
-		components.forEach((c) -> c.clientUpdate(this, level, handler, camera, delta));
+	public void clientUpdate(Level level, UpdateEvent event) {
+		components.forEach((c) -> c.clientUpdate(this, level, event));
 	}
 	
 	public void renderGUI (List<RenderData> data, Camera cam, Level level) {

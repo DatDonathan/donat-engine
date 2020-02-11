@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import at.jojokobi.donatengine.audio.AudioSystem;
 import at.jojokobi.donatengine.audio.AudioSystemSupplier;
 import at.jojokobi.donatengine.input.Input;
-import at.jojokobi.donatengine.input.InputSupplier;
+import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.input.SimpleInput;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelHandler;
@@ -32,7 +32,6 @@ import at.jojokobi.netutil.server.ServerController;
 public class SimpleServerGameLogic implements GameLogic {
 
 	private Level level;
-	private boolean running = true;
 	private Server server;
 	private Map<Long, Input> inputs = new HashMap<>();
 	private SerializationWrapper serialization;
@@ -45,8 +44,7 @@ public class SimpleServerGameLogic implements GameLogic {
 	}
 
 	@Override
-	public void start(Camera camera, Consumer<GameLogic> logicSwitcher, Input input,
-			AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
+	public void start(InputHandler input, Game game) {
 		server.setController(new ServerController() {
 			@Override
 			public void onConnect(long client, OutputStream out) throws IOException {
@@ -106,8 +104,7 @@ public class SimpleServerGameLogic implements GameLogic {
 	}
 
 	@Override
-	public void update(double delta, Camera camera, Consumer<GameLogic> logicSwitcher, Input input,
-			AudioSystemSupplier audioSystemSupplier, IRessourceHandler ressourceHandler, GamePresenceHandler gamePresenceHandler) {
+	public void update(double delta, InputHandler input, Game game) {
 		LevelHandler handler = new LevelHandler() {
 
 			@Override
@@ -117,7 +114,7 @@ public class SimpleServerGameLogic implements GameLogic {
 
 			@Override
 			public Input getInput(long clientId) {
-				return clientId == InputSupplier.SCENE_INPUT ? input : inputs.get(clientId);
+				return clientId == InputHandler.SCENE_INPUT ? input : inputs.get(clientId);
 			}
 
 			@Override
@@ -195,9 +192,8 @@ public class SimpleServerGameLogic implements GameLogic {
 	}
 
 	@Override
-	public void onStop() {
+	public void stop(InputHandler input, Game game) {
 		level.end();
-		running = false;
 		try {
 			server.close();
 		} catch (IOException e) {
@@ -206,18 +202,8 @@ public class SimpleServerGameLogic implements GameLogic {
 	}
 
 	@Override
-	public void stop() {
-		running = false;
-	}
-
-	@Override
-	public boolean isRunning() {
-		return running;
-	}
-
-	@Override
-	public void render(List<RenderData> data, Camera camera, IRessourceHandler ressourceHandler) {
-		level.render(data, camera, ressourceHandler, false);
+	public void render(List<RenderData> data) {
+		level.render(data, camera, false);
 	}
 
 }

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import at.jojokobi.donatengine.Game;
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.GUI;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
-import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 
@@ -30,7 +30,7 @@ public class ClientBehavior implements MultiplayerBehavior {
 	}
 
 	@Override
-	public void onUpdate(Level level, GameObject obj, long id, LevelHandler handler) {
+	public void onUpdate(Level level, GameObject obj, long id, UpdateEvent event) {
 		
 	}
 
@@ -57,9 +57,9 @@ public class ClientBehavior implements MultiplayerBehavior {
 	}
 
 	@Override
-	public void update(Level level, LevelHandler handler) {
+	public void update(Level level, UpdateEvent event) {
 		for (ClientPacketType type : packetTypes) {
-			packets.addAll(type.onUpdate(level, handler));
+			packets.addAll(type.onUpdate(level, event));
 		}
 	}
 
@@ -69,7 +69,7 @@ public class ClientBehavior implements MultiplayerBehavior {
 	}
 
 	@Override
-	public void processGUIAction(Level level, LevelHandler handler, Camera camera, long id, GUIAction action) {
+	public void processGUIAction(Level level, Game game, long id, GUIAction action) {
 		for (ClientPacketType type : packetTypes) {
 			packets.addAll(type.onProcessGUIAction(id, action));
 		}

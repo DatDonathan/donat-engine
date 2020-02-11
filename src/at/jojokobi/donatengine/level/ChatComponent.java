@@ -24,11 +24,6 @@ public class ChatComponent implements LevelComponent{
 	}
 
 	@Override
-	public void renderBefore(List<RenderData> data, Camera cam, Level level) {
-		
-	}
-
-	@Override
 	public void renderAfter(List<RenderData> data, Camera cam, Level level) {
 		Font font = new Font(16, "Consolas");
 		int i = 0;
@@ -41,26 +36,6 @@ public class ChatComponent implements LevelComponent{
 	@Override
 	public List<ObservableProperty<?>> observableProperties() {
 		return Arrays.asList(messages);
-	}
-
-	@Override
-	public void init(Level level, LevelHandler handler) {
-		
-	}
-
-	@Override
-	public void hostUpdate(Level level, LevelHandler handler, Camera cam, double delta) {
-		
-	}
-
-	@Override
-	public void update(Level level, LevelHandler handler, Camera cam, double delta) {
-		
-	}
-
-	@Override
-	public void clientUpdate(Level level, LevelHandler handler, Camera cam, double delta) {
-		
 	}
 
 }

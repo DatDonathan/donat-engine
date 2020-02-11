@@ -3,7 +3,7 @@ package at.jojokobi.donatengine.input;
 import at.jojokobi.netutil.server.Server;
 
 @FunctionalInterface
-public interface InputSupplier {
+public interface InputHandler {
 	
 	public static final long SCENE_INPUT = Server.BROADCAST_CLIENT_ID;
 

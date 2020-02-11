@@ -5,11 +5,10 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.function.Supplier;
 
+import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.GameLogic;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class ChangeLogicAction implements GUIAction {
@@ -36,8 +35,8 @@ public class ChangeLogicAction implements GUIAction {
 	}
 
 	@Override
-	public void perform(Level level, LevelHandler handler, long id, GUISystem system, Camera camera) {
-		handler.changeLogic(logicSupplier.get());
+	public void perform(Level level, Game game, long id, GUISystem system) {
+		game.changeLogic(logicSupplier.get());
 	}
 
 	@Override

@@ -5,8 +5,6 @@ import java.util.List;
 
 import at.jojokobi.donatengine.input.ClickDirection;
 import at.jojokobi.donatengine.input.ClickInformation;
-import at.jojokobi.donatengine.javafx.rendering.Perspective;
-import at.jojokobi.donatengine.javafx.rendering.StretchYZPerspective;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.util.MathUtil;
 import at.jojokobi.donatengine.util.Vector2D;

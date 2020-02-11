@@ -4,10 +4,9 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class StopGameAction implements GUIAction{
@@ -23,8 +22,8 @@ public class StopGameAction implements GUIAction{
 	}
 
 	@Override
-	public void perform(Level level, LevelHandler handler, long id, GUISystem system, Camera camera) {
-		handler.stop();
+	public void perform(Level level, Game game, long id, GUISystem system) {
+		game.stop();
 	}
 
 	@Override

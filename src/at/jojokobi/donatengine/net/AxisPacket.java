@@ -8,9 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import at.jojokobi.donatengine.Game;
+import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
+import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelHandler;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.util.Vector2D;
 
@@ -18,9 +20,9 @@ public class AxisPacket implements ClientPacket {
 	
 	public static final ClientPacketType PACKET_TYPE = new ClientPacketType() {
 		@Override
-		public List<ClientPacket> onUpdate(Level level, LevelHandler handler) {
+		public List<ClientPacket> onUpdate(Level level, UpdateEvent event) {
 			List<ClientPacket> packets = new ArrayList<>();
-			Map<String, Vector2D> changes = handler.getInput().fetchChangedAxis();
+			Map<String, Vector2D> changes = event.getGame().getLocalInput().fetchChangedAxis();
 			for (var e : changes.entrySet()) {
 				packets.add(new AxisPacket(e.getKey (), e.getValue()));
 			}
@@ -59,8 +61,8 @@ public class AxisPacket implements ClientPacket {
 	}
 
 	@Override
-	public void apply(Level level, LevelHandler handler, long client) {
-		handler.getInput(client).setAxis(axis, vector);
+	public void apply(Level level, Game game, InputHandler input, long client) {
+		input.getInput(client).setAxis(axis, vector);
 	}
 
 }
