@@ -34,7 +34,7 @@ public interface LevelComponent {
 		
 	};
 	
-	public default void onConnectPlayer (Camera cam, Level level, long id) {
+	public default void onConnectPlayer (Level level, long id) {
 		
 	}
 	

@@ -13,7 +13,6 @@ import at.jojokobi.donatengine.gui.GUI;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.gui.SimpleGUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
-import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.net.MultiplayerBehavior;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
@@ -107,7 +106,7 @@ public abstract class Level extends Hitbox {
 		return null;
 	}
 
-	public void update(UpdateEvent event, InputHandler input) {
+	public void update(UpdateEvent event) {
 //		if (camera.hasMoved()) {
 //			recalcObjectsInView();
 //		}
@@ -140,7 +139,7 @@ public abstract class Level extends Hitbox {
 		}
 	}
 
-	public synchronized void render(List<RenderData> data, Camera camera, boolean renderInvisible) {
+	public synchronized void render(List<RenderData> data, boolean renderInvisible) {
 		LevelArea area = getArea(camera.getArea());
 		if (area != null) {
 			area.render(this, data, camera);
@@ -183,15 +182,15 @@ public abstract class Level extends Hitbox {
 			generate(camera);
 			components.forEach(c -> c.init(this, event));
 			if (getBehavior().isClient()) {
-				spawnPlayer(0, camera);
+				spawnPlayer(0);
 			}
 		}
 	}
 
 	public abstract void generate(Camera camera);
 
-	public void spawnPlayer(long client, Camera camera) {
-		components.forEach(c -> c.onConnectPlayer(camera, this, client));
+	public void spawnPlayer(long client) {
+		components.forEach(c -> c.onConnectPlayer(this, client));
 	}
 
 	public void parseTilemap(int[][][] tilemap, TileMapParser parser, String area) {

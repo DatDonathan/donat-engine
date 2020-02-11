@@ -6,9 +6,11 @@ public class MapInputHandler implements InputHandler {
 
 	private Input local;
 	private Map<Long, Input> map;
-	
-	public MapInputHandler(Map<Long, Input> map) {
+
+
+	public MapInputHandler(Input local, Map<Long, Input> map) {
 		super();
+		this.local = local;
 		this.map = map;
 	}
 
