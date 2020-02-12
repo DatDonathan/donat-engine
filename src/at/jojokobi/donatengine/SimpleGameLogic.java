@@ -34,12 +34,8 @@ public class SimpleGameLogic implements GameLogic{
 	}
 	
 	@Override
-	public void render(List<RenderData> data) {
+	public Camera render(List<RenderData> data) {
 		level.render(data, false);
-	}
-	
-	@Override
-	public Camera getCamera() {
 		return level.getCamera();
 	}
 	

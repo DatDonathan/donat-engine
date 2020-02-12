@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import at.jojokobi.donatengine.audio.AudioSystem;
 import at.jojokobi.donatengine.input.Input;
+import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.rendering.GameView;
 import at.jojokobi.donatengine.rendering.RenderData;
@@ -46,7 +47,8 @@ public class Game implements Loopable {
 			logic.update(delta, this);
 			localInput.updateBuffers();
 			List<RenderData> data = new LinkedList<>();
-			gameView.render(data);
+			Camera cam = logic.render(data);
+			gameView.render(data, cam);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

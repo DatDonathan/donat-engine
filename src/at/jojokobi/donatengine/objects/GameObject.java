@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import at.jojokobi.donatengine.event.UpdateEvent;
-import at.jojokobi.donatengine.input.ClickDirection;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.rendering.RenderData;
@@ -16,7 +15,6 @@ import at.jojokobi.donatengine.rendering.ModelRenderData;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.util.Position;
-import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
 
 public abstract class GameObject extends Hitbox implements BinarySerializable{
@@ -340,56 +338,48 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 //		
 //		}
 	}
-
-	public boolean canRender(Camera cam) {
-/*		return cam.isColliding(getX() - getxOffset(), getY() - getyOffset(),
-			cam.getZ() - getRenderModel().getRenderingZ(cam, getZ()) - getzOffset(), getRenderModel().getWidth(),
-			getRenderModel().getHeight(), getRenderModel().getLength() + getRenderModel().getRenderingZ(cam, getZ()) * 2);*/
-		
-		return cam.canSee(this);
-	}
 	
-	public ClickDirection getClickDirection (Vector2D pos, Camera cam) {
-		ClickDirection direction = null;
-		Vector3D position = new Vector3D(getX(), getY(), getZ());
-
-		Vector2D topBackLeft = cam.toScreenPosition(position.clone().add(0, getHeight(), 0));
-		Vector2D topBackRight = cam.toScreenPosition(position.clone().add(getWidth(), getHeight(), 0));
-		Vector2D topFrontLeft = cam.toScreenPosition(position.clone().add(0, getHeight(), getLength()));
-		Vector2D topFrontRight = cam.toScreenPosition(position.clone().add(getWidth(), getHeight(), getLength()));
-		
-//		Vector2D bottomBackLeft = cam.toScreenPosition(position.clone().add(0, 0, 0));
-//		Vector2D bottomBackRight = cam.toScreenPosition(position.clone().add(getWidth(), 0, 0));
-		Vector2D bottomFrontLeft = cam.toScreenPosition(position.clone().add(0, 0, getLength()));
-		Vector2D bottomFrontRight = cam.toScreenPosition(position.clone().add(getWidth(), 0, getLength()));
-		
-		//Left
-		if (pos.intersects(topBackLeft.clone().add(-2, 0), bottomFrontLeft.clone().add(2, 0))) {
-			direction = ClickDirection.LEFT;
-		}
-		//Right
-		else if (pos.intersects(bottomFrontRight.clone().add(-2, 0), topBackRight.clone().add(2, 0))) {
-			direction = ClickDirection.RIGHT;
-		}
-		//Bottom
-		else if (pos.intersects(bottomFrontLeft.clone().add(0, -2), bottomFrontRight.clone().add(0, 2))) {
-			direction = ClickDirection.BOTTOM;
-		}
-		//Back
-		else if (pos.intersects(topBackLeft.clone().add(0, -2), topBackRight.clone().add(0, 2))) {
-			direction = ClickDirection.BACK;
-		}
-		//Top
-		else if (pos.intersects(topBackLeft, topFrontRight)) {
-			direction = ClickDirection.TOP;
-		}
-		//Front
-		else if (pos.intersects(topFrontLeft, bottomFrontRight)) {
-			direction = ClickDirection.FRONT;
-		}
-		
-		return direction;
-	}
+//	public ClickDirection getClickDirection (Vector2D pos, Camera cam) {
+//		ClickDirection direction = null;
+//		Vector3D position = new Vector3D(getX(), getY(), getZ());
+//
+//		Vector2D topBackLeft = cam.toScreenPosition(position.clone().add(0, getHeight(), 0));
+//		Vector2D topBackRight = cam.toScreenPosition(position.clone().add(getWidth(), getHeight(), 0));
+//		Vector2D topFrontLeft = cam.toScreenPosition(position.clone().add(0, getHeight(), getLength()));
+//		Vector2D topFrontRight = cam.toScreenPosition(position.clone().add(getWidth(), getHeight(), getLength()));
+//		
+////		Vector2D bottomBackLeft = cam.toScreenPosition(position.clone().add(0, 0, 0));
+////		Vector2D bottomBackRight = cam.toScreenPosition(position.clone().add(getWidth(), 0, 0));
+//		Vector2D bottomFrontLeft = cam.toScreenPosition(position.clone().add(0, 0, getLength()));
+//		Vector2D bottomFrontRight = cam.toScreenPosition(position.clone().add(getWidth(), 0, getLength()));
+//		
+//		//Left
+//		if (pos.intersects(topBackLeft.clone().add(-2, 0), bottomFrontLeft.clone().add(2, 0))) {
+//			direction = ClickDirection.LEFT;
+//		}
+//		//Right
+//		else if (pos.intersects(bottomFrontRight.clone().add(-2, 0), topBackRight.clone().add(2, 0))) {
+//			direction = ClickDirection.RIGHT;
+//		}
+//		//Bottom
+//		else if (pos.intersects(bottomFrontLeft.clone().add(0, -2), bottomFrontRight.clone().add(0, 2))) {
+//			direction = ClickDirection.BOTTOM;
+//		}
+//		//Back
+//		else if (pos.intersects(topBackLeft.clone().add(0, -2), topBackRight.clone().add(0, 2))) {
+//			direction = ClickDirection.BACK;
+//		}
+//		//Top
+//		else if (pos.intersects(topBackLeft, topFrontRight)) {
+//			direction = ClickDirection.TOP;
+//		}
+//		//Front
+//		else if (pos.intersects(topFrontLeft, bottomFrontRight)) {
+//			direction = ClickDirection.FRONT;
+//		}
+//		
+//		return direction;
+//	}
 
 	
 //

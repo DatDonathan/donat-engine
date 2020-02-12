@@ -2,6 +2,7 @@ package at.jojokobi.donatengine.gui.nodes;
 
 import java.util.List;
 
+import at.jojokobi.donatengine.engine.GameEngine;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.rendering.ScreenTextRenderData;
 import at.jojokobi.donatengine.style.FixedStyle;
@@ -43,10 +44,13 @@ public class Text extends Node {
 	public void updateStyle(double mouseX, double mouseY, Node selected, FixedStyle parent) {
 		super.updateStyle(mouseX, mouseY, selected, parent);
 		//TODO use Engine Font Calculator
-		javafx.scene.text.Text text = new javafx.scene.text.Text(this.text);
-		text.setFont(getStyle().getFont());
-		textWidth = text.getLayoutBounds().getWidth();
-		textHeight = text.getLayoutBounds().getHeight();
+//		javafx.scene.text.Text text = new javafx.scene.text.Text(this.text);
+//		text.setFont(getStyle().getFont());
+//		textWidth = text.getLayoutBounds().getWidth();
+//		textHeight = text.getLayoutBounds().getHeight();
+		Vector2D size = GameEngine.getFontSystem().calculateTextDimensions(text, getStyle().getFont());
+		textWidth = size.getX();
+		textHeight = size.getY();
 	}
 	
 	@Override

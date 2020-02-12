@@ -11,10 +11,8 @@ public interface GameLogic {
 
 	public void update (double delta, Game game);
 	
-	public void render (List<RenderData> data);
+	public Camera render (List<RenderData> data);
 	
 	public void stop (Game game);
-	
-	public Camera getCamera ();
 	
 }

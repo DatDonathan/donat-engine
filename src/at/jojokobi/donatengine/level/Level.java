@@ -111,7 +111,7 @@ public abstract class Level extends Hitbox {
 //			recalcObjectsInView();
 //		}
 //		camera.update(delta);
-		camera.update(event.getDelta(), this);
+		camera.update(event, this);
 		particleSystem.update(event.getDelta());
 		getBehavior().update(this, event);
 		if (getBehavior().isHost()) {
@@ -123,7 +123,7 @@ public abstract class Level extends Hitbox {
 		}
 		for (long id : objects.keySet()) {
 			GameObject gameObject = objects.get(id);
-			if ((updateHidden || gameObject.isAlwaysUpdate() || camera.canSee(gameObject)) && gameObject.isNeedsUpdate()) {
+			if (updateHidden || gameObject.isAlwaysUpdate() || gameObject.isNeedsUpdate()) {
 				behavior.onUpdate(this, gameObject, id, event);
 				if (behavior.isHost()) {
 					gameObject.hostUpdate(this, event);
@@ -148,10 +148,9 @@ public abstract class Level extends Hitbox {
 			comp.renderBefore(data, camera, this);
 		}
 		List<GameObject> objects = getObjects();
-		objects.sort(camera.getComparator());
 		// Render objects
 		for (GameObject obj : objects) {
-			if (camera.canSee(obj) && (obj.isVisible() || renderInvisible)) {
+			if (obj.isVisible() || renderInvisible) {
 				obj.render(data, camera, this);
 			}
 		}
