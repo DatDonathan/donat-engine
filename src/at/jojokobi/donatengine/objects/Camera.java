@@ -1,5 +1,8 @@
 package at.jojokobi.donatengine.objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.util.Vector3D;
@@ -21,6 +24,8 @@ public class Camera {
 	private double nearClip = 1;
 	private double farClip = 1000;
 	private double fov = 90;
+	
+	private List<String> attributes = new ArrayList<>();
 
 	public Camera(double x, double y, double z, double viewWidth, double viewHeight) {
 		super();
@@ -134,6 +139,10 @@ public class Camera {
 
 	public void setFov(double fov) {
 		this.fov = fov;
+	}
+
+	public List<String> getAttributes() {
+		return attributes;
 	}
 
 }
