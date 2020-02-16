@@ -21,7 +21,7 @@ public class FixedStyle {
 	private Double marginBottom;
 
 	public FixedStyle reset() {
-		font = new Font(12, "System");
+		font = new Font("System", 12);
 		fill = Color.TRANSPARENT;
 		border = Color.TRANSPARENT;
 		fontColor = Color.BLACK;
