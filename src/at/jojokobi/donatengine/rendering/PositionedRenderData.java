@@ -2,7 +2,7 @@ package at.jojokobi.donatengine.rendering;
 
 import at.jojokobi.donatengine.util.Position;
 
-public class PositionedRenderData extends RenderData {
+public abstract class PositionedRenderData extends RenderData {
 
 	private Position position;
 

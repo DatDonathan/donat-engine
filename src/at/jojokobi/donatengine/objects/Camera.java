@@ -7,7 +7,7 @@ import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.util.Vector3D;
 
-public class Camera {
+public class Camera implements Cloneable {
 	
 	private double x;
 	private double y;
@@ -143,6 +143,20 @@ public class Camera {
 
 	public List<String> getAttributes() {
 		return attributes;
+	}
+	
+	@Override
+	public Camera clone() {
+		Camera cam = new Camera(x, y, z, viewWidth, viewHeight);
+		cam.rotationX = rotationX;
+		cam.rotationY = rotationY;
+		cam.rotationZ = rotationZ;
+		cam.fov = fov;
+		cam.area = area;
+		cam.nearClip = nearClip;
+		cam.farClip = farClip;
+		cam.attributes = new ArrayList<>(attributes);
+		return cam;
 	}
 
 }

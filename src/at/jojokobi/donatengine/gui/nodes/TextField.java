@@ -33,7 +33,7 @@ public class TextField extends Parent{
 //			ctx.setStroke(Color.BLACK);
 //			ctx.setLineWidth(1);
 //			ctx.strokeLine(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY(), dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY() + text.getHeight());
-			data.add(new ScreenLineRenderData(new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY()), new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY() + text.getHeight())));
+			data.add(new ScreenLineRenderData(new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY()), new FixedStyle().reset().setBorder(Color.BLACK).setBorderStrength(1.0), new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY() + text.getHeight())));
 		}
 	}
 	

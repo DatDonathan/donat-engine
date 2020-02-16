@@ -2,7 +2,7 @@ package at.jojokobi.donatengine.rendering;
 
 import at.jojokobi.donatengine.util.Vector2D;
 
-public class ScreenPositonedRenderData extends RenderData {
+public abstract class ScreenPositonedRenderData extends RenderData {
 	
 	private Vector2D position;
 

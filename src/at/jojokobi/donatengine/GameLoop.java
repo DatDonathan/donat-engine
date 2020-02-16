@@ -1,6 +1,6 @@
 package at.jojokobi.donatengine;
 
-public class GameLoop {
+public class GameLoop implements Runnable {
 
 	private int fps = 60;
 	private Loopable loopable;
@@ -51,6 +51,11 @@ public class GameLoop {
 
 	public int getCurrentFps() {
 		return currentFps;
+	}
+
+	@Override
+	public void run() {
+		start();
 	}
 
 }
