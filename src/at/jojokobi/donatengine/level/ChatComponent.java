@@ -1,5 +1,6 @@
 package at.jojokobi.donatengine.level;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import at.jojokobi.donatengine.objects.properties.ObservableObjectProperty;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.objects.properties.list.ObservableList;
 import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.rendering.ScreenTextRenderData;
+import at.jojokobi.donatengine.rendering.RenderShape;
+import at.jojokobi.donatengine.rendering.RenderText;
+import at.jojokobi.donatengine.rendering.ScreenCanvasRenderData;
 import at.jojokobi.donatengine.style.Color;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.style.Font;
@@ -26,11 +29,13 @@ public class ChatComponent implements LevelComponent{
 	@Override
 	public void renderAfter(List<RenderData> data, Camera cam, Level level) {
 		Font font = new Font("Consolas", 16);
+		List<RenderShape> shapes = new ArrayList<>();
 		int i = 0;
 		for (String string : messages.get()) {
-			data.add(new ScreenTextRenderData(new Vector2D(5, cam.getViewHeight() - 5 - i * 16), string, new FixedStyle().reset().setFont(font).setFontColor(Color.BLACK)));
+			shapes.add(new RenderText(new Vector2D(5, cam.getViewHeight() - 5 - i * 16), string,  new FixedStyle().reset().setFont(font).setFontColor(Color.BLACK)));
 			i++;
 		}
+		data.add(new ScreenCanvasRenderData(new Vector2D(0, 0), shapes));
 	}
 
 	@Override

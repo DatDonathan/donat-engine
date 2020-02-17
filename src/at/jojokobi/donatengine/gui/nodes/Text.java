@@ -3,8 +3,8 @@ package at.jojokobi.donatengine.gui.nodes;
 import java.util.List;
 
 import at.jojokobi.donatengine.platform.GamePlatform;
-import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.rendering.ScreenTextRenderData;
+import at.jojokobi.donatengine.rendering.RenderShape;
+import at.jojokobi.donatengine.rendering.RenderText;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Rect;
 import at.jojokobi.donatengine.util.Vector2D;
@@ -21,15 +21,15 @@ public class Text extends Node {
 	}
 	
 	@Override
-	public void render(double dx, double dy, List<RenderData> data) {
-		super.render(dx, dy, data);
+	public void render(double dx, double dy, List<RenderShape> shapes) {
+		super.render(dx, dy, shapes);
 //		ctx.setFont(getStyle().getFont());
 //		ctx.setFill(getStyle().getFontColor());
 //		ctx.setStroke(getStyle().getFontBorder());
 //		ctx.setLineWidth(getStyle().getFontBorderStrength());
 //		ctx.fillText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
 //		ctx.strokeText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
-		data.add(new ScreenTextRenderData(new Vector2D(getX(), getY()), text, getStyle()));
+		shapes.add(new RenderText(new Vector2D(getX(), getY()), text, getStyle()));
 	}
 
 	public String getText() {

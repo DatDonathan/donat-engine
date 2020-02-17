@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
-import at.jojokobi.donatengine.input.Input;
-import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.rendering.ScreenRectRenderData;
+import at.jojokobi.donatengine.input.Input;import at.jojokobi.donatengine.rendering.RenderRect;
+import at.jojokobi.donatengine.rendering.RenderShape;
 import at.jojokobi.donatengine.style.Dimension;
 import at.jojokobi.donatengine.style.FitHeightDimension;
 import at.jojokobi.donatengine.style.FitWidthDimension;
@@ -31,13 +30,13 @@ public abstract class Node {
 	private NodeState state = new NodeState(false, false);
 	private List<GUIAction> actions = new ArrayList<>();
 	
-	public void render (double dx, double dy, List<RenderData> data) {
+	public void render (double dx, double dy, List<RenderShape> shapes) {
 //		ctx.setFill(style.getFill());
 //		ctx.setStroke(style.getBorder());
 //		ctx.setLineWidth(style.getBorderStrength());
 //		ctx.fillRoundRect(dx + x,  dy+ y, width, height - 2, style.getBorderRadius(), style.getBorderRadius());
 //		ctx.strokeRoundRect(dx + x, dy + y, width , height - 2, style.getBorderRadius(), style.getBorderRadius());
-		data.add(new ScreenRectRenderData(new Vector2D(x + dx, y + dx), width, height, style));
+		shapes.add(new RenderRect(new Vector2D(x + dx, y + dx), width, height, style));
 	}
 
 	public void update(Input input, double delta) {

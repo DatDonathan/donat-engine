@@ -8,7 +8,7 @@ import java.util.Map;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.input.Input;
-import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.RenderShape;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Rect;
 import at.jojokobi.donatengine.util.Vector2D;
@@ -18,10 +18,10 @@ public abstract class Parent extends Node{
 	private List<Node> children = new ArrayList<>();
 
 	@Override
-	public void render (double dx, double dy, List<RenderData> data) {
-		super.render(dx, dy, data);
+	public void render (double dx, double dy, List<RenderShape> shapes) {
+		super.render(dx, dy, shapes);
 		for (Node node : children) {
-			node.render(dx + getX(), dy + getY(), data);
+			node.render(dx + getX(), dy + getY(), shapes);
 		}
 	}
 	

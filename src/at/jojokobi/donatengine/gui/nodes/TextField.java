@@ -3,8 +3,8 @@ package at.jojokobi.donatengine.gui.nodes;
 import java.util.List;
 
 import at.jojokobi.donatengine.input.Input;
-import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.rendering.ScreenLineRenderData;
+import at.jojokobi.donatengine.rendering.RenderLine;
+import at.jojokobi.donatengine.rendering.RenderShape;
 import at.jojokobi.donatengine.style.Color;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Vector2D;
@@ -27,13 +27,13 @@ public class TextField extends Parent{
 	}
 	
 	@Override
-	public void render(double dx, double dy, List<RenderData> data) {
-		super.render(dx, dy, data);
+	public void render(double dx, double dy, List<RenderShape> shapes) {
+		super.render(dx, dy, shapes);
 		if (getState().isSelected() && ((int) timer) % 2 == 0) {
 //			ctx.setStroke(Color.BLACK);
 //			ctx.setLineWidth(1);
 //			ctx.strokeLine(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY(), dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY() + text.getHeight());
-			data.add(new ScreenLineRenderData(new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY()), new FixedStyle().reset().setBorder(Color.BLACK).setBorderStrength(1.0), new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY() + text.getHeight())));
+			shapes.add(new RenderLine(new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY()), new Vector2D(dx + getX() + text.getX() + text.getWidth(), dy + getY() + text.getY() + text.getHeight()), new FixedStyle().reset().setBorder(Color.BLACK).setBorderStrength(1.0)));
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package at.jojokobi.donatengine.gui;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import at.jojokobi.donatengine.gui.actions.GUIAction;
@@ -7,7 +8,10 @@ import at.jojokobi.donatengine.gui.nodes.Node;
 import at.jojokobi.donatengine.gui.nodes.Parent;
 import at.jojokobi.donatengine.input.Input;
 import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.RenderShape;
+import at.jojokobi.donatengine.rendering.ScreenCanvasRenderData;
 import at.jojokobi.donatengine.style.FixedStyle;
+import at.jojokobi.donatengine.util.Vector2D;
 
 public class SimpleGUI implements GUI{
 	
@@ -31,7 +35,9 @@ public class SimpleGUI implements GUI{
 	@Override
 	public void render(long clientId, List<RenderData> data, double width, double height) {
 		if (started && client == clientId) {
-			parent.render(0, 0, data);
+			List<RenderShape> shapes = new LinkedList<>();
+			parent.render(0, 0, shapes);
+			data.add(new ScreenCanvasRenderData(new Vector2D(), shapes));
 		}
 	}
 

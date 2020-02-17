@@ -1,14 +1,18 @@
 package at.jojokobi.donatengine.particles;
 
+import java.util.Arrays;
 import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.platform.GamePlatform;
+import at.jojokobi.donatengine.rendering.CanvasRenderData;
 import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.rendering.TextRenderData;
+import at.jojokobi.donatengine.rendering.RenderText;
 import at.jojokobi.donatengine.style.Color;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.style.Font;
 import at.jojokobi.donatengine.util.Position;
+import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
 
 public class TextParticle extends Particle{
@@ -32,7 +36,9 @@ public class TextParticle extends Particle{
 
 	@Override
 	public void render(List<RenderData> data, Camera cam) {
-		data.add(new TextRenderData(new Position(new Vector3D(getX(), getY(), getZ()), getArea()), new FixedStyle().reset().setFont(font).setFontColor(color), text));
+		FixedStyle style = new FixedStyle().reset().setFont(font).setFontColor(color);
+		Vector2D dimensions = GamePlatform.getFontSystem().calculateTextDimensions(text, font);
+		data.add(new CanvasRenderData(new Position(new Vector3D(getX(), getY(), getZ()), getArea()), Arrays.asList(new RenderText(new Vector2D(-dimensions.getX()/2, -dimensions.getY()/2), text, style))));
 	}
 
 }

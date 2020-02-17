@@ -1,13 +1,16 @@
 package at.jojokobi.donatengine.particles;
 
+import java.util.Arrays;
 import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
-import at.jojokobi.donatengine.rendering.RectRenderData;
+import at.jojokobi.donatengine.rendering.CanvasRenderData;
 import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.RenderRect;
 import at.jojokobi.donatengine.style.Color;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Position;
+import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
 
 public class CircleParticle extends Particle{
@@ -29,7 +32,7 @@ public class CircleParticle extends Particle{
 
 	@Override
 	public void render(List<RenderData> data, Camera cam) {
-		data.add(new RectRenderData(new Position(new Vector3D(getX(), getY(), getZ()), getArea()), radius * 2, radius * 2, new FixedStyle().reset().setFill(color)));
+		data.add(new CanvasRenderData(new Position(new Vector3D(getX(), getY(), getZ()), getArea()), Arrays.asList(new RenderRect(new Vector2D(-radius, -radius), radius * 2, radius * 2, new FixedStyle().reset().setFill(color)))));
 	}
 
 

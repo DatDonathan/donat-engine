@@ -3,17 +3,15 @@ package at.jojokobi.donatengine.rendering;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Vector2D;
 
-public class ScreenRectRenderData extends ScreenPositonedRenderData {
-
+public class RenderRect extends RenderShape{
+	
 	private double width;
 	private double height;
-	private FixedStyle style;
 	
-	public ScreenRectRenderData(Vector2D position, double width, double height, FixedStyle style) {
-		super(position);
+	public RenderRect(Vector2D position, double width, double height, FixedStyle style) {
+		super(position, style);
 		this.width = width;
 		this.height = height;
-		this.style = style;
 	}
 
 	public double getWidth() {
@@ -24,20 +22,12 @@ public class ScreenRectRenderData extends ScreenPositonedRenderData {
 		return height;
 	}
 
-	public FixedStyle getStyle() {
-		return style;
-	}
-
 	public void setWidth(double width) {
 		this.width = width;
 	}
 
 	public void setHeight(double height) {
 		this.height = height;
-	}
-
-	public void setStyle(FixedStyle style) {
-		this.style = style;
 	}
 	
 }

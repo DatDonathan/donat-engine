@@ -3,15 +3,12 @@ package at.jojokobi.donatengine.rendering;
 import at.jojokobi.donatengine.style.FixedStyle;
 import at.jojokobi.donatengine.util.Vector2D;
 
-public class ScreenLineRenderData extends ScreenPositonedRenderData {
+public class RenderLine extends RenderShape {
 
-	private FixedStyle style;
 	private Vector2D endPosition;
 
-	
-	public ScreenLineRenderData(Vector2D position, FixedStyle style, Vector2D endPosition) {
-		super(position);
-		this.style = style;
+	public RenderLine(Vector2D position, Vector2D endPosition, FixedStyle style) {
+		super(position, style);
 		this.endPosition = endPosition;
 	}
 
@@ -22,13 +19,5 @@ public class ScreenLineRenderData extends ScreenPositonedRenderData {
 	public void setEndPosition(Vector2D endPosition) {
 		this.endPosition = endPosition;
 	}
-
-	public FixedStyle getStyle() {
-		return style;
-	}
-
-	public void setStyle(FixedStyle style) {
-		this.style = style;
-	}
-
+	
 }
