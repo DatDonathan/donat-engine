@@ -14,7 +14,7 @@ import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class Game implements Loopable {
 	
-	private AtomicBoolean running;
+	private AtomicBoolean running = new AtomicBoolean(true);
 	private GameLogic logic;
 	private Input localInput;
 	private AudioSystem audioSystem;
@@ -23,14 +23,11 @@ public class Game implements Loopable {
 	private GameView gameView;
 	
 	
-	public Game(boolean running, GameLogic logic, Input localInput, AudioSystem audioSystem,
-			GamePresenceHandler gamePresenceHandler, SerializationWrapper serialization, GameView gameView) {
+	public Game(GameLogic logic, Input localInput, AudioSystem audioSystem, SerializationWrapper serialization, GameView gameView) {
 		super();
-		this.running = new AtomicBoolean(running);
 		this.logic = logic;
 		this.localInput = localInput;
 		this.audioSystem = audioSystem;
-		this.gamePresenceHandler = gamePresenceHandler;
 		this.serialization = serialization;
 		this.gameView = gameView;
 	}
