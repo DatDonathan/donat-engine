@@ -11,6 +11,8 @@ public class Color {
 	public static final Color YELLOW = new Color (1, 1, 0, 1);
 	public static final Color CYAN = new Color (0, 1, 1, 1);
 	public static final Color MAGENTA = new Color (1, 0, 1, 1);
+	public static final Color ORANGE = new Color (1, 0.5, 0, 1);
+	public static final Color GRAY = new Color (0.5, 0.5, 0.5, 1);
 	
 	
 	public static final int COLOR_MAX = 255;
