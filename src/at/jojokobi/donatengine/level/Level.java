@@ -81,7 +81,7 @@ public abstract class Level extends Hitbox {
 	private GUISystem guiSystem;
 	private MultiplayerBehavior behavior;
 	private long clientId = 0;
-	private Camera camera;
+	private Camera camera = new Camera(0, 0, 0, 1280, 768);
 
 //	private long nextId = 1;
 
