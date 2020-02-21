@@ -139,7 +139,7 @@ public abstract class Level extends Hitbox {
 		}
 	}
 
-	public synchronized void render(List<RenderData> data, boolean renderInvisible) {
+	public void render(List<RenderData> data, boolean renderInvisible) {
 		LevelArea area = getArea(camera.getArea());
 		if (area != null) {
 			area.render(this, data, camera);
@@ -193,7 +193,7 @@ public abstract class Level extends Hitbox {
 	}
 
 	public void parseTilemap(int[][][] tilemap, TileMapParser parser, String area) {
-		parseTilemap(tilemap, parser, 32, 32, 32, area);
+		parseTilemap(tilemap, parser, 1, 1, 1, area);
 	}
 
 	public void parseTilemap(int[][][] tilemap, TileMapParser parser, double tileWidth, double tileHeight,

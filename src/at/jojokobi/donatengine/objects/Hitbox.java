@@ -7,9 +7,9 @@ public class Hitbox {
 	private double x = 0;
 	private double y = 0;
 	private double z = 0;
-	private double width = 32;
-	private double height = 32;
-	private double length = 32;
+	private double width = 1;
+	private double height = 1;
+	private double length = 1;
 	private String area = "";
 	
 	public Hitbox(double x, double y, double z) {

@@ -36,7 +36,7 @@ public abstract class Node {
 //		ctx.setLineWidth(style.getBorderStrength());
 //		ctx.fillRoundRect(dx + x,  dy+ y, width, height - 2, style.getBorderRadius(), style.getBorderRadius());
 //		ctx.strokeRoundRect(dx + x, dy + y, width , height - 2, style.getBorderRadius(), style.getBorderRadius());
-		shapes.add(new RenderRect(new Vector2D(x + dx, y + dx), width, height, style));
+		shapes.add(new RenderRect(new Vector2D(x + dx, y + dy), width, height, style));
 	}
 
 	public void update(Input input, double delta) {

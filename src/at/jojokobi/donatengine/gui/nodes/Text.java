@@ -29,7 +29,7 @@ public class Text extends Node {
 //		ctx.setLineWidth(getStyle().getFontBorderStrength());
 //		ctx.fillText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
 //		ctx.strokeText(text, dx + getX(), dy + getY() + getStyle().getFont().getSize() - 5);
-		shapes.add(new RenderText(new Vector2D(getX(), getY()), text, getStyle()));
+		shapes.add(new RenderText(new Vector2D(getX() + dx, getY() + dy), text, getStyle()));
 	}
 
 	public String getText() {
