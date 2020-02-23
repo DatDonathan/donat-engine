@@ -31,7 +31,7 @@ public class TextParticle extends Particle{
 	@Override
 	public void update(double delta) {
 		super.update(delta);
-		setY(getY() + delta * 32);
+		setY(getY() + delta);
 	}
 
 	@Override

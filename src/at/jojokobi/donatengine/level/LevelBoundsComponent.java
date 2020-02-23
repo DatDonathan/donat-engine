@@ -68,11 +68,14 @@ public class LevelBoundsComponent implements LevelComponent {
 		if (cam.getZ() < pos.getZ()) {
 			cam.setZ(pos.getZ());
 		}
-		if (cam.getX() + cam.getViewWidth() > pos.getX() + size.getX()) {
-			cam.setX(pos.getX() + size.getX() - cam.getViewWidth());
+		if (cam.getX() > pos.getX() + size.getX()) {
+			cam.setX(pos.getX() + size.getX());
 		}
-		if (cam.getZ() + cam.getViewHeight() > pos.getZ() + size.getZ()) {
-			cam.setZ(pos.getZ() + size.getZ() - cam.getViewHeight());
+		if (cam.getY() > pos.getY() + size.getY()) {
+			cam.setY(pos.getY() + size.getY());
+		}
+		if (cam.getZ() > pos.getZ() + size.getZ()) {
+			cam.setZ(pos.getZ() + size.getZ());
 		}
 	}
 	

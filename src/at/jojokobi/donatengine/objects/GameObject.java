@@ -318,7 +318,7 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 
 		
 		if (renderTag != null) {
-			data.add(new ModelRenderData(new Position(getPosition(), getArea()), renderTag));
+			data.add(new ModelRenderData(new Position(getPosition().subtract(xOffset, yOffset, zOffset), getArea()), renderTag));
 		}
 		
 		components.forEach((c) -> c.renderAfter(this, data, cam, level));
