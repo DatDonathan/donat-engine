@@ -7,25 +7,22 @@ import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.util.Vector3D;
 
 public class FollowCameraComponent implements ObjectComponent {
 	
 	private long clientId;
-	private Vector3D offset;
+	private double maxBorderDst;
 
-	public FollowCameraComponent(Vector3D offset, long clientId) {
+	public FollowCameraComponent(long clientId, double maxBorderDst) {
 		super();
-		this.offset = offset;
 		this.clientId = clientId;
+		this.maxBorderDst = maxBorderDst;
 	}
 
 	@Override
 	public void update(GameObject object, Level level, UpdateEvent event) {
 		if (level.getClientId() == clientId) {
-			level.getCamera().setX(object.getX() + offset.getX());
-			level.getCamera().setY(object.getY() + offset.getY());
-			level.getCamera().setZ(object.getZ() + offset.getZ());
+			event.getGame().getGameView().getCameraHandler().doCameraFollow(object, level, level.getCamera(), maxBorderDst);
 		}
 	}
 

@@ -30,7 +30,7 @@ public class LevelBoundsComponent implements LevelComponent {
 	public void update(Level level, UpdateEvent event) {
 		Vector3D pos = this.pos.get();
 		Vector3D size = this.size.get();
-		if (blockObjects && level.getBehavior().isHost()) {
+		if (blockObjects) {
 			for (GameObject obj : level.getObjects()) {
 				if (obj.getX() < pos.getX()) {
 					obj.setX(pos.getX(), false);
@@ -56,27 +56,7 @@ public class LevelBoundsComponent implements LevelComponent {
 
 	@Override
 	public void clientUpdate(Level level, UpdateEvent event) {
-		Camera cam = level.getCamera();
-		Vector3D pos = this.pos.get();
-		Vector3D size = this.size.get();
-		if (cam.getX() < pos.getX()) {
-			cam.setX(pos.getX());
-		}
-		if (cam.getY() < pos.getY()) {
-			cam.setY(pos.getY());
-		}
-		if (cam.getZ() < pos.getZ()) {
-			cam.setZ(pos.getZ());
-		}
-		if (cam.getX() > pos.getX() + size.getX()) {
-			cam.setX(pos.getX() + size.getX());
-		}
-		if (cam.getY() > pos.getY() + size.getY()) {
-			cam.setY(pos.getY() + size.getY());
-		}
-		if (cam.getZ() > pos.getZ() + size.getZ()) {
-			cam.setZ(pos.getZ() + size.getZ());
-		}
+		
 	}
 	
 	public boolean outsideBounds (GameObject obj) {

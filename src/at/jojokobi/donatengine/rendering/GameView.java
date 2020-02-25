@@ -16,5 +16,7 @@ public interface GameView {
 	public Vector2D getSize ();
 	
 	public void setSize (Vector2D size);
+	
+	public CameraHandler getCameraHandler ();
 
 }
