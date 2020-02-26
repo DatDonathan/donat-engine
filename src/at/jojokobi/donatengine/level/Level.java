@@ -19,7 +19,6 @@ import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.Hitbox;
 import at.jojokobi.donatengine.objects.ObjectComponent;
 import at.jojokobi.donatengine.objects.PlayerComponent;
-import at.jojokobi.donatengine.objects.Tile;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.particles.ParticleSystem;
 import at.jojokobi.donatengine.rendering.RenderData;
@@ -306,20 +305,6 @@ public abstract class Level extends Hitbox {
 		return objs.isEmpty() ? null : objs.get(0);
 	}
 
-	public Tile getTileAt(int tileX, int tileY, String area) {
-		return getTileAt(tileX, tileY, 0, area);
-	}
-
-	public Tile getTileAt(int tileX, int tileY, int tileZ, String area) {
-		Tile tile = null;
-		for (Tile t : getInstances(Tile.class)) {
-			if (t.getArea().equals(area) && t.getTileX() == tileX && t.getTileY() == tileY && t.getTileZ() == tileZ) {
-				tile = t;
-			}
-		}
-		return tile;
-	}
-
 	public Vector3D calcMotion(double x, double y, double z, String area, double width, double height, double length,
 			double xMotion, double yMotion, double zMotion, boolean slide, List<Object> ignore) {
 		Vector3D pos = new Vector3D();
@@ -441,24 +426,18 @@ public abstract class Level extends Hitbox {
 	 */
 	public void spawn(GameObject obj, long id) {
 		if (obj != null && getId(obj) < 0) {
-//			if (!(obj instanceof Tile) || (getTileAt(((Tile) obj).getTileX(), ((Tile) obj).getTileY(), ((Tile) obj).getTileZ(), obj.getArea()) == null)) {
-//				objects.put(nextId++, obj);
 			objects.add(obj, id);
 			obj.onSpawn(this);
 			behavior.onSpawn(this, obj, id);
-//			}
 		}
 	}
 
 	public long spawn(GameObject obj) {
 		long id = -1;
 		if (obj != null && getId(obj) < 0) {
-//			if (!(obj instanceof Tile) || (getTileAt(((Tile) obj).getTileX(), ((Tile) obj).getTileY(), ((Tile) obj).getTileZ(), obj.getArea()) == null)) {
-//				objects.put(nextId++, obj);
 			id = objects.add(obj);
 			obj.onSpawn(this);
 			behavior.onSpawn(this, obj, id);
-//			} 
 		}
 		return id;
 	}
