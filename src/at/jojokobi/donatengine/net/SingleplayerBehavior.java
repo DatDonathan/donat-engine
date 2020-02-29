@@ -12,6 +12,7 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
+import at.jojokobi.donatengine.tiles.Tile;
 
 public class SingleplayerBehavior implements MultiplayerBehavior {
 
@@ -72,6 +73,16 @@ public class SingleplayerBehavior implements MultiplayerBehavior {
 
 	@Override
 	public void onRemoveGUI(GUISystem guiSystem, GUI gui, long id) {
+		
+	}
+
+	@Override
+	public void onPlace(Tile tile, int tileX, int tileY, int tileZ, String area) {
+		
+	}
+
+	@Override
+	public void onRemove(int tileX, int tileY, int tileZ, String area) {
 		
 	}
 

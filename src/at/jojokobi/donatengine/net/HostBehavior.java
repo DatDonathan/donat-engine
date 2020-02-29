@@ -13,6 +13,7 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
+import at.jojokobi.donatengine.tiles.Tile;
 
 public class HostBehavior implements MultiplayerBehavior {
 	
@@ -119,6 +120,20 @@ public class HostBehavior implements MultiplayerBehavior {
 	public void onRemoveGUI(GUISystem guiSystem, GUI gui, long id) {
 		for (ServerPacketType type : packetTypes) {
 			packets.addAll(type.onRemoveGUI(guiSystem, gui, id));
+		}
+	}
+
+	@Override
+	public void onPlace(Tile tile, int tileX, int tileY, int tileZ, String area) {
+		for (ServerPacketType type : packetTypes) {
+			type.onPlaceTile(tile, tileX, tileY, tileZ, area);
+		}
+	}
+
+	@Override
+	public void onRemove(int tileX, int tileY, int tileZ, String area) {
+		for (ServerPacketType type : packetTypes) {
+			type.onRemoveTile(tileX, tileY, tileZ, area);
 		}
 	}
 

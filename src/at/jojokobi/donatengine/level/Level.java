@@ -22,6 +22,7 @@ import at.jojokobi.donatengine.objects.PlayerComponent;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.particles.ParticleSystem;
 import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.tiles.TileSystem;
 import at.jojokobi.donatengine.util.KeyedContainer;
 import at.jojokobi.donatengine.util.KeyedHashContainer;
 import at.jojokobi.donatengine.util.LongKeySupplier;
@@ -81,6 +82,8 @@ public abstract class Level extends Hitbox {
 	private MultiplayerBehavior behavior;
 	private long clientId = 0;
 	private Camera camera = new Camera(0, 0, 0, 1280, 768);
+	
+	private TileSystem tileSystem;
 
 //	private long nextId = 1;
 
@@ -607,6 +610,10 @@ public abstract class Level extends Hitbox {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+	}
+
+	public TileSystem getTileSystem() {
+		return tileSystem;
 	}
 
 }

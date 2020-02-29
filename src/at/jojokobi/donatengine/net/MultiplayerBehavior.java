@@ -10,8 +10,9 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
+import at.jojokobi.donatengine.tiles.TileSystem;
 
-public interface MultiplayerBehavior extends GUISystem.Listener {
+public interface MultiplayerBehavior extends GUISystem.Listener, TileSystem.Listener {
 	
 	public boolean isClient ();
 	

@@ -9,6 +9,7 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.tiles.Tile;
 
 public interface ServerPacketType {
 	
@@ -31,6 +32,14 @@ public interface ServerPacketType {
 	}
 	
 	public default List<ServerPacket> onRemoveGUI (GUISystem system, GUI gui, long id) {
+		return Arrays.asList();
+	}
+	
+	public default List<ServerPacket> onPlaceTile (Tile tile, int tileX, int tileY, int tileZ, String area) {
+		return Arrays.asList();
+	}
+	
+	public default List<ServerPacket> onRemoveTile (int tileX, int tileY, int tileZ, String area) {
 		return Arrays.asList();
 	}
 	
