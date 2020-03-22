@@ -22,6 +22,8 @@ import at.jojokobi.donatengine.objects.PlayerComponent;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.particles.ParticleSystem;
 import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.tiles.MapTileSystem;
+import at.jojokobi.donatengine.tiles.Tile;
 import at.jojokobi.donatengine.tiles.TileSystem;
 import at.jojokobi.donatengine.util.KeyedContainer;
 import at.jojokobi.donatengine.util.KeyedHashContainer;
@@ -178,6 +180,9 @@ public abstract class Level extends Hitbox {
 //		recalcObjectsInView();
 		if (guiSystem == null) {
 			initGuiSystem(new SimpleGUISystem(new DynamicGUIFactory()));
+		}
+		if (tileSystem == null) {
+			initTileSystem(new MapTileSystem(32));
 		}
 		if (getBehavior().isHost()) {
 			generate(camera);
@@ -589,6 +594,26 @@ public abstract class Level extends Hitbox {
 				@Override
 				public void onAddGUI(GUISystem guiSystem, GUI gui, long id) {
 					getBehavior().onAddGUI(guiSystem, gui, id);
+				}
+			});
+		} else {
+			throw new IllegalStateException("GUISystem already initialized");
+		}
+	}
+	
+	public void initTileSystem (TileSystem tileSystem) {
+		if (this.tileSystem == null) {
+			this.tileSystem = tileSystem;
+			tileSystem.addListener(new TileSystem.Listener() {
+				
+				@Override
+				public void onRemove(int tileX, int tileY, int tileZ, String area) {
+					getBehavior().onRemove(tileX, tileY, tileZ, area);
+				}
+				
+				@Override
+				public void onPlace(Tile tile, int tileX, int tileY, int tileZ, String area) {
+					getBehavior().onPlace(tile, tileX, tileY, tileZ, area);
 				}
 			});
 		} else {

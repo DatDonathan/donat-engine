@@ -17,7 +17,7 @@ import at.jojokobi.donatengine.tiles.Tile;
 
 public class HostBehavior implements MultiplayerBehavior {
 	
-	private List<ServerPacketType> packetTypes = Arrays.asList(SpawnPacket.PACKET_TYPE, DeletePacket.PACKET_TYPE, MovePacket.PACKET_TYPE, MotionPacket.PACKET_TYPE, PropertyChangedPacket.PACKET_TYPE, PropertyStateChangedPacket.PACKET_TYPE, LevelPropertyChangedPacket.PACKET_TYPE, LevelPropertyStateChangedPacket.PACKET_TYPE, AddAreaPacket.PACKET_TYPE, AddGUIPacket.PACKET_TYPE, RemoveGUIPacket.PACKET_TYPE);
+	private List<ServerPacketType> packetTypes = Arrays.asList(SpawnPacket.PACKET_TYPE, DeletePacket.PACKET_TYPE, MovePacket.PACKET_TYPE, MotionPacket.PACKET_TYPE, PropertyChangedPacket.PACKET_TYPE, PropertyStateChangedPacket.PACKET_TYPE, LevelPropertyChangedPacket.PACKET_TYPE, LevelPropertyStateChangedPacket.PACKET_TYPE, AddAreaPacket.PACKET_TYPE, AddGUIPacket.PACKET_TYPE, RemoveGUIPacket.PACKET_TYPE, PlaceTilePacket.PACKET_TYPE, RemoveTilePacket.PACKET_TYPE, TilePropertyChangePacket.PACKET_TYPE);
 	private List<ServerPacket> packets = new ArrayList<>();
 	
 	private boolean client;
