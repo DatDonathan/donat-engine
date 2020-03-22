@@ -15,6 +15,11 @@ public abstract class Tile implements BinarySerializable{
 	
 	private String model;
 	
+	public Tile(String model) {
+		super();
+		this.model = model;
+	}
+
 	public void onPlace (Level level) {
 		
 	}

@@ -17,7 +17,7 @@ public interface TileSystem {
 	
 	public List<TileInstance> getTilesInArea (int tileX, int tileY, int tileZ, int width, int height, int length, String area);
 	
-	public List<TileInstance> getTilesInAbsoluteArea (int x, int y, int z, int width, int height, int length, String area);
+	public List<TileInstance> getTilesInAbsoluteArea (double x, double y, double z, double width, double height, double length, String area);
 	
 	public List<TileInstance> getTiles ();
 	

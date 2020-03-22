@@ -78,7 +78,7 @@ public class MapTileSystem implements TileSystem {
 	}
 
 	@Override
-	public List<TileInstance> getTilesInAbsoluteArea(int x, int y, int z, int width, int height, int length,
+	public List<TileInstance> getTilesInAbsoluteArea(double x, double y, double z, double width, double height, double length,
 			String area) {
 		return getTilesInArea((int) (x/tileSize), (int) (y/tileSize), (int) (z/tileSize), (int) Math.ceil(width/tileSize), (int) Math.ceil(height/tileSize), (int) Math.ceil(length/tileSize), area);
 	}

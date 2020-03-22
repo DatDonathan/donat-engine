@@ -1,9 +1,9 @@
 package at.jojokobi.donatengine.level;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import at.jojokobi.donatengine.event.StartEvent;
 import at.jojokobi.donatengine.event.StopEvent;
@@ -15,6 +15,7 @@ import at.jojokobi.donatengine.gui.SimpleGUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.net.MultiplayerBehavior;
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.objects.Collidable;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.ObjectComponent;
 import at.jojokobi.donatengine.objects.PlayerComponent;
@@ -255,6 +256,14 @@ public abstract class Level {
 		}
 		return objects;
 	}
+	
+	public List<Collidable> getCollidablesInArea(double x, double y, double z, double width, double height, double length,
+			String area) {
+		List<Collidable> collidables = new ArrayList<>();
+		collidables.addAll(getObjectsInArea(x, y, z, width, height, length, area));
+		collidables.addAll(tileSystem.getTilesInAbsoluteArea(x, y, z, width, height, length, area));
+		return collidables;
+	}
 
 //	public List<GameObject> getSolidInArea (double x, double y, double width, double height, long area) {
 //		List<GameObject> objects = getObjectsInArea(x, y, width, height, area);
@@ -266,21 +275,9 @@ public abstract class Level {
 //		return objects;
 //	}
 
-	public List<GameObject> getSolidInArea(double x, double y, double z, double width, double height, double length,
+	public List<Collidable> getSolidInArea(double x, double y, double z, double width, double height, double length,
 			String area) {
-//		List<GameObject> objects = new ArrayList<>();
-//		for (GameObject object : getSolidInArea(x, y, width, height, area)) {
-//			if (object.isColliding(x, y, z, width, height, length)) {
-//				objects.add(object);
-//			}
-//		}
-		List<GameObject> objects = getObjectsInArea(x, y, z, width, height, length, area);
-		for (Iterator<GameObject> iter = objects.iterator(); iter.hasNext();) {
-			if (!iter.next().isSolid()) {
-				iter.remove();
-			}
-		}
-		return objects;
+		return getCollidablesInArea(x, y, z, width, height, length, area).stream().filter(c -> c.isSolid()).collect(Collectors.toList());
 	}
 
 	public <T> List<T> getInstances(Class<T> clazz) {
@@ -313,7 +310,7 @@ public abstract class Level {
 		Vector3D pos = new Vector3D();
 		boolean blocked = false;
 		// Y
-		List<GameObject> yObjs = null;
+		List<Collidable> yObjs = null;
 		if (yMotion < 0) {
 			yObjs = getSolidInArea(x, y + yMotion, z, width, height - yMotion, length, area);
 		} else {
@@ -325,7 +322,7 @@ public abstract class Level {
 		}
 		// Positive
 		else if (yMotion > 0) {
-			GameObject yObj = yObjs.get(0);
+			Collidable yObj = yObjs.get(0);
 			for (int i = 1; i < yObjs.size(); i++) {
 				if (yObj.getY() > yObjs.get(i).getY()) {
 					yObj = yObjs.get(i);
@@ -336,7 +333,7 @@ public abstract class Level {
 		}
 		// Negative
 		else if (yMotion < 0) {
-			GameObject yObj = yObjs.get(0);
+			Collidable yObj = yObjs.get(0);
 			for (int i = 1; i < yObjs.size(); i++) {
 				if (yObj.getY() + yObj.getHeight() < yObjs.get(i).getY() + yObjs.get(i).getHeight()) {
 					yObj = yObjs.get(i);
@@ -348,7 +345,7 @@ public abstract class Level {
 		
 		// X
 		if (slide || !blocked) {
-			List<GameObject> xObjs = null;
+			List<Collidable> xObjs = null;
 			if (xMotion < 0) {
 				xObjs = getSolidInArea(x + xMotion, y, z, width - xMotion, height, length,area);
 			} else {
@@ -360,7 +357,7 @@ public abstract class Level {
 			}
 			// Positive
 			else if (xMotion > 0) {
-				GameObject xObj = xObjs.get(0);
+				Collidable xObj = xObjs.get(0);
 				for (int i = 1; i < xObjs.size(); i++) {
 					if (xObj.getX() > xObjs.get(i).getX()) {
 						xObj = xObjs.get(i);
@@ -371,7 +368,7 @@ public abstract class Level {
 			}
 			// Negative
 			else if (xMotion < 0) {
-				GameObject xObj = xObjs.get(0);
+				Collidable xObj = xObjs.get(0);
 				for (int i = 1; i < xObjs.size(); i++) {
 					if (xObj.getX() + xObj.getWidth() < xObjs.get(i).getX() + xObjs.get(i).getWidth()) {
 						xObj = xObjs.get(i);
@@ -384,7 +381,7 @@ public abstract class Level {
 
 		// Z
 		if (slide || !blocked) {
-			List<GameObject> zObjs = null;
+			List<Collidable> zObjs = null;
 			if (zMotion < 0) {
 				zObjs = getSolidInArea(x, y, z + zMotion, width, height, length - zMotion,area);
 			} else {
@@ -396,7 +393,7 @@ public abstract class Level {
 			}
 			// Positive
 			else if (zMotion > 0) {
-				GameObject zObj = zObjs.get(0);
+				Collidable zObj = zObjs.get(0);
 				for (int i = 1; i < zObjs.size(); i++) {
 					if (zObj.getZ() > zObjs.get(i).getZ()) {
 						zObj = zObjs.get(i);
@@ -407,7 +404,7 @@ public abstract class Level {
 			}
 			// Negative
 			else if (zMotion < 0) {
-				GameObject zObj = zObjs.get(0);
+				Collidable zObj = zObjs.get(0);
 				for (int i = 1; i < zObjs.size(); i++) {
 					if (zObj.getZ() + zObj.getLength() < zObjs.get(i).getZ() + zObjs.get(i).getLength()) {
 						zObj = zObjs.get(i);

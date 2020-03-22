@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -125,118 +126,13 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 		boolean movedBefore = moved;
 		boolean motionBefore = changedMotion;
 		if (isCollideSolid()) {
-			// Y
-			List<GameObject> yObjs = null;
-			if (y < 0) {
-				yObjs = level.getSolidInArea(getX(), getY() + y, getZ(), getWidth(), getHeight() - y, getLength(), getArea ());
-			} else {
-				yObjs = level.getSolidInArea(getX(), getY(), getZ(), getWidth(), getHeight() + y, getLength(), getArea());
-			}
-			yObjs.remove(this);
-			if (yObjs.isEmpty()) {
-				setY(getY() + y);
-			}
-			// Positive
-			else if (y > 0) {
-				GameObject yObj = yObjs.get(0);
-				for (int i = 1; i < yObjs.size(); i++) {
-					if (yObj.getY() > yObjs.get(i).getY()) {
-						yObj = yObjs.get(i);
-					}
-				}
-				setY(yObj.getY() - getHeight());
-				if (isPhysics()) {
-					setTotalYMotion(-yMotion * getBounce());
-				}
-			}
-			// Negative
-			else if (y < 0) {
-				GameObject yObj = yObjs.get(0);
-				for (int i = 1; i < yObjs.size(); i++) {
-					if (yObj.getY() + yObj.getHeight() < yObjs.get(i).getY() + yObjs.get(i).getHeight()) {
-						yObj = yObjs.get(i);
-					}
-				}
-				setY(yObj.getY() + yObj.getHeight());
-				if (isPhysics()) {
-					setTotalYMotion(-yMotion * getBounce());
-				}
-			}
-
-			// X
-			List<GameObject> xObjs = null;
-			if (x < 0) {
-				xObjs = level.getSolidInArea(getX() + x, getY(), getZ(), getWidth() - x, getHeight(), getLength(), getArea ());
-			} else {
-				xObjs = level.getSolidInArea(getX(), getY(), getZ(), getWidth() + x, getHeight(), getLength(), getArea ());
-			}
-			xObjs.remove(this);
-			if (xObjs.isEmpty()) {
-				setX(getX() + x);
-			}
-			// Positive
-			else if (x > 0) {
-				GameObject xObj = xObjs.get(0);
-				for (int i = 1; i < xObjs.size(); i++) {
-					if (xObj.getX() > xObjs.get(i).getX()) {
-						xObj = xObjs.get(i);
-					}
-				}
-				setX(xObj.getX() - getWidth());
-				if (isPhysics()) {
-					setxMotion(-xMotion * getBounce());
-				}
-			}
-			// Negative
-			else if (x < 0) {
-				GameObject xObj = xObjs.get(0);
-				for (int i = 1; i < xObjs.size(); i++) {
-					if (xObj.getX() + xObj.getWidth() < xObjs.get(i).getX() + xObjs.get(i).getWidth()) {
-						xObj = xObjs.get(i);
-					}
-				}
-				setX(xObj.getX() + xObj.getWidth());
-				if (isPhysics()) {
-					setxMotion(-xMotion * getBounce());
-				}
-			}
-
-			// Z
-			List<GameObject> zObjs = null;
-			if (z < 0) {
-				zObjs = level.getSolidInArea(getX(), getY(), getZ() + z, getWidth(), getHeight(), getLength() - z, getArea ());
-			} else {
-				zObjs = level.getSolidInArea(getX(), getY(), getZ(), getWidth(), getHeight(), getLength() + z, getArea ());
-			}
-			zObjs.remove(this);
-			if (zObjs.isEmpty()) {
-				setZ(getZ() + z);
-			}
-			// Positive
-			else if (z > 0) {
-				GameObject zObj = zObjs.get(0);
-				for (int i = 1; i < zObjs.size(); i++) {
-					if (zObj.getZ() > zObjs.get(i).getZ()) {
-						zObj = zObjs.get(i);
-					}
-				}
-				setZ(zObj.getZ() - getLength());
-				if (isPhysics()) {
-					setzMotion(-zMotion * getBounce());
-				}
-			}
-			// Negative
-			else if (z < 0) {
-				GameObject zObj = zObjs.get(0);
-				for (int i = 1; i < zObjs.size(); i++) {
-					if (zObj.getZ() + zObj.getLength() < zObjs.get(i).getZ() + zObjs.get(i).getLength()) {
-						zObj = zObjs.get(i);
-					}
-				}
-				setZ(zObj.getZ() + zObj.getLength());
-				if (isPhysics()) {
-					setzMotion(-zMotion * getBounce());
-				}
+			Vector3D position = level.calcMotion(x, y, z, area, x, y, z, xMotion, yMotion, zMotion, false, Arrays.asList(this));
+			if (isPhysics()) {
+				Vector3D diff = new Vector3D(getX() + x, getY() + y, getZ() + z);
+				diff.subtract(position).multiply(-getBounce());
+				setxMotion(diff.getX());
+				setyMotion(diff.getY());
+				setzMotion(diff.getZ());
 			}
 		} else {
 			setX(getX() + x);
@@ -337,7 +233,7 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 
 
 	public boolean onGround(Level level) {
-		List<GameObject> objs = gravityPerSecond < 0
+		List<Collidable> objs = gravityPerSecond < 0
 				? level.getSolidInArea(getX(), getY() - 1, getZ(), getWidth(), 1, getLength(), getArea())
 				: level.getSolidInArea(getX(), getY() + getHeight(), getZ(), getWidth(), 1, getLength(), getArea());
 		objs.remove(this);

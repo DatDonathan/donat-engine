@@ -57,4 +57,9 @@ public class TileInstance implements Collidable {
 	public String getArea() {
 		return position.getArea();
 	}
+
+	@Override
+	public boolean isSolid() {
+		return tile.isSolid();
+	}
 }

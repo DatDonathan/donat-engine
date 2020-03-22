@@ -17,7 +17,9 @@ public interface Collidable {
 	
 	public double getLength();
 	
-	public String getArea ();
+	public String getArea();
+	
+	public boolean isSolid();
 	
 	public default Position getPosition () {
 		return new Position(new Vector3D(getX(), getY(), getZ()), getArea());
