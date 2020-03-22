@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import at.jojokobi.donatengine.util.Position;
+import at.jojokobi.donatengine.util.Vector3D;
 
 public class MapTileSystem implements TileSystem {
 
@@ -87,6 +88,11 @@ public class MapTileSystem implements TileSystem {
 	public List<TileInstance> getTilesInAbsoluteArea(int x, int y, int z, int width, int height, int length,
 			String area) {
 		return getTilesInArea((int) (x/tileSize), (int) (y/tileSize), (int) (z/tileSize), (int) Math.ceil(width/tileSize), (int) Math.ceil(height/tileSize), (int) Math.ceil(length/tileSize), area);
+	}
+
+	@Override
+	public Position toPosition(TilePosition tilePosition) {
+		return new Position(new Vector3D(tilePosition.getX() * tileSize, tilePosition.getY() * tileSize, tilePosition.getZ() * tileSize), tilePosition.getArea());
 	}
 
 }

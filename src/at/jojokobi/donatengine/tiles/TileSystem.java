@@ -22,6 +22,8 @@ public interface TileSystem {
 	
 	public TilePosition toTilePosition (Position position);
 	
+	public Position toPosition (TilePosition tilePosition);
+	
 	public void addListener (Listener listener);
 	
 	public void removeListener (Listener listener);
