@@ -120,13 +120,13 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 	}
 
 	public void move(double xMotion, double yMotion, double zMotion, double delta, Level level) {
-		double x = xMotion * delta;
-		double y = yMotion * delta;
-		double z = zMotion * delta;
 		boolean movedBefore = moved;
 		boolean motionBefore = changedMotion;
 		if (isCollideSolid()) {
-			Vector3D position = level.calcMotion(x, y, z, area, x, y, z, xMotion, yMotion, zMotion, false, Arrays.asList(this));
+			Vector3D position = level.calcMotion(getX(), getY(), getZ(), area, getWidth(), getHeight(), getLength(), xMotion * delta, yMotion * delta, zMotion * delta, false, Arrays.asList(this));
+			setX(position.getX());
+			setY(position.getY());
+			setZ(position.getZ());
 			if (isPhysics()) {
 				Vector3D diff = new Vector3D(getX() + x, getY() + y, getZ() + z);
 				diff.subtract(position).multiply(-getBounce());

@@ -109,7 +109,7 @@ public class SimpleServerGameLogic implements GameLogic {
 	public void render(RenderScene scene) {
 		level.render(scene.getData(), false);
 		scene.setCamera(level.getCamera());
-		scene.setTileSystem(scene.getTileSystem());
+		scene.setTileSystem(level.getTileSystem());
 	}
 
 }
