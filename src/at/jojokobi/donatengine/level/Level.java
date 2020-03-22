@@ -178,7 +178,7 @@ public abstract class Level {
 			initGuiSystem(new SimpleGUISystem(new DynamicGUIFactory()));
 		}
 		if (tileSystem == null) {
-			initTileSystem(new MapTileSystem(32));
+			initTileSystem(new MapTileSystem(1));
 		}
 		if (getBehavior().isHost()) {
 			generate(camera);
@@ -196,21 +196,10 @@ public abstract class Level {
 	}
 
 	public void parseTilemap(int[][][] tilemap, TileMapParser parser, String area) {
-		parseTilemap(tilemap, parser, 1, 1, 1, area);
-	}
-
-	public void parseTilemap(int[][][] tilemap, TileMapParser parser, double tileWidth, double tileHeight,
-			double tileLength, String area) {
 		for (int y = 0; y < tilemap.length; y++) {
 			for (int z = 0; z < tilemap[y].length; z++) {
 				for (int x = 0; x < tilemap[y][z].length; x++) {
-					for (GameObject tile : parser.parse(tilemap[y][z][x], x * tileWidth,
-							(tilemap.length - 1 - y) * tileHeight, z * tileLength)) {
-						if (tile != null) {
-							tile.setArea(area);
-							spawn(tile);
-						}
-					}
+					parser.parse(tilemap[y][z][x], x, (tilemap.length - 1 - y), z, area, this);
 				}
 			}
 		}

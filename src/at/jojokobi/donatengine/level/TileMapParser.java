@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import at.jojokobi.donatengine.objects.GameObject;
-
 public abstract class TileMapParser {
 	
 	public TileMapParser () {
 		
 	}
 	
-	public abstract List<GameObject> parse(int id, double x, double y, double z);
+	public abstract void parse(int id, int x, int y, int z, String string, Level level);
 	
 	public static final int[][][] loadTilemap (InputStream input, int layerLength) {
 		StringBuilder text = new StringBuilder();
