@@ -22,11 +22,13 @@ public class MapTileSystem implements TileSystem {
 	@Override
 	public void place(Tile tile, int tileX, int tileY, int tileZ, String area) {
 		tiles.put(new TilePosition(tileX, tileY, tileZ, area), tile);
+		listeners.forEach(l -> l.onPlace(tile, tileX, tileY, tileZ, area));
 	}
 
 	@Override
 	public void remove(int tileX, int tileY, int tileZ, String area) {
 		tiles.remove(new TilePosition(tileX, tileY, tileZ, area));
+		listeners.forEach(l -> l.onRemove(tileX, tileY, tileZ, area));
 	}
 
 	@Override
