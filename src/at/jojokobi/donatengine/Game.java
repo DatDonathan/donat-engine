@@ -1,15 +1,12 @@
 package at.jojokobi.donatengine;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import at.jojokobi.donatengine.audio.AudioSystem;
 import at.jojokobi.donatengine.input.Input;
-import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.rendering.GameView;
-import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.RenderScene;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public class Game implements Loopable {
@@ -43,9 +40,9 @@ public class Game implements Loopable {
 		try {
 			logic.update(delta, this);
 			localInput.updateBuffers();
-			List<RenderData> data = new LinkedList<>();
-			Camera cam = logic.render(data);
-			gameView.render(data, cam);
+			RenderScene scene = new RenderScene();
+			logic.render(scene);
+			gameView.render(scene.getData(), scene.getTileSystem(), scene.getCamera());
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -16,8 +16,7 @@ import at.jojokobi.donatengine.input.MapInputHandler;
 import at.jojokobi.donatengine.input.SimpleInput;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.net.ClientPacket;
-import at.jojokobi.donatengine.objects.Camera;
-import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.RenderScene;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.netutil.server.Server;
@@ -40,6 +39,7 @@ public class SimpleServerGameLogic implements GameLogic {
 
 		level.clear();
 		level.start(new StartEvent(new MapInputHandler(game.getLocalInput(), inputs), game));
+		game.getGameView().bind(level.getTileSystem());
 	}
 
 	@Override
@@ -106,9 +106,10 @@ public class SimpleServerGameLogic implements GameLogic {
 	}
 
 	@Override
-	public Camera render(List<RenderData> data) {
-		level.render(data, false);
-		return level.getCamera();
+	public void render(RenderScene scene) {
+		level.render(scene.getData(), false);
+		scene.setCamera(level.getCamera());
+		scene.setTileSystem(scene.getTileSystem());
 	}
 
 }

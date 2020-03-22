@@ -8,9 +8,9 @@ import at.jojokobi.donatengine.util.Vector2D;
 
 public interface GameView {
 	
-	public void bind (TileSystem level);
+	public void bind (TileSystem tileSystem);
 	
-	public void render (List<RenderData> data, Camera cam);
+	public void render (List<RenderData> data, TileSystem tileSystem, Camera cam);
 	
 	public void setTitle (String title);
 	

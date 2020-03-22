@@ -4,15 +4,13 @@ package at.jojokobi.donatengine;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 import at.jojokobi.donatengine.event.StartEvent;
 import at.jojokobi.donatengine.event.StopEvent;
 import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.net.ServerPacket;
-import at.jojokobi.donatengine.objects.Camera;
-import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.RenderScene;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.netutil.client.Client;
@@ -40,6 +38,7 @@ public class ClientGameLogic implements GameLogic{
 		level.setClientId(client.getClientId());
 		level.clear();
 		level.start(new StartEvent(c -> game.getLocalInput(), game));
+		game.getGameView().bind(level.getTileSystem());
 	}
 
 	@Override
@@ -88,9 +87,10 @@ public class ClientGameLogic implements GameLogic{
 	}
 
 	@Override
-	public Camera render(List<RenderData> data) {
-		level.render(data, false);
-		return level.getCamera();
+	public void render(RenderScene scene) {
+		level.render(scene.getData(), false);
+		scene.setCamera(level.getCamera());
+		scene.setTileSystem(scene.getTileSystem());
 	}
 
 }

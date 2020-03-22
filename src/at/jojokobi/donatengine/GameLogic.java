@@ -1,9 +1,6 @@
 package at.jojokobi.donatengine;
 
-import java.util.List;
-
-import at.jojokobi.donatengine.objects.Camera;
-import at.jojokobi.donatengine.rendering.RenderData;
+import at.jojokobi.donatengine.rendering.RenderScene;
 
 public interface GameLogic {
 	
@@ -11,7 +8,7 @@ public interface GameLogic {
 
 	public void update (double delta, Game game);
 	
-	public Camera render (List<RenderData> data);
+	public void render (RenderScene scene);
 	
 	public void stop (Game game);
 	
