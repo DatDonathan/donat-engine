@@ -26,7 +26,7 @@ public class TilePropertyChangePacket implements ServerPacket {
 				int index = 0;
 				for (ObservableProperty<?> prop : inst.getTile().observableProperties()) {
 					if (prop.fetchChanged()) {
-						packets.add(new TilePropertyChangePacket(inst.getPosition().getX(), inst.getPosition().getY(), inst.getPosition().getZ(), inst.getPosition().getArea(), index, prop.get()));
+						packets.add(new TilePropertyChangePacket(inst.getTilePosition().getX(), inst.getTilePosition().getY(), inst.getTilePosition().getZ(), inst.getTilePosition().getArea(), index, prop.get()));
 					}
 					index++;
 				}

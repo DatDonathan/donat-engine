@@ -16,7 +16,6 @@ import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.net.MultiplayerBehavior;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.GameObject;
-import at.jojokobi.donatengine.objects.Hitbox;
 import at.jojokobi.donatengine.objects.ObjectComponent;
 import at.jojokobi.donatengine.objects.PlayerComponent;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
@@ -33,7 +32,7 @@ import at.jojokobi.donatengine.util.StringKeySupplier;
 import at.jojokobi.donatengine.util.Vector3D;
 
 
-public abstract class Level extends Hitbox {
+public abstract class Level {
 //	
 //	public static final Comparator<GameObject> ZY_COMPARATOR = new Comparator<GameObject>() {
 //		@Override
@@ -89,12 +88,8 @@ public abstract class Level extends Hitbox {
 
 //	private long nextId = 1;
 
-	public Level(MultiplayerBehavior behavior, double width, double height, double length) {
-		super(0, 0);
+	public Level(MultiplayerBehavior behavior) {
 		this.behavior = behavior;
-		setWidth(width);
-		setHeight(height);
-		setLength(length);
 	}
 
 	protected void addComponent(LevelComponent component) {
@@ -500,21 +495,6 @@ public abstract class Level extends Hitbox {
 //			objects.add(o.getValue());
 //		});
 		return objects.asList();
-	}
-
-	@Override
-	public final void setX(double x) {
-
-	}
-
-	@Override
-	public final void setY(double y) {
-
-	}
-
-	@Override
-	public final void setZ(double z) {
-
 	}
 
 	public boolean isUpdateHidden() {

@@ -42,7 +42,7 @@ public class PlaceTilePacket implements ServerPacket {
 		public List<ServerPacket> recreatePackets(Level level) {
 			List<ServerPacket> packets = new ArrayList<>();
 			for (TileInstance tile : level.getTileSystem().getTiles()) {
-				packets.add(new PlaceTilePacket(tile.getTile(), tile.getPosition().getX(), tile.getPosition().getY(), tile.getPosition().getZ(), tile.getPosition().getArea()));
+				packets.add(new PlaceTilePacket(tile.getTile(), tile.getTilePosition().getX(), tile.getTilePosition().getY(), tile.getTilePosition().getZ(), tile.getTilePosition().getArea()));
 			}
 			return packets;
 		}

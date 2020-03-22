@@ -17,7 +17,15 @@ import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.util.Position;
 import at.jojokobi.donatengine.util.Vector3D;
 
-public abstract class GameObject extends Hitbox implements BinarySerializable{
+public abstract class GameObject implements BinarySerializable, Collidable{
+	
+	private double x = 0;
+	private double y = 0;
+	private double z = 0;
+	private double width = 1;
+	private double height = 1;
+	private double length = 1;
+	private String area = "";
 
 	private double xOffset = 0;
 	private double yOffset = 0;
@@ -48,27 +56,14 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 	
 	private List<ObjectComponent> components = new ArrayList<>();
 
-//	@Deprecated
-//	public GameObject(double x, double y, double z, Level level, Image image) {
-//		this(x, y, z, level, new Image2DModel(image));
-//	}
-//
-//	@Deprecated
-//	public GameObject(double x, double y, Level level, Image image) {
-//		this(x, y, 0, level, image);
-//	}
 
 	public GameObject(double x, double y, double z, String area, String renderTag) {
-		super(x, y, z);
-//		this.level = level;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.area = area;
 		this.renderTag = renderTag;
-		setArea(area);
 	}
-	
-//
-//	public GameObject(double x, double y, Level level, RenderModel renderModel) {
-//		this(x, y, 0, level, renderModel);
-//	}
 
 	public boolean collidesSolid(Level level) {
 		return getCollided(level).stream().anyMatch((obj) -> obj.isSolid());
@@ -252,39 +247,75 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		changedMotion = motionBefore;
 	}
 	
-	@Override
+	public double getX() {
+		return x;
+	}
+	public double getY() {
+		return y;
+	}
+	public double getWidth() {
+		return width;
+	}
+	public void setWidth(double width) {
+		this.width = width;
+	}
+	public double getHeight() {
+		return height;
+	}
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public double getZ() {
+		return z;
+	}
+
+	public double getLength() {
+		return length;
+	}
+
+	public void setLength(double depth) {
+		this.length = depth;
+	}
+	
+	public Vector3D getPositionVector () {
+		return new Vector3D(x, y, z);
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	
 	public void setX(double x) {
 		setX(x, true);
 	}
 	
-	@Override
 	public void setY(double y) {
 		setY(y, true);
 	}
 	
-	@Override
 	public void setZ(double z) {
 		setZ(z , true);
 	}
 	
 	public void setX(double x, boolean setChange) {
-		super.setX(x);
+		this.x = x;
 		moved = moved || setChange;
 	}
 	
 	public void setY(double y, boolean setChange) {
-		super.setY(y);
+		this.y = y;
 		moved = moved || setChange;
 	}
 	
 	public void setZ(double z, boolean setChange) {
-		super.setZ(z);
+		this.z = z;
 		moved = moved || setChange;
 	}
 	
-	@Override
 	public void setArea(String area) {
-		super.setArea(area);
+		this.area = area;
 		moved = true;
 	}
 
@@ -318,7 +349,7 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 
 		
 		if (renderTag != null) {
-			data.add(new ModelRenderData(new Position(getPosition().subtract(xOffset, yOffset, zOffset), getArea()), renderTag));
+			data.add(new ModelRenderData(new Position(getPositionVector().subtract(xOffset, yOffset, zOffset), getArea()), renderTag));
 		}
 		
 		components.forEach((c) -> c.renderAfter(this, data, cam, level));
@@ -581,10 +612,6 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		return properties;
 	}
 	
-	public Vector3D getPosition() {
-		return new Vector3D(getX(), getY(), getZ());
-	}
-	
 	public Vector3D getMotion() {
 		return new Vector3D(xMotion, yMotion, zMotion);
 	}
@@ -665,6 +692,26 @@ public abstract class GameObject extends Hitbox implements BinarySerializable{
 		for (ObservableProperty<?> property : observableProperties()) {
 			property.readValue(buffer, serialization);
 		}
+	}
+	
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(getClass().getSimpleName() +  " [x=");
+		builder.append(x);
+		builder.append(", y=");
+		builder.append(y);
+		builder.append(", z=");
+		builder.append(z);
+		builder.append(", width=");
+		builder.append(width);
+		builder.append(", height=");
+		builder.append(height);
+		builder.append(", length=");
+		builder.append(length);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

@@ -3,6 +3,7 @@ package at.jojokobi.donatengine.tiles;
 import java.util.List;
 
 import at.jojokobi.donatengine.util.Position;
+import at.jojokobi.donatengine.util.Vector3D;
 
 public interface TileSystem {
 	
@@ -20,9 +21,17 @@ public interface TileSystem {
 	
 	public List<TileInstance> getTiles ();
 	
-	public TilePosition toTilePosition (Position position);
+	public double getTileSize();
 	
-	public Position toPosition (TilePosition tilePosition);
+	public default TilePosition toTilePosition(Position position) {
+		double tileSize = getTileSize();
+		return new TilePosition((int) (position.getPosition().getX()/tileSize), (int) (position.getPosition().getY()/tileSize), (int) (position.getPosition().getZ()/tileSize), position.getArea());
+	}
+	
+	public default Position toPosition(TilePosition tilePosition) {
+		double tileSize = getTileSize();
+		return new Position(new Vector3D(tilePosition.getX() * tileSize, tilePosition.getY() * tileSize, tilePosition.getZ() * tileSize), tilePosition.getArea());
+	}
 	
 	public void addListener (Listener listener);
 	

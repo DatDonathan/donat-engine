@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import at.jojokobi.donatengine.util.Position;
-import at.jojokobi.donatengine.util.Vector3D;
 
 public class MapTileSystem implements TileSystem {
 
@@ -52,7 +50,7 @@ public class MapTileSystem implements TileSystem {
 				for (int z = 0; z < length; z++) {
 					Tile tile = getTile(tileX, tileY, tileZ, area);
 					if (tile != null) {
-						instances.add(new TileInstance(new TilePosition(tileX, tileY, tileZ, area), tile));
+						instances.add(new TileInstance(this, new TilePosition(tileX, tileY, tileZ, area), tile));
 					}
 				}
 			}
@@ -64,14 +62,9 @@ public class MapTileSystem implements TileSystem {
 	public List<TileInstance> getTiles() {
 		List<TileInstance> instances = new ArrayList<>();
 		for (var e : tiles.entrySet()) {
-			instances.add(new TileInstance(e.getKey(), e.getValue()));
+			instances.add(new TileInstance(this, e.getKey(), e.getValue()));
 		}
 		return instances;
-	}
-
-	@Override
-	public TilePosition toTilePosition(Position position) {
-		return new TilePosition((int) (position.getPosition().getX()/tileSize), (int) (position.getPosition().getY()/tileSize), (int) (position.getPosition().getZ()/tileSize), position.getArea());
 	}
 
 	@Override
@@ -91,8 +84,8 @@ public class MapTileSystem implements TileSystem {
 	}
 
 	@Override
-	public Position toPosition(TilePosition tilePosition) {
-		return new Position(new Vector3D(tilePosition.getX() * tileSize, tilePosition.getY() * tileSize, tilePosition.getZ() * tileSize), tilePosition.getArea());
+	public double getTileSize() {
+		return tileSize;
 	}
 
 }

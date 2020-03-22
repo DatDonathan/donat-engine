@@ -31,7 +31,7 @@ public class ShadowComponent implements ObjectComponent{
 //		
 //		ctx.setFill(new Color(0.5, 0.5, 0.5, 0.5));
 //		ctx.fillOval(screenStartPos.getX(), screenStartPos.getY(), screenEndPos.getX() - screenStartPos.getX(), screenEndPos.getY() - screenStartPos.getY());
-		data.add(new ModelShadowRenderData(new Position(object.getPosition(), object.getArea()), object.getRenderTag()));
+		data.add(new ModelShadowRenderData(new Position(object.getPositionVector(), object.getArea()), object.getRenderTag()));
 	}
 
 	@Override
