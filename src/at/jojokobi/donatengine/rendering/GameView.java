@@ -3,9 +3,12 @@ package at.jojokobi.donatengine.rendering;
 import java.util.List;
 
 import at.jojokobi.donatengine.objects.Camera;
+import at.jojokobi.donatengine.tiles.TileSystem;
 import at.jojokobi.donatengine.util.Vector2D;
 
 public interface GameView {
+	
+	public void bind (TileSystem level);
 	
 	public void render (List<RenderData> data, Camera cam);
 	

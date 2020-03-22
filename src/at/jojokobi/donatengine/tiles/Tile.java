@@ -8,13 +8,12 @@ import java.util.List;
 
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import at.jojokobi.donatengine.rendering.TileModel;
 import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public abstract class Tile implements BinarySerializable{
 	
-	private TileModel model;
+	private String model;
 	
 	public void onPlace (Level level) {
 		
@@ -28,7 +27,7 @@ public abstract class Tile implements BinarySerializable{
 		return true;
 	}
 	
-	public TileModel getModel () {
+	public String getModel () {
 		return model;
 	}
 
