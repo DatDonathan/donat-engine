@@ -126,7 +126,6 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 		boolean motionBefore = changedMotion;
 		if (isCollideSolid()) {
 			// Y
-			System.out.println("Y");
 			List<Collidable> yObjs = null;
 			if (y < 0) {
 				yObjs = level.getSolidInArea(getX(), getY() + y, getZ(), getWidth(), getHeight() - y, getLength(), getArea ());
@@ -165,7 +164,6 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 			}
 
 			// X
-			System.out.println("X");
 			List<Collidable> xObjs = null;
 			if (x < 0) {
 				xObjs = level.getSolidInArea(getX() + x, getY(), getZ(), getWidth() - x, getHeight(), getLength(), getArea ());
@@ -205,7 +203,6 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 
 			// Z
 			List<Collidable> zObjs = null;
-			System.out.println("Z");
 			if (z < 0) {
 				zObjs = level.getSolidInArea(getX(), getY(), getZ() + z, getWidth(), getHeight(), getLength() - z, getArea ());
 			} else {

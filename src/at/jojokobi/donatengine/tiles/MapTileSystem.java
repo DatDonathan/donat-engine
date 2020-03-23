@@ -86,7 +86,6 @@ public class MapTileSystem implements TileSystem {
 		int endTileX = (int) Math.ceil((x + width)/tileSize);
 		int endTileY = (int) Math.ceil((y + height)/tileSize);
 		int endTileZ = (int) Math.ceil((z + length)/tileSize);
-		System.out.println("[" + x + "/" + y + "/" + z + "/" + width + "/" + height + "/" + length + "] [" + tileX + "/" + tileY + "/" + tileZ + "/" + (endTileX - tileX) + "/" + (endTileY - tileY) + "/" + (endTileZ - tileZ) + "]");
 		return getTilesInArea(tileX, tileY, tileZ, endTileX - tileX, endTileY - tileY, endTileZ - tileZ, area);
 	}
 
