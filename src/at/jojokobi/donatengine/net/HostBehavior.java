@@ -126,14 +126,14 @@ public class HostBehavior implements MultiplayerBehavior {
 	@Override
 	public void onPlace(Tile tile, int tileX, int tileY, int tileZ, String area) {
 		for (ServerPacketType type : packetTypes) {
-			type.onPlaceTile(tile, tileX, tileY, tileZ, area);
+			packets.addAll(type.onPlaceTile(tile, tileX, tileY, tileZ, area));
 		}
 	}
 
 	@Override
 	public void onRemove(int tileX, int tileY, int tileZ, String area) {
 		for (ServerPacketType type : packetTypes) {
-			type.onRemoveTile(tileX, tileY, tileZ, area);
+			packets.addAll(type.onRemoveTile(tileX, tileY, tileZ, area));
 		}
 	}
 

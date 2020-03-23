@@ -50,9 +50,7 @@ public class ClientGameLogic implements GameLogic{
 		try {
 			while (data.available() > 0) {
 				ServerPacket packet = serialization.deserialize(ServerPacket.class, data);
-				synchronized (ClientGameLogic.this) {
-					packet.apply(level, game, serialization);
-				}
+				packet.apply(level, game, serialization);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

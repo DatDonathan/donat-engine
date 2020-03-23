@@ -22,10 +22,13 @@ import at.jojokobi.donatengine.net.LevelPropertyChangedPacket;
 import at.jojokobi.donatengine.net.LevelPropertyStateChangedPacket;
 import at.jojokobi.donatengine.net.MotionPacket;
 import at.jojokobi.donatengine.net.MovePacket;
+import at.jojokobi.donatengine.net.PlaceTilePacket;
 import at.jojokobi.donatengine.net.PropertyChangedPacket;
 import at.jojokobi.donatengine.net.PropertyStateChangedPacket;
 import at.jojokobi.donatengine.net.RemoveGUIPacket;
+import at.jojokobi.donatengine.net.RemoveTilePacket;
 import at.jojokobi.donatengine.net.SpawnPacket;
+import at.jojokobi.donatengine.net.TilePropertyChangePacket;
 import at.jojokobi.donatengine.objects.properties.list.AddChange;
 import at.jojokobi.donatengine.objects.properties.list.ClearChange;
 import at.jojokobi.donatengine.objects.properties.list.EntryPropertyChange;
@@ -90,6 +93,9 @@ public final class BinarySerialization {
 		idClassFactory.addClass(PropertyStateChangedPacket.class);
 		idClassFactory.addClass(RemoveGUIPacket.class);
 		idClassFactory.addClass(SpawnPacket.class);
+		idClassFactory.addClass(PlaceTilePacket.class);
+		idClassFactory.addClass(RemoveTilePacket.class);
+		idClassFactory.addClass(TilePropertyChangePacket.class);
 		
 		idClassFactory.addClass(AddChange.class);
 		idClassFactory.addClass(ClearChange.class);
