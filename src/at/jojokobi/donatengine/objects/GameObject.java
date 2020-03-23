@@ -4,7 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -120,19 +119,127 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 	}
 
 	public void move(double xMotion, double yMotion, double zMotion, double delta, Level level) {
+		double x = xMotion * delta;
+		double y = yMotion * delta;
+		double z = zMotion * delta;
 		boolean movedBefore = moved;
 		boolean motionBefore = changedMotion;
 		if (isCollideSolid()) {
-			Vector3D position = level.calcMotion(getX(), getY(), getZ(), area, getWidth(), getHeight(), getLength(), xMotion * delta, yMotion * delta, zMotion * delta, false, Arrays.asList(this));
-			setX(position.getX());
-			setY(position.getY());
-			setZ(position.getZ());
-			if (isPhysics()) {
-				Vector3D diff = new Vector3D(getX() + x, getY() + y, getZ() + z);
-				diff.subtract(position).multiply(-getBounce());
-				setxMotion(diff.getX());
-				setyMotion(diff.getY());
-				setzMotion(diff.getZ());
+			// Y
+			System.out.println("Y");
+			List<Collidable> yObjs = null;
+			if (y < 0) {
+				yObjs = level.getSolidInArea(getX(), getY() + y, getZ(), getWidth(), getHeight() - y, getLength(), getArea ());
+			} else {
+				yObjs = level.getSolidInArea(getX(), getY(), getZ(), getWidth(), getHeight() + y, getLength(), getArea());
+			}
+			yObjs.remove(this);
+			if (yObjs.isEmpty()) {
+				setY(getY() + y);
+			}
+			// Positive
+			else if (y > 0) {
+				Collidable yObj = yObjs.get(0);
+				for (int i = 1; i < yObjs.size(); i++) {
+					if (yObj.getY() > yObjs.get(i).getY()) {
+						yObj = yObjs.get(i);
+					}
+				}
+				setY(yObj.getY() - getHeight());
+				if (isPhysics()) {
+					setTotalYMotion(-yMotion * getBounce());
+				}
+			}
+			// Negative
+			else if (y < 0) {
+				Collidable yObj = yObjs.get(0);
+				for (int i = 1; i < yObjs.size(); i++) {
+					if (yObj.getY() + yObj.getHeight() < yObjs.get(i).getY() + yObjs.get(i).getHeight()) {
+						yObj = yObjs.get(i);
+					}
+				}
+				setY(yObj.getY() + yObj.getHeight());
+				if (isPhysics()) {
+					setTotalYMotion(-yMotion * getBounce());
+				}
+			}
+
+			// X
+			System.out.println("X");
+			List<Collidable> xObjs = null;
+			if (x < 0) {
+				xObjs = level.getSolidInArea(getX() + x, getY(), getZ(), getWidth() - x, getHeight(), getLength(), getArea ());
+			} else {
+				xObjs = level.getSolidInArea(getX(), getY(), getZ(), getWidth() + x, getHeight(), getLength(), getArea ());
+			}
+			xObjs.remove(this);
+			if (xObjs.isEmpty()) {
+				setX(getX() + x);
+			}
+			// Positive
+			else if (x > 0) {
+				Collidable xObj = xObjs.get(0);
+				for (int i = 1; i < xObjs.size(); i++) {
+					if (xObj.getX() > xObjs.get(i).getX()) {
+						xObj = xObjs.get(i);
+					}
+				}
+				setX(xObj.getX() - getWidth());
+				if (isPhysics()) {
+					setxMotion(-xMotion * getBounce());
+				}
+			}
+			// Negative
+			else if (x < 0) {
+				Collidable xObj = xObjs.get(0);
+				for (int i = 1; i < xObjs.size(); i++) {
+					if (xObj.getX() + xObj.getWidth() < xObjs.get(i).getX() + xObjs.get(i).getWidth()) {
+						xObj = xObjs.get(i);
+					}
+				}
+				setX(xObj.getX() + xObj.getWidth());
+				if (isPhysics()) {
+					setxMotion(-xMotion * getBounce());
+				}
+			}
+
+			// Z
+			List<Collidable> zObjs = null;
+			System.out.println("Z");
+			if (z < 0) {
+				zObjs = level.getSolidInArea(getX(), getY(), getZ() + z, getWidth(), getHeight(), getLength() - z, getArea ());
+			} else {
+				zObjs = level.getSolidInArea(getX(), getY(), getZ(), getWidth(), getHeight(), getLength() + z, getArea ());
+			}
+			zObjs.remove(this);
+			if (zObjs.isEmpty()) {
+				setZ(getZ() + z);
+			}
+			// Positive
+			else if (z > 0) {
+				Collidable zObj = zObjs.get(0);
+				for (int i = 1; i < zObjs.size(); i++) {
+					if (zObj.getZ() > zObjs.get(i).getZ()) {
+						zObj = zObjs.get(i);
+					}
+				}
+				setZ(zObj.getZ() - getLength());
+				if (isPhysics()) {
+					setzMotion(-zMotion * getBounce());
+				}
+			}
+			// Negative
+			else if (z < 0) {
+				Collidable zObj = zObjs.get(0);
+				for (int i = 1; i < zObjs.size(); i++) {
+					if (zObj.getZ() + zObj.getLength() < zObjs.get(i).getZ() + zObjs.get(i).getLength()) {
+						zObj = zObjs.get(i);
+					}
+				}
+				setZ(zObj.getZ() + zObj.getLength());
+				if (isPhysics()) {
+					setzMotion(-zMotion * getBounce());
+				}
 			}
 		} else {
 			setX(getX() + x);

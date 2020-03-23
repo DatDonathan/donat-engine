@@ -48,9 +48,9 @@ public class MapTileSystem implements TileSystem {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				for (int z = 0; z < length; z++) {
-					Tile tile = getTile(tileX, tileY, tileZ, area);
+					Tile tile = getTile(tileX + x, tileY + y, tileZ + z, area);
 					if (tile != null) {
-						instances.add(new TileInstance(this, new TilePosition(tileX, tileY, tileZ, area), tile));
+						instances.add(new TileInstance(this, new TilePosition(tileX + x, tileY + y, tileZ + z, area), tile));
 					}
 				}
 			}
@@ -80,7 +80,14 @@ public class MapTileSystem implements TileSystem {
 	@Override
 	public List<TileInstance> getTilesInAbsoluteArea(double x, double y, double z, double width, double height, double length,
 			String area) {
-		return getTilesInArea((int) (x/tileSize), (int) (y/tileSize), (int) (z/tileSize), (int) Math.ceil(width/tileSize), (int) Math.ceil(height/tileSize), (int) Math.ceil(length/tileSize), area);
+		int tileX = (int) (x/tileSize);
+		int tileY = (int) (y/tileSize);
+		int tileZ = (int) (z/tileSize);
+		int endTileX = (int) Math.ceil((x + width)/tileSize);
+		int endTileY = (int) Math.ceil((y + height)/tileSize);
+		int endTileZ = (int) Math.ceil((z + length)/tileSize);
+		System.out.println("[" + x + "/" + y + "/" + z + "/" + width + "/" + height + "/" + length + "] [" + tileX + "/" + tileY + "/" + tileZ + "/" + (endTileX - tileX) + "/" + (endTileY - tileY) + "/" + (endTileZ - tileZ) + "]");
+		return getTilesInArea(tileX, tileY, tileZ, endTileX - tileX, endTileY - tileY, endTileZ - tileZ, area);
 	}
 
 	@Override
