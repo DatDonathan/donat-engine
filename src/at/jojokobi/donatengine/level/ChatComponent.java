@@ -8,6 +8,7 @@ import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.properties.ObservableObjectProperty;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.objects.properties.list.ObservableList;
+import at.jojokobi.donatengine.platform.GamePlatform;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.rendering.RenderShape;
 import at.jojokobi.donatengine.rendering.RenderText;
@@ -32,7 +33,7 @@ public class ChatComponent implements LevelComponent{
 		List<RenderShape> shapes = new ArrayList<>();
 		int i = 0;
 		for (String string : messages.get()) {
-			shapes.add(new RenderText(new Vector2D(5, cam.getViewHeight() - 5 - i * 16), string,  new FixedStyle().reset().setFont(font).setFontColor(Color.BLACK)));
+			shapes.add(new RenderText(new Vector2D(5, cam.getViewHeight() - 5 - (i + 1)  * GamePlatform.getFontSystem().calculateTextDimensions("Tg", font).getY()), string,  new FixedStyle().reset().setFont(font).setFontColor(Color.BLACK)));
 			i++;
 		}
 		data.add(new ScreenCanvasRenderData(new Vector2D(0, 0), shapes));
