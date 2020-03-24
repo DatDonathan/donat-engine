@@ -10,18 +10,18 @@ import at.jojokobi.donatengine.rendering.RenderData;
 
 public class FollowCameraComponent implements ObjectComponent {
 	
-	private long clientId;
+	private PlayerComponent component;
 	private double maxBorderDst;
 
-	public FollowCameraComponent(long clientId, double maxBorderDst) {
+	public FollowCameraComponent(PlayerComponent component, double maxBorderDst) {
 		super();
-		this.clientId = clientId;
+		this.component = component;
 		this.maxBorderDst = maxBorderDst;
 	}
 
 	@Override
 	public void update(GameObject object, Level level, UpdateEvent event) {
-		if (level.getClientId() == clientId) {
+		if (level.getClientId() == component.getClient()) {
 			event.getGame().getGameView().getCameraHandler().doCameraFollow(object, level, level.getCamera(), maxBorderDst);
 		}
 	}
