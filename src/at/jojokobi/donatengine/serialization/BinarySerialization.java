@@ -11,6 +11,7 @@ import at.jojokobi.donatengine.gui.actions.ChangeGUIAction;
 import at.jojokobi.donatengine.gui.actions.ChangeLogicAction;
 import at.jojokobi.donatengine.gui.actions.ChatAction;
 import at.jojokobi.donatengine.gui.actions.StopGameAction;
+import at.jojokobi.donatengine.level.ChatComponent;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.net.AddAreaPacket;
 import at.jojokobi.donatengine.net.AddGUIPacket;
@@ -113,6 +114,8 @@ public final class BinarySerialization {
 		
 		idClassFactory.addClass(Vector2D.class);
 		idClassFactory.addClass(Vector3D.class);
+		
+		idClassFactory.addClass(ChatComponent.Message.class);
 		
 	}
 	
