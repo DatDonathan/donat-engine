@@ -31,7 +31,10 @@ public class MapTileSystem implements TileSystem {
 	}
 
 	private void updateTile(int tileX, int tileY, int tileZ, String area) {
-		getTile(tileX, tileY, tileZ, area).update(this, tileX, tileY, tileZ, area);
+		Tile tile = getTile(tileX, tileY, tileZ, area);
+		if (tile != null) {
+			tile.update(this, tileX, tileY, tileZ, area);
+		}
 	}
 
 	@Override

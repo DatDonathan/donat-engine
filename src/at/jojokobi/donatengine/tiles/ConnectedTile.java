@@ -22,10 +22,10 @@ public abstract class ConnectedTile extends Tile {
 		if (isCompatible(system.getTile(tileX + 1, tileY, tileZ, area))) {
 			faces.add(Direction.RIGHT);
 		}
-		if (isCompatible(system.getTile(tileX, tileY - 1, tileZ, area))) {
+		if (isCompatible(system.getTile(tileX, tileY + 1, tileZ, area))) {
 			faces.add(Direction.UP);
 		}
-		if (isCompatible(system.getTile(tileX, tileY + 1, tileZ, area))) {
+		if (isCompatible(system.getTile(tileX, tileY - 1, tileZ, area))) {
 			faces.add(Direction.DOWN);
 		}
 		if (isCompatible(system.getTile(tileX, tileY, tileZ - 1, area))) {
