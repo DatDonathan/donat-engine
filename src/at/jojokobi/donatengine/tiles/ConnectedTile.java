@@ -16,25 +16,29 @@ public abstract class ConnectedTile extends Tile {
 	public void update(TileSystem system, int tileX, int tileY, int tileZ, String area) {
 		super.update(system, tileX, tileY, tileZ, area);
 		Set<Direction> faces = new HashSet<Direction>();
-		if (system.getTile(getClass(), tileX - 1, tileY, tileZ, area) != null) {
+		if (isCompatible(system.getTile(tileX - 1, tileY, tileZ, area))) {
 			faces.add(Direction.LEFT);
 		}
-		if (system.getTile(getClass(), tileX + 1, tileY, tileZ, area) != null) {
+		if (isCompatible(system.getTile(tileX + 1, tileY, tileZ, area))) {
 			faces.add(Direction.RIGHT);
 		}
-		if (system.getTile(getClass(), tileX, tileY - 1, tileZ, area) != null) {
+		if (isCompatible(system.getTile(tileX, tileY - 1, tileZ, area))) {
 			faces.add(Direction.UP);
 		}
-		if (system.getTile(getClass(), tileX, tileY + 1, tileZ, area) != null) {
+		if (isCompatible(system.getTile(tileX, tileY + 1, tileZ, area))) {
 			faces.add(Direction.DOWN);
 		}
-		if (system.getTile(getClass(), tileX, tileY, tileZ - 1, area) != null) {
+		if (isCompatible(system.getTile(tileX, tileY, tileZ - 1, area))) {
 			faces.add(Direction.BACK);
 		}
-		if (system.getTile(getClass(), tileX, tileY, tileZ + 1, area) != null) {
+		if (isCompatible(system.getTile(tileX, tileY, tileZ + 1, area))) {
 			faces.add(Direction.FORWARD);
 		}
 		setModel(models.getModel(faces));
+	}
+	
+	public boolean isCompatible (Tile tile) {
+		return getClass().isInstance(tile);
 	}
 
 }
