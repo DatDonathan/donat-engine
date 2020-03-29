@@ -35,6 +35,14 @@ public abstract class Tile implements BinarySerializable{
 	public String getModel () {
 		return model;
 	}
+	
+	protected void setModel(String model) {
+		this.model = model;
+	}
+
+	public void update (TileSystem system, int tileX, int tileY, int tileZ, String area) {
+		
+	}
 
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException {
