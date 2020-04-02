@@ -55,6 +55,7 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 	private boolean alwaysUpdate = false;
 	
 	private List<ObjectComponent> components = new ArrayList<>();
+	private List<String> tags = new ArrayList<>();
 
 
 	public GameObject(double x, double y, double z, String area, String renderTag) {
@@ -624,6 +625,14 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 		return new Vector3D(xMotion, getTotalYMotion(), zMotion);
 	}
 	
+	public List<String> getTags() {
+		return new ArrayList<>(tags);
+	}
+	
+	public void addTag (String tag) {
+		tags.add(tag);
+	}
+
 	public <T extends GameObject> List<T> getObjectsInDirection (Level level,Vector3D dir, double distance, Class<T> clazz) {
 		double startX = getX();
 		double startY = getY();
