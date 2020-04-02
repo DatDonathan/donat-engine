@@ -10,14 +10,10 @@ public class Path {
 	
 	private List<Vector3D> velocities = new ArrayList<>();
 	
-	
-
 	public Path(Vector3D... velocities) {
 		super();
 		this.velocities.addAll(Arrays.asList(velocities));
 	}
-
-
 
 	public List<Vector3D> getVelocities() {
 		return velocities;

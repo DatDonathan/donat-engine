@@ -532,6 +532,25 @@ public abstract class Level {
 	public long getClientId() {
 		return clientId;
 	}
+	
+	public List<GameObject> getObjectsWithTag (String tag) {
+		List<GameObject> objs = new ArrayList<GameObject>();
+		for (GameObject obj : getObjects()) {
+			if (obj.getTags().contains(tag)) {
+				objs.add(obj);
+			}
+		}
+		return objs;
+	}
+	
+	public GameObject getObjectWithTag (String tag) {
+		for (GameObject obj : getObjects()) {
+			if (obj.getTags().contains(tag)) {
+				return obj;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 
