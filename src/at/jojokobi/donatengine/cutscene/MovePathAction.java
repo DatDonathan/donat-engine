@@ -1,32 +1,27 @@
 package at.jojokobi.donatengine.cutscene;
 
+
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.objects.GameObject;
+import at.jojokobi.donatengine.objects.path.Path;
+import at.jojokobi.donatengine.objects.path.PathmoverComponent;
 
 public class MovePathAction implements CutsceneAction {
 	
 	private String tag;
+	private Path path;
 
 	@Override
 	public ActionProgress execute(Level level) {
 		GameObject obj = level.getObjectWithTag(tag);
-		if (obj != null) {
-			
+		PathmoverComponent comp;
+		ActionProgressImpl prog = new ActionProgressImpl();
+		if (obj != null && (comp = obj.getComponent(PathmoverComponent.class)) != null) {
+			comp.move(obj, path).addListener(() -> prog.finish());
 		}
-		ActionProgress prog = new ActionProgress() {
-			
-			private Runnable runnable;
-			
-			@Override
-			public void setOnFinish(Runnable runnable) {
-				this.runnable = runnable;
-			}
-			
-			@Override
-			public boolean isFinished() {
-				return false;
-			}
-		};
+		else {
+			prog.finish();
+		}
 		
 		return prog;
 	}
