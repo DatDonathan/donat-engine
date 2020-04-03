@@ -11,6 +11,12 @@ public class MovePathAction implements CutsceneAction {
 	private String tag;
 	private Path path;
 
+	public MovePathAction(String tag, Path path) {
+		super();
+		this.tag = tag;
+		this.path = path;
+	}
+
 	@Override
 	public ActionProgress execute(Level level) {
 		GameObject obj = level.getObjectWithTag(tag);

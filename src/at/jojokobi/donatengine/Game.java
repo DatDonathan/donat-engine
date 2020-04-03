@@ -3,6 +3,7 @@ package at.jojokobi.donatengine;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import at.jojokobi.donatengine.audio.AudioSystem;
+import at.jojokobi.donatengine.cutscene.CutsceneHandler;
 import at.jojokobi.donatengine.input.Input;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.rendering.GameView;
@@ -18,6 +19,7 @@ public class Game implements Loopable {
 	private GamePresenceHandler gamePresenceHandler = new GamePresenceHandler();
 	private SerializationWrapper serialization;
 	private GameView gameView;
+	private CutsceneHandler cutsceneHandler = new CutsceneHandler();
 	
 	
 	public Game(GameLogic logic, Input localInput, AudioSystem audioSystem, SerializationWrapper serialization, GameView gameView) {
@@ -90,6 +92,10 @@ public class Game implements Loopable {
 
 	public GameView getGameView() {
 		return gameView;
+	}
+
+	public CutsceneHandler getCutsceneHandler() {
+		return cutsceneHandler;
 	}
 	
 }

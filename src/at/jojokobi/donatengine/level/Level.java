@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import at.jojokobi.donatengine.cutscene.CutscenePlayer;
 import at.jojokobi.donatengine.event.StartEvent;
 import at.jojokobi.donatengine.event.StopEvent;
 import at.jojokobi.donatengine.event.UpdateEvent;
@@ -84,6 +85,7 @@ public abstract class Level {
 	private MultiplayerBehavior behavior;
 	private long clientId = 0;
 	private Camera camera = new Camera(0, 0, 0, 1280, 768);
+	private CutscenePlayer cutscenePlayer = new CutscenePlayer();
 	
 	private TileSystem tileSystem;
 
@@ -625,5 +627,9 @@ public abstract class Level {
 	public TileSystem getTileSystem() {
 		return tileSystem;
 	}
+
+	public CutscenePlayer getCutscenePlayer() {
+		return cutscenePlayer;
+	}	
 
 }
