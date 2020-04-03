@@ -37,7 +37,7 @@ public class PathMovement {
 	}
 
 	public boolean isFinished () {
-		return path == null;
+		return goal == null;
 	}
 	
 	public void addListener (Runnable runnable) {
