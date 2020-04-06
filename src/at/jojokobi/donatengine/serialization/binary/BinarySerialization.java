@@ -1,4 +1,4 @@
-package at.jojokobi.donatengine.serialization;
+package at.jojokobi.donatengine.serialization.binary;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -41,6 +41,7 @@ import at.jojokobi.donatengine.objects.properties.list.RemoveIndexChange;
 import at.jojokobi.donatengine.objects.properties.list.SetChange;
 import at.jojokobi.donatengine.objects.properties.map.ObservableMap;
 import at.jojokobi.donatengine.objects.properties.map.PutChange;
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.util.Vector2D;
 import at.jojokobi.donatengine.util.Vector3D;
 

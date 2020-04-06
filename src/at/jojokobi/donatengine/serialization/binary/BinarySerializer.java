@@ -1,8 +1,10 @@
-package at.jojokobi.donatengine.serialization;
+package at.jojokobi.donatengine.serialization.binary;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+
+import at.jojokobi.donatengine.serialization.SerializationWrapper;
 
 public interface BinarySerializer<T> {
 

@@ -11,7 +11,7 @@ import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.objects.GameObject;
-import at.jojokobi.donatengine.serialization.BinarySerializable;
+import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
 import at.jojokobi.donatengine.tiles.Tile;
 
 public class SingleplayerBehavior implements MultiplayerBehavior {

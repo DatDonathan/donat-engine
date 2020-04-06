@@ -17,8 +17,8 @@ import at.jojokobi.donatengine.input.SimpleInput;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.net.ClientPacket;
 import at.jojokobi.donatengine.rendering.RenderScene;
-import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
 import at.jojokobi.netutil.server.Server;
 
 public class SimpleServerGameLogic implements GameLogic {

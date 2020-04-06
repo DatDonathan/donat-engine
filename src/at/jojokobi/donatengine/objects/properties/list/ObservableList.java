@@ -14,8 +14,8 @@ import java.util.ListIterator;
 
 import at.jojokobi.donatengine.objects.properties.ObservableObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
 
 public class ObservableList<E> implements ObservableObject, List<E>, BinarySerializable {
 	

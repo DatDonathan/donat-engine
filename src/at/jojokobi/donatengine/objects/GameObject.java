@@ -12,8 +12,8 @@ import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
 import at.jojokobi.donatengine.rendering.RenderData;
 import at.jojokobi.donatengine.rendering.ModelRenderData;
-import at.jojokobi.donatengine.serialization.BinarySerializable;
 import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
 import at.jojokobi.donatengine.util.Position;
 import at.jojokobi.donatengine.util.Vector3D;
 

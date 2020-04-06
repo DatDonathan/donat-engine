@@ -1,4 +1,4 @@
-package at.jojokobi.donatengine.serialization;
+package at.jojokobi.donatengine.serialization.binary;
 
 import java.io.DataInput;
 import java.io.DataOutput;
