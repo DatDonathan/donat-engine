@@ -44,7 +44,7 @@ public class Game implements Loopable {
 			localInput.updateBuffers();
 			RenderScene scene = new RenderScene();
 			logic.render(scene);
-			gameView.render(scene.getData(), scene.getTileSystem(), scene.getCamera());
+			gameView.render(scene.getData(), scene.getTileSystem(), scene.getCamera(), scene.getAnimationTimer());
 		}
 		catch (Exception e) {
 			e.printStackTrace();

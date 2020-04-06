@@ -11,6 +11,7 @@ public class RenderScene {
 	private List<RenderData> data = new LinkedList<RenderData>();
 	private Camera camera;
 	private TileSystem tileSystem;
+	private double animationTimer;
 	
 		
 	public RenderScene() {
@@ -34,6 +35,14 @@ public class RenderScene {
 	}
 	public void setTileSystem(TileSystem tileSystem) {
 		this.tileSystem = tileSystem;
+	}
+
+	public double getAnimationTimer() {
+		return animationTimer;
+	}
+
+	public void setAnimationTimer(double animationTimer) {
+		this.animationTimer = animationTimer;
 	}
 
 }

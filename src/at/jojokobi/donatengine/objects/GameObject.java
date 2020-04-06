@@ -54,6 +54,8 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 
 	private boolean alwaysUpdate = false;
 	
+	private double animationTimer;
+	
 	private List<ObjectComponent> components = new ArrayList<>();
 	private List<String> tags = new ArrayList<>();
 
@@ -109,6 +111,7 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 			move(xMotion, getTotalYMotion(), zMotion, event.getDelta(), level);
 		}
 		components.forEach((c) -> c.update(this, level, event));
+		animationTimer += event.getDelta();
 	}
 	
 	public void clientUpdate(Level level, UpdateEvent event) {
@@ -350,7 +353,7 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 
 		
 		if (renderTag != null) {
-			data.add(new ModelRenderData(new Position(getPositionVector().subtract(xOffset, yOffset, zOffset), getArea()), renderTag));
+			data.add(new ModelRenderData(new Position(getPositionVector().subtract(xOffset, yOffset, zOffset), getArea()), renderTag, animationTimer));
 		}
 		
 		components.forEach((c) -> c.renderAfter(this, data, cam, level));
@@ -713,6 +716,14 @@ public abstract class GameObject implements BinarySerializable, Collidable{
 		return level.getCollidablesInArea(startX, startY, startZ, width, height, length, getArea());
 	}
 	
+	public double getAnimationTimer() {
+		return animationTimer;
+	}
+
+	public void setAnimationTimer(double animationTimer) {
+		this.animationTimer = animationTimer;
+	}
+
 	@Override
 	public void serialize(DataOutput buffer, SerializationWrapper serialization) throws IOException{
 		buffer.writeDouble(getX());

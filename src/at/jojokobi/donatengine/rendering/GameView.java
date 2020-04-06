@@ -10,7 +10,7 @@ public interface GameView {
 	
 	public void bind (TileSystem tileSystem);
 	
-	public void render (List<RenderData> data, TileSystem tileSystem, Camera cam);
+	public void render (List<RenderData> data, TileSystem tileSystem, Camera cam, double timer);
 	
 	public void setTitle (String title);
 	

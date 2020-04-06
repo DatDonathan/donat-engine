@@ -88,6 +88,7 @@ public abstract class Level {
 	private CutscenePlayer cutscenePlayer = new CutscenePlayer();
 	
 	private TileSystem tileSystem;
+	private double timer;
 
 //	private long nextId = 1;
 
@@ -139,6 +140,7 @@ public abstract class Level {
 		for (Pair<Long, GUIAction> action : guiSystem.update(this, camera.getViewWidth(), camera.getViewHeight(), event)) {
 			behavior.processGUIAction(this, event.getGame(), action.getKey(), action.getValue());
 		}
+		timer += event.getDelta();
 	}
 
 	public void render(List<RenderData> data, boolean renderInvisible) {
@@ -630,6 +632,10 @@ public abstract class Level {
 
 	public CutscenePlayer getCutscenePlayer() {
 		return cutscenePlayer;
-	}	
+	}
+
+	public double getTimer() {
+		return timer;
+	}
 
 }
