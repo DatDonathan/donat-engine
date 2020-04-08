@@ -11,8 +11,8 @@ import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.net.ServerPacket;
 import at.jojokobi.donatengine.rendering.RenderScene;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 import at.jojokobi.netutil.client.Client;
 
 public class ClientGameLogic implements GameLogic{

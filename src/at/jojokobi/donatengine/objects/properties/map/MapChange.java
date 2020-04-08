@@ -2,8 +2,8 @@ package at.jojokobi.donatengine.objects.properties.map;
 
 import java.util.Map;
 
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 
 public interface MapChange extends BinarySerializable {
 	

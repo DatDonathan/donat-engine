@@ -8,7 +8,7 @@ import at.jojokobi.donatengine.input.Input;
 import at.jojokobi.donatengine.presence.GamePresenceHandler;
 import at.jojokobi.donatengine.rendering.GameView;
 import at.jojokobi.donatengine.rendering.RenderScene;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 
 public class Game implements Loopable {
 	

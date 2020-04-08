@@ -8,8 +8,8 @@ import java.util.List;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.rendering.BackgroundRenderData;
 import at.jojokobi.donatengine.rendering.RenderData;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 
 public class LevelArea implements BinarySerializable{
 	

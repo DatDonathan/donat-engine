@@ -4,8 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
-
 public interface BinarySerializer<T> {
 
 	public void serialize (T t, DataOutput buffer, SerializationWrapper serialization) throws IOException;

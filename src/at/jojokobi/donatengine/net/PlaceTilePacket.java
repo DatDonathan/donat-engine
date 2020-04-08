@@ -10,7 +10,7 @@ import java.util.List;
 import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.objects.GameObject;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 import at.jojokobi.donatengine.tiles.Tile;
 import at.jojokobi.donatengine.tiles.TileInstance;
 

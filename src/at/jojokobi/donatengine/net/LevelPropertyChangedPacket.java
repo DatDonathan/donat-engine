@@ -11,7 +11,7 @@ import at.jojokobi.donatengine.Game;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 
 public class LevelPropertyChangedPacket implements ServerPacket {
 

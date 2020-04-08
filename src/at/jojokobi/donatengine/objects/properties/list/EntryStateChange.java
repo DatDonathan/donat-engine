@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 import at.jojokobi.donatengine.objects.properties.ObservableObject;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 
 public class EntryStateChange implements ListChange{
 	

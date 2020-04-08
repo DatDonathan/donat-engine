@@ -4,8 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
-
 public class BinarySerializationWrapper implements SerializationWrapper {
 	
 	private ClassFactory fact;

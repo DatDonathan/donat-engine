@@ -11,7 +11,7 @@ import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.input.InputHandler;
 import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 
 public class GUIActionPacket implements ClientPacket{
 	

@@ -13,8 +13,8 @@ import java.util.Set;
 
 import at.jojokobi.donatengine.objects.properties.ObservableObject;
 import at.jojokobi.donatengine.objects.properties.ObservableProperty;
-import at.jojokobi.donatengine.serialization.SerializationWrapper;
 import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
+import at.jojokobi.donatengine.serialization.binary.SerializationWrapper;
 
 public class ObservableMap<K, V> implements ObservableObject, BinarySerializable, Map<K, V>{
 	
