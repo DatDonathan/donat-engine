@@ -9,20 +9,30 @@ package at.jojokobi.donatengine.serialization.structured;
  */
 public interface SerializedData {
 	
-	public Object get (String key);
+	public Object getObject (String key);
 	
-	public <T> T get (String key, Class<T> clazz);
-	
-	public int getInt (String key);
+	public <T> T getObject (String key, Class<T> clazz);
 	
 	public String getString (String key);
 	
+	public short getShort (String key);
+	
+	public byte geByte (String key);
+	
+	public int getInt (String key);
+	
 	public double getDouble (String key);
+	
+	public float getFloat (String key);
 	
 	public boolean getBoolean (String key);
 	
 	public long getLong (String key);
 	
-	public void put (Object object);
+	public char getCharacter (String key);
+	
+	public <T extends Enum<T>> T getEnum (String key, Class<T> clazz);
+	
+	public void put (String string, Object object);
 
 }

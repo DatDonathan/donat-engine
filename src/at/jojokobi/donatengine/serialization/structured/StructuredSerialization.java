@@ -4,20 +4,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class StrucuredSerialization {
+public final class StructuredSerialization {
 
-	private static StrucuredSerialization instance;
+	private static StructuredSerialization instance;
 
-	public static StrucuredSerialization getInstance() {
+	public static StructuredSerialization getInstance() {
 		if (instance == null) {
-			instance = new StrucuredSerialization();
+			instance = new StructuredSerialization();
 		}
 		return instance;
 	}
 
 	private Map<Class<?>, StructuredSerializer<?>> serializers = new HashMap<>();
 
-	private StrucuredSerialization() {
+	private StructuredSerialization() {
 
 	}
 
