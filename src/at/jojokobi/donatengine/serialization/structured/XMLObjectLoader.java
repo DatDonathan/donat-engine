@@ -9,15 +9,63 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class XMLObjectLoader implements ObjectLoader{
 
+	private static final String CLASS_ATTRIBUTE = "__class__";
+	
 	@Override
 	public void save(OutputStream out, Object obj) throws IOException {
-		
+		try (out) {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			factory.setNamespaceAware(true);
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.newDocument();
+			
+			//Serialize
+			XMLSerializationEntry entry = new XMLSerializationEntry();
+			StructuredSerialization.getInstance().serialize(obj, entry);
+			
+			//Create node tree
+			Element element = document.createElement(obj == null ? "null" : obj.getClass().getSimpleName().toLowerCase());
+			toElement(element, document, entry);
+			document.appendChild(element);
+			
+			//Write
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			DOMSource source = new DOMSource(document);
+			StreamResult result = new StreamResult(out);
+			transformer.transform(source, result);
+		} catch (ParserConfigurationException | TransformerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void toElement (Element element, Document document, XMLSerializationEntry entry) {
+		for (var e : entry.getData().getPrimitives().entrySet()) {
+			Element elem = document.createElement(e.getKey());
+			elem.setTextContent(e.getValue());
+			element.appendChild(elem);
+		}
+		for (var e : entry.getData().getObjects().entrySet()) {
+			Element elem = document.createElement(e.getKey());
+			toElement(elem, document, e.getValue());
+			element.appendChild(elem);
+		}
 	}
 
 	@Override
@@ -29,20 +77,38 @@ public class XMLObjectLoader implements ObjectLoader{
 			Document document = builder.parse(in);
 			document.getDocumentElement().normalize();
 			
-			
-		} catch (ParserConfigurationException | SAXException e) {
+			//Build tree
+			XMLSerializationEntry entry = load(document.getDocumentElement());
+			return StructuredSerialization.getInstance().deserialize(clazz, entry);
+		} catch (ParserConfigurationException | SAXException | ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new IOException(e);
 		}
-		return null;
+	}
+	
+	private XMLSerializationEntry load (Element element) throws ClassNotFoundException {
+		XMLSerializationEntry entry = new XMLSerializationEntry();
+		entry.setSerializedClass(Class.forName(element.getAttribute(CLASS_ATTRIBUTE)));
+		NodeList list = element.getChildNodes();
+		for (int i = 0; i < list.getLength(); i++) {
+			Node node = list.item(0);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				if (((Element) node).getChildNodes().getLength() > 0) {
+					entry.getData().putEntry(node.getNodeName(), load((Element) node));
+				} else {
+					entry.getData().put(node.getNodeName(), node.getNodeValue());
+				}
+			}
+		}
+		return entry;
 	}
 
 }
 
-class XMLSerialitionEntry implements SerializationEntry {
+class XMLSerializationEntry implements SerializationEntry {
 	
 	private Class<?> clazz;
-	private SerializedData data = new XMLSerializationData();
+	private XMLSerializationData data = new XMLSerializationData();
 	
 	
 	@Override
@@ -54,30 +120,25 @@ class XMLSerialitionEntry implements SerializationEntry {
 		this.clazz = clazz;
 	}
 	@Override
-	public SerializedData getData() {
+	public XMLSerializationData getData() {
 		return data;
 	}
-	
-	
 	
 }
 
 class XMLSerializationData implements SerializedData {
 	
 	private Map<String, String> primitives = new HashMap<String, String>();
-	private Map<String, SerializationEntry> objects = new HashMap<String, SerializationEntry>();
+	private Map<String, XMLSerializationEntry> objects = new HashMap<String, XMLSerializationEntry>();
 
 	@Override
 	public Object getObject(String key) {
-		return objects.get(key);
+		return StructuredSerialization.getInstance().deserialize(Object.class, (SerializationEntry) objects.get(key));
 	}
 
 	@Override
 	public <T> T getObject(String key, Class<T> clazz) {
-		if (objects.get(key) instanceof SerializationEntry) {
-			return StructuredSerialization.getInstance().deserialize(clazz, (SerializationEntry) objects.get(key));
-		}
-		return null;
+		return StructuredSerialization.getInstance().deserialize(clazz, (SerializationEntry) objects.get(key));
 	}
 
 	@Override
@@ -117,10 +178,14 @@ class XMLSerializationData implements SerializedData {
 			primitives.put(key, object + "");
 		}
 		else {
-			SerializationEntry entry = new XMLSerialitionEntry();
+			XMLSerializationEntry entry = new XMLSerializationEntry();
 			StructuredSerialization.getInstance().serialize(object, entry);
 			objects.put(key, entry);
 		}
+	}
+	
+	void putEntry (String key, XMLSerializationEntry entry) {
+		objects.put(key, entry);
 	}
 
 	@Override
@@ -146,6 +211,14 @@ class XMLSerializationData implements SerializedData {
 	@Override
 	public <T extends Enum<T>> T getEnum(String key, Class<T> clazz) {
 		return Enum.valueOf(clazz, primitives.get(key) + "");
+	}
+
+	Map<String, String> getPrimitives() {
+		return primitives;
+	}
+
+	Map<String, XMLSerializationEntry> getObjects() {
+		return objects;
 	}
 	
 }
