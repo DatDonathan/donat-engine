@@ -77,18 +77,7 @@ public class XMLObjectLoader implements ObjectLoader{
 			
 			//Build tree
 			SerializedValue entry = load(document.getDocumentElement());
-			return new PreloadedObject<T>() {
-
-				@Override
-				public T create() {
-					return entry.get(clazz);
-				}
-
-				@Override
-				public void save(OutputStream out) throws IOException {
-					XMLObjectLoader.this.save(out, entry);
-				}
-			};
+			return preload(clazz, entry);
 		} catch (ParserConfigurationException | SAXException | ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new IOException(e);
@@ -152,6 +141,26 @@ public class XMLObjectLoader implements ObjectLoader{
 			value =  new SerializedObject(entry);
 		}
 		return value;
+	}
+
+	@Override
+	public <T> PreloadedObject<T> preload(T t, Class<T> clazz) {
+		return preload(clazz, serializeValue(t));		
+	}
+	
+	private <T> PreloadedObject<T> preload (Class<T> clazz, SerializedValue entry) {
+		return new PreloadedObject<T>() {
+
+			@Override
+			public T create() {
+				return entry.get(clazz);
+			}
+
+			@Override
+			public void save(OutputStream out) throws IOException {
+				XMLObjectLoader.this.save(out, entry);
+			}
+		};
 	}
 
 }
