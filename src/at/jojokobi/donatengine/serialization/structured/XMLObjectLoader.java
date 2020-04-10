@@ -26,7 +26,10 @@ import org.xml.sax.SAXException;
 
 public class XMLObjectLoader implements ObjectLoader{
 
-	private static final String CLASS_ATTRIBUTE = "__class__";
+	public static final String CLASS_ATTRIBUTE = "__class__";
+	public static final String LIST_ATTRIBUTE = "__list__";
+	public static final String NULL_ATTRIBUTE = "__null__";
+	public static final String LIST_ENTRY_TAG = "entry";
 	
 	@Override
 	public void save(OutputStream out, Object obj) throws IOException {
@@ -42,7 +45,7 @@ public class XMLObjectLoader implements ObjectLoader{
 			
 			//Create node tree
 			Element element = document.createElement(obj == null ? "null" : obj.getClass().getSimpleName().toLowerCase());
-			toElement(element, document, entry);
+			serializeValue(entry).toElement(document, element);
 			document.appendChild(element);
 			
 			//Write
@@ -56,19 +59,6 @@ public class XMLObjectLoader implements ObjectLoader{
 			e.printStackTrace();
 		}
 	}
-	
-	public void toElement (Element element, Document document, XMLSerializationEntry entry) {
-		for (var e : entry.getData().getPrimitives().entrySet()) {
-			Element elem = document.createElement(e.getKey());
-			elem.setTextContent(e.getValue());
-			element.appendChild(elem);
-		}
-		for (var e : entry.getData().getObjects().entrySet()) {
-			Element elem = document.createElement(e.getKey());
-			toElement(elem, document, e.getValue());
-			element.appendChild(elem);
-		}
-	}
 
 	@Override
 	public <T> T load(InputStream in, Class<T> clazz) throws IOException {
@@ -80,29 +70,71 @@ public class XMLObjectLoader implements ObjectLoader{
 			document.getDocumentElement().normalize();
 			
 			//Build tree
-			XMLSerializationEntry entry = load(document.getDocumentElement());
-			return StructuredSerialization.getInstance().deserialize(clazz, entry);
+			SerializedValue entry = load(document.getDocumentElement());
+			return entry.get(clazz);
 		} catch (ParserConfigurationException | SAXException | ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new IOException(e);
 		}
 	}
 	
-	private XMLSerializationEntry load (Element element) throws ClassNotFoundException {
-		XMLSerializationEntry entry = new XMLSerializationEntry();
-		entry.setSerializedClass(Class.forName(element.getAttribute(CLASS_ATTRIBUTE)));
+	private SerializedValue load (Element element) throws ClassNotFoundException {
+		SerializedValue value = null;
 		NodeList list = element.getChildNodes();
-		for (int i = 0; i < list.getLength(); i++) {
-			Node node = list.item(0);
-			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				if (((Element) node).getChildNodes().getLength() > 0) {
-					entry.getData().putEntry(node.getNodeName(), load((Element) node));
-				} else {
-					entry.getData().put(node.getNodeName(), node.getNodeValue());
+		if (element.getAttribute(NULL_ATTRIBUTE) != null) {
+			value = new SerializeNullValue();
+		}
+		else if (element.getAttribute(LIST_ATTRIBUTE) != null) {
+			List<SerializedValue> values = new ArrayList<SerializedValue>();
+			for (int i = 0; i < list.getLength(); i++) {
+				Node node = list.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					values.add(load(element));
 				}
 			}
+			value = new SerializedList(values);
 		}
-		return entry;
+		else if (element.getAttribute(CLASS_ATTRIBUTE) != null) {
+			XMLSerializationEntry entry = new XMLSerializationEntry();
+			entry.setSerializedClass(Class.forName(element.getAttribute(CLASS_ATTRIBUTE)));
+			for (int i = 0; i < list.getLength(); i++) {
+				Node node = list.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					entry.getData().putValue(node.getNodeName(), load(element));
+				}
+			}
+			value = new SerializedObject(entry);
+		}
+		else {
+			value = new SerializedString(element.getTextContent());
+		}
+		return value;
+	}
+	
+	static SerializedValue serializeValue (Object object) {
+		SerializedValue value = null;
+		if (object == null) {
+			value = new SerializeNullValue();
+		}
+		else if (object.getClass().isEnum()) {
+			value = new SerializedString(((Enum<?>) object).name());
+		}
+		else if (object.getClass() == String.class || object.getClass() == Byte.class || object.getClass() == Short.class || object.getClass() == Integer.class || object.getClass() == Boolean.class || object.getClass() == Float.class || object.getClass() == Character.class|| object.getClass() == Double.class || object.getClass() == Long.class) {
+			value = new SerializedString(object + "");
+		}
+		else if (object instanceof List<?>) {
+			List<SerializedValue> values = new ArrayList<SerializedValue>();
+			for (Object obj : ((List<?>) object)) {
+				values.add(serializeValue(obj));
+			}
+			value = new SerializedList(values);
+		}
+		else {
+			XMLSerializationEntry entry = new XMLSerializationEntry();
+			StructuredSerialization.getInstance().serialize(object, entry);
+			value =  new SerializedObject(entry);
+		}
+		return value;
 	}
 
 }
@@ -130,9 +162,7 @@ class XMLSerializationEntry implements SerializationEntry {
 
 class XMLSerializationData implements SerializedData {
 	
-	private Map<String, String> primitives = new HashMap<String, String>();
-	private Map<String, XMLSerializationEntry> objects = new HashMap<String, XMLSerializationEntry>();
-	private Map<String, List<?>> lists = new HashMap<>();
+	private Map<String, SerializedValue> objects = new HashMap<>();
 
 	@Override
 	public Object getObject(String key) {
@@ -146,93 +176,186 @@ class XMLSerializationData implements SerializedData {
 
 	@Override
 	public int getInt(String key) {
-		return Integer.parseInt(primitives.get(key) + "");
+		return Integer.parseInt(objects.get(key).getString());
 	}
 
 	@Override
 	public String getString(String key) {
-		return primitives.get(key) + "";
+		return objects.get(key).getString();
 	}
 
 	@Override
 	public double getDouble(String key) {
-		return Double.parseDouble(primitives.get(key) + "");
+		return Double.parseDouble(objects.get(key).getString());
 	}
 
 	@Override
 	public boolean getBoolean(String key) {
-		return Boolean.parseBoolean(primitives.get(key));
+		return Boolean.parseBoolean(objects.get(key).getString());
 	}
 
 	@Override
 	public long getLong(String key) {
-		return Long.getLong(primitives.get(key));
+		return Long.getLong(objects.get(key).getString());
 	}
 
 	@Override
 	public void put(String key, Object object) {
-		if (object == null) {
-			objects.put(key, null);
-		}
-		else if (object.getClass().isEnum()) {
-			primitives.put(key, ((Enum<?>) object).name());
-		}
-		else if (object.getClass() == String.class || object.getClass() == Byte.class || object.getClass() == Short.class || object.getClass() == Integer.class || object.getClass() == Boolean.class || object.getClass() == Float.class || object.getClass() == Character.class|| object.getClass() == Double.class || object.getClass() == Long.class) {
-			primitives.put(key, object + "");
-		}
-		else {
-			XMLSerializationEntry entry = new XMLSerializationEntry();
-			StructuredSerialization.getInstance().serialize(object, entry);
-			objects.put(key, entry);
-		}
+		objects.put(key, XMLObjectLoader.serializeValue(object));
 	}
 	
-	void putEntry (String key, XMLSerializationEntry entry) {
+	void putValue (String key, SerializedValue entry) {
 		objects.put(key, entry);
 	}
 
 	@Override
 	public short getShort(String key) {
-		return Short.parseShort(primitives.get(key) + "");
+		return Short.parseShort(objects.get(key).getString());
 	}
 
 	@Override
 	public byte geByte(String key) {
-		return Byte.parseByte(primitives.get(key) + "");
+		return Byte.parseByte(objects.get(key).getString());
 	}
 
 	@Override
 	public float getFloat(String key) {
-		return Float.parseFloat(primitives.get(key) + "");
+		return Float.parseFloat(objects.get(key).getString());
 	}
 
 	@Override
 	public char getCharacter(String key) {
-		return (primitives.get(key) + "").charAt(0);
+		return objects.get(key).getString().charAt(0);
 	}
 
 	@Override
 	public <T extends Enum<T>> T getEnum(String key, Class<T> clazz) {
-		return Enum.valueOf(clazz, primitives.get(key) + "");
+		return Enum.valueOf(clazz, objects.get(key).getString());
 	}
 	
 	@Override
 	public <T> List<T> getList(String key, Class<T> clazz) {
-		List<T> list = new ArrayList<>();
-		for (Object obj : lists.get(key)) {
-			list.add(clazz.cast(obj));
-		}
-		return list;
+		return objects.get(key).getList(clazz);
 	}
 
-	Map<String, String> getPrimitives() {
-		return primitives;
-	}
-
-	Map<String, XMLSerializationEntry> getObjects() {
+	Map<String, SerializedValue> getObjects() {
 		return objects;
 	}
 	
 }
 
+interface SerializedValue {
+	
+	public <T> T get(Class<T> clazz);
+	
+	public void toElement (Document document, Element element);
+	
+	public default Object get() {
+		return get(Object.class);
+	}
+	
+	public default String getString() {
+		return get() + "";
+	}
+	
+	public default <T> List<T> getList (Class<T> clazz) {
+		throw new UnsupportedOperationException();
+	}
+	
+}
+
+class SerializeNullValue implements SerializedValue {
+
+	@Override
+	public <T> T get(Class<T> clazz) {
+		return null;
+	}
+
+	@Override
+	public void toElement(Document document, Element element) {
+		element.setAttribute(XMLObjectLoader.NULL_ATTRIBUTE, "");
+	}
+	
+}
+
+class SerializedString implements SerializedValue {
+	
+	private String string;
+
+	public SerializedString(String string) {
+		super();
+		this.string = string;
+	}
+
+	@Override
+	public <T> T get(Class<T> clazz) {
+		return clazz.cast(string);
+	}
+
+	@Override
+	public void toElement(Document document, Element element) {
+		element.setTextContent(string);
+	}
+	
+}
+
+class SerializedObject implements SerializedValue {
+	
+	private XMLSerializationEntry entry;
+
+	public SerializedObject(XMLSerializationEntry entry) {
+		super();
+		this.entry = entry;
+	}
+
+	@Override
+	public <T> T get(Class<T> clazz) {
+		return StructuredSerialization.getInstance().deserialize(clazz, entry);
+	}
+
+	@Override
+	public void toElement(Document document, Element element) {
+		for (var e : entry.getData().getObjects().entrySet()) {
+			Element elem = document.createElement(e.getKey());
+			e.getValue().toElement(document, elem);
+			element.appendChild(elem);
+		}
+	}
+
+}
+
+class SerializedList implements SerializedValue {
+	
+	private List<SerializedValue> list = new ArrayList<>();
+
+	public SerializedList(List<SerializedValue> list) {
+		super();
+		this.list = list;
+	}
+
+	@Override
+	public <T> T get(Class<T> clazz) {
+		List<Object> list = getList(Object.class);
+		return clazz.cast(list);
+	}
+	
+	@Override
+	public <T> List<T> getList (Class<T> clazz) {
+		List<T> list = new ArrayList<T>();
+		for (SerializedValue value : this.list) {
+			list.add(value.get(clazz));
+		}
+		return list;
+	}
+
+	@Override
+	public void toElement(Document document, Element element) {
+		for (SerializedValue value : list) {
+			Element elem = document.createElement(XMLObjectLoader.LIST_ENTRY_TAG);
+			value.toElement(document, elem);
+			element.appendChild(elem);
+		}
+	}
+	
+}
 
