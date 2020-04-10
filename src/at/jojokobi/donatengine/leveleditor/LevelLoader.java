@@ -8,8 +8,12 @@ import at.jojokobi.donatengine.level.Level;
 
 public interface LevelLoader {
 
-	public void load (InputStream stream, Level level) throws IOException, InvalidLevelFileException;
+	public void load (InputStream stream) throws IOException, InvalidLevelFileException;
 	
-	public void save (OutputStream stream, Level level) throws IOException;
+	public void apply (Level level);
+	
+	public void copy (Level level);
+	
+	public void save (OutputStream stream) throws IOException;
 	
 }

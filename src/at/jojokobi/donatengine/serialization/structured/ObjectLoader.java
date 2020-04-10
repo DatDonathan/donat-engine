@@ -8,6 +8,6 @@ public interface ObjectLoader {
 	
 	public void save (OutputStream out, Object obj) throws IOException;
 	
-	public <T> T load (InputStream in, Class<T> clazz) throws IOException;
+	public <T> PreloadedObject<T> load (InputStream in, Class<T> clazz) throws IOException;
 
 }

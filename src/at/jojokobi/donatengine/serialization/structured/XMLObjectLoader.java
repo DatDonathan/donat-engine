@@ -31,21 +31,17 @@ public class XMLObjectLoader implements ObjectLoader{
 	public static final String NULL_ATTRIBUTE = "__null__";
 	public static final String LIST_ENTRY_TAG = "entry";
 	
-	@Override
-	public void save(OutputStream out, Object obj) throws IOException {
+	
+	public void save(OutputStream out, SerializedValue value) throws IOException {
 		try (out) {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setNamespaceAware(true);
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.newDocument();
 			
-			//Serialize
-			XMLSerializationEntry entry = new XMLSerializationEntry();
-			StructuredSerialization.getInstance().serialize(obj, entry);
-			
 			//Create node tree
-			Element element = document.createElement(obj == null ? "null" : obj.getClass().getSimpleName().toLowerCase());
-			serializeValue(entry).toElement(document, element);
+			Element element = document.createElement(value.getRootName());
+			value.toElement(document, element);
 			document.appendChild(element);
 			
 			//Write
@@ -57,11 +53,21 @@ public class XMLObjectLoader implements ObjectLoader{
 			transformer.transform(source, result);
 		} catch (ParserConfigurationException | TransformerException e) {
 			e.printStackTrace();
+			throw new IOException(e);
 		}
+	}
+	
+	@Override
+	public void save(OutputStream out, Object obj) throws IOException {
+			//Serialize
+			XMLSerializationEntry entry = new XMLSerializationEntry();
+			StructuredSerialization.getInstance().serialize(obj, entry);
+			
+			save(out, entry);
 	}
 
 	@Override
-	public <T> T load(InputStream in, Class<T> clazz) throws IOException {
+	public <T> PreloadedObject<T> load(InputStream in, Class<T> clazz) throws IOException {
 		try (in) {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setNamespaceAware(true);
@@ -71,7 +77,18 @@ public class XMLObjectLoader implements ObjectLoader{
 			
 			//Build tree
 			SerializedValue entry = load(document.getDocumentElement());
-			return entry.get(clazz);
+			return new PreloadedObject<T>() {
+
+				@Override
+				public T create() {
+					return entry.get(clazz);
+				}
+
+				@Override
+				public void save(OutputStream out) throws IOException {
+					XMLObjectLoader.this.save(out, entry);
+				}
+			};
 		} catch (ParserConfigurationException | SAXException | ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new IOException(e);
@@ -250,6 +267,8 @@ interface SerializedValue {
 	
 	public void toElement (Document document, Element element);
 	
+	public String getRootName ();
+	
 	public default Object get() {
 		return get(Object.class);
 	}
@@ -275,6 +294,11 @@ class SerializeNullValue implements SerializedValue {
 	public void toElement(Document document, Element element) {
 		element.setAttribute(XMLObjectLoader.NULL_ATTRIBUTE, "");
 	}
+
+	@Override
+	public String getRootName() {
+		return "null";
+	}
 	
 }
 
@@ -295,6 +319,11 @@ class SerializedString implements SerializedValue {
 	@Override
 	public void toElement(Document document, Element element) {
 		element.setTextContent(string);
+	}
+
+	@Override
+	public String getRootName() {
+		return "primitive";
 	}
 	
 }
@@ -320,6 +349,11 @@ class SerializedObject implements SerializedValue {
 			e.getValue().toElement(document, elem);
 			element.appendChild(elem);
 		}
+	}
+
+	@Override
+	public String getRootName() {
+		return entry.getSerializedClass().getSimpleName();
 	}
 
 }
@@ -355,6 +389,11 @@ class SerializedList implements SerializedValue {
 			value.toElement(document, elem);
 			element.appendChild(elem);
 		}
+	}
+
+	@Override
+	public String getRootName() {
+		return "List";
 	}
 	
 }
