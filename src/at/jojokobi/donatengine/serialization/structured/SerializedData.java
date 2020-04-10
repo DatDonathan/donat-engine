@@ -1,5 +1,7 @@
 package at.jojokobi.donatengine.serialization.structured;
 
+import java.util.List;
+
 /**
  * 
  * Objects are allowed to be serialized as soon as they are put() so get()-ing them may return another instance.
@@ -30,6 +32,8 @@ public interface SerializedData {
 	public long getLong (String key);
 	
 	public char getCharacter (String key);
+	
+	public <T> List<T> getList (String key, Class<T> clazz);
 	
 	public <T extends Enum<T>> T getEnum (String key, Class<T> clazz);
 	

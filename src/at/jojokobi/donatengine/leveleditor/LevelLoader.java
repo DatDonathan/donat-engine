@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 import at.jojokobi.donatengine.level.Level;
 
-public interface MapLoader {
+public interface LevelLoader {
 
 	public void load (InputStream stream, Level level) throws IOException, InvalidLevelFileException;
 	

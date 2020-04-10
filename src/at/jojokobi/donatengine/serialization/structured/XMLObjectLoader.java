@@ -3,7 +3,9 @@ package at.jojokobi.donatengine.serialization.structured;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -130,6 +132,7 @@ class XMLSerializationData implements SerializedData {
 	
 	private Map<String, String> primitives = new HashMap<String, String>();
 	private Map<String, XMLSerializationEntry> objects = new HashMap<String, XMLSerializationEntry>();
+	private Map<String, List<?>> lists = new HashMap<>();
 
 	@Override
 	public Object getObject(String key) {
@@ -212,6 +215,15 @@ class XMLSerializationData implements SerializedData {
 	public <T extends Enum<T>> T getEnum(String key, Class<T> clazz) {
 		return Enum.valueOf(clazz, primitives.get(key) + "");
 	}
+	
+	@Override
+	public <T> List<T> getList(String key, Class<T> clazz) {
+		List<T> list = new ArrayList<>();
+		for (Object obj : lists.get(key)) {
+			list.add(clazz.cast(obj));
+		}
+		return list;
+	}
 
 	Map<String, String> getPrimitives() {
 		return primitives;
@@ -222,3 +234,5 @@ class XMLSerializationData implements SerializedData {
 	}
 	
 }
+
+
