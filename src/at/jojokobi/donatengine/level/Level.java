@@ -30,6 +30,7 @@ import at.jojokobi.donatengine.util.KeyedContainer;
 import at.jojokobi.donatengine.util.KeyedHashContainer;
 import at.jojokobi.donatengine.util.LongKeySupplier;
 import at.jojokobi.donatengine.util.Pair;
+import at.jojokobi.donatengine.util.Position;
 import at.jojokobi.donatengine.util.StringKeySupplier;
 import at.jojokobi.donatengine.util.Vector3D;
 
@@ -296,6 +297,11 @@ public abstract class Level {
 	public <T> T getInstance(Class<T> clazz) {
 		List<T> objs = getInstances(clazz);
 		return objs.isEmpty() ? null : objs.get(0);
+	}
+	
+	public RaycastResult<GameObject> raycastGameObject (Position start, Vector3D direction, double steps) {
+		//TODO implement
+		return null;
 	}
 
 	public Vector3D calcMotion(double x, double y, double z, String area, double width, double height, double length,
