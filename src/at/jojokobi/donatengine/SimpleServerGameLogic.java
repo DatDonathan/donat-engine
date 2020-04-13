@@ -38,6 +38,7 @@ public class SimpleServerGameLogic implements GameLogic {
 		server.start();
 
 		level.clear();
+		level.init();
 		level.start(new StartEvent(new MapInputHandler(game.getLocalInput(), inputs), game));
 		game.getGameView().bind(level.getTileSystem());
 	}

@@ -14,7 +14,6 @@ import at.jojokobi.donatengine.gui.GUI;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.gui.SimpleGUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
-import at.jojokobi.donatengine.net.MultiplayerBehavior;
 import at.jojokobi.donatengine.objects.Camera;
 import at.jojokobi.donatengine.objects.Collidable;
 import at.jojokobi.donatengine.objects.GameObject;
@@ -83,7 +82,7 @@ public abstract class Level {
 	private boolean updateHidden = true;
 	private ParticleSystem particleSystem = new ParticleSystem();
 	private GUISystem guiSystem;
-	private MultiplayerBehavior behavior;
+	private LevelBehavior behavior;
 	private long clientId = 0;
 	private Camera camera = new Camera(0, 0, 0, 1280, 768);
 	private CutscenePlayer cutscenePlayer = new CutscenePlayer();
@@ -93,7 +92,7 @@ public abstract class Level {
 
 //	private long nextId = 1;
 
-	public Level(MultiplayerBehavior behavior) {
+	public Level(LevelBehavior behavior) {
 		this.behavior = behavior;
 	}
 
@@ -118,6 +117,15 @@ public abstract class Level {
 		camera.update(event, this);
 		particleSystem.update(event.getDelta());
 		getBehavior().update(this, event);
+		updateComponents(event);
+		
+		updateGameObjects(event);
+		processGUIAcrions(event);
+		
+		timer += event.getDelta();
+	}
+	
+	protected void updateComponents (UpdateEvent event) {
 		if (getBehavior().isHost()) {
 			components.forEach(c -> c.hostUpdate(this, event));
 		}
@@ -125,6 +133,9 @@ public abstract class Level {
 		if (getBehavior().isClient()) {
 			components.forEach(c -> c.clientUpdate(this, event));
 		}
+	}
+	
+	protected void updateGameObjects (UpdateEvent event) {
 		for (long id : objects.keySet()) {
 			GameObject gameObject = objects.get(id);
 			if (updateHidden || gameObject.isAlwaysUpdate() || gameObject.isNeedsUpdate()) {
@@ -138,10 +149,12 @@ public abstract class Level {
 				}
 			}
 		}
+	}
+	
+	protected void processGUIAcrions (UpdateEvent event) {
 		for (Pair<Long, GUIAction> action : guiSystem.update(this, camera.getViewWidth(), camera.getViewHeight(), event)) {
 			behavior.processGUIAction(this, event.getGame(), action.getKey(), action.getValue());
 		}
-		timer += event.getDelta();
 	}
 
 	public void render(List<RenderData> data, boolean renderInvisible) {
@@ -172,19 +185,29 @@ public abstract class Level {
 			comp.renderAfter(data, camera, this);
 		}
 	}
-
+	
 	public List<LevelArea> getAreas() {
 		return areas.asList();
 	}
-
-	public void start(StartEvent event) {
-//		recalcObjectsInView();
+	
+	/**
+	 * Do stuff needed for the level to run
+	 */
+	public void init () {
 		if (guiSystem == null) {
 			initGuiSystem(new SimpleGUISystem(new DynamicGUIFactory()));
 		}
 		if (tileSystem == null) {
 			initTileSystem(new MapTileSystem(1));
 		}
+	}
+
+	/**
+	 * do game logic relevant stuff that should happen at the start of the level
+	 * @param event
+	 */
+	public void start(StartEvent event) {
+//		recalcObjectsInView();
 		if (getBehavior().isHost()) {
 			generate(camera);
 			components.forEach(c -> c.init(this, event));
@@ -535,7 +558,7 @@ public abstract class Level {
 		return guiSystem.getGUIs();
 	}
 
-	public MultiplayerBehavior getBehavior() {
+	public LevelBehavior getBehavior() {
 		return behavior;
 	}
 

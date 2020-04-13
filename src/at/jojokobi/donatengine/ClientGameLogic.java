@@ -37,6 +37,7 @@ public class ClientGameLogic implements GameLogic{
 		
 		level.setClientId(client.getClientId());
 		level.clear();
+		level.init();
 		level.start(new StartEvent(c -> game.getLocalInput(), game));
 		game.getGameView().bind(level.getTileSystem());
 	}

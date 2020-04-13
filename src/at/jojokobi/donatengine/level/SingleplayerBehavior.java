@@ -1,4 +1,4 @@
-package at.jojokobi.donatengine.net;
+package at.jojokobi.donatengine.level;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,13 +8,11 @@ import at.jojokobi.donatengine.event.UpdateEvent;
 import at.jojokobi.donatengine.gui.GUI;
 import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
-import at.jojokobi.donatengine.level.Level;
-import at.jojokobi.donatengine.level.LevelArea;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
 import at.jojokobi.donatengine.tiles.Tile;
 
-public class SingleplayerBehavior implements MultiplayerBehavior {
+public class SingleplayerBehavior implements LevelBehavior {
 
 	@Override
 	public boolean isClient() {

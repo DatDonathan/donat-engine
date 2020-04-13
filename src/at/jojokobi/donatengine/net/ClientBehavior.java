@@ -11,11 +11,12 @@ import at.jojokobi.donatengine.gui.GUISystem;
 import at.jojokobi.donatengine.gui.actions.GUIAction;
 import at.jojokobi.donatengine.level.Level;
 import at.jojokobi.donatengine.level.LevelArea;
+import at.jojokobi.donatengine.level.LevelBehavior;
 import at.jojokobi.donatengine.objects.GameObject;
 import at.jojokobi.donatengine.serialization.binary.BinarySerializable;
 import at.jojokobi.donatengine.tiles.Tile;
 
-public class ClientBehavior implements MultiplayerBehavior {
+public class ClientBehavior implements LevelBehavior {
 	
 	private List<ClientPacketType> packetTypes = Arrays.asList(ButtonPacket.PACKET_TYPE, AxisPacket.PACKET_TYPE, GUIActionPacket.PACKET_TYPE);
 	private List<ClientPacket> packets = new ArrayList<>();
