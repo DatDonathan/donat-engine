@@ -19,7 +19,7 @@ public interface SerializedData {
 	
 	public short getShort (String key);
 	
-	public byte geByte (String key);
+	public byte getByte (String key);
 	
 	public int getInt (String key);
 	

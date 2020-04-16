@@ -240,7 +240,7 @@ class XMLSerializationData implements SerializedData {
 	}
 
 	@Override
-	public byte geByte(String key) {
+	public byte getByte(String key) {
 		return Byte.parseByte(objects.get(key).getString());
 	}
 
