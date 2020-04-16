@@ -60,10 +60,9 @@ public class XMLObjectLoader implements ObjectLoader{
 	@Override
 	public void save(OutputStream out, Object obj) throws IOException {
 			//Serialize
-			XMLSerializationEntry entry = new XMLSerializationEntry();
-			StructuredSerialization.getInstance().serialize(obj, entry);
+			SerializedValue value = serializeValue(obj);
 			
-			save(out, entry);
+			save(out, value);
 	}
 
 	@Override
@@ -353,6 +352,7 @@ class SerializedObject implements SerializedValue {
 
 	@Override
 	public void toElement(Document document, Element element) {
+		element.setAttribute(XMLObjectLoader.CLASS_ATTRIBUTE, entry.getSerializedClass().getCanonicalName());
 		for (var e : entry.getData().getObjects().entrySet()) {
 			Element elem = document.createElement(e.getKey());
 			e.getValue().toElement(document, elem);
@@ -393,6 +393,7 @@ class SerializedList implements SerializedValue {
 
 	@Override
 	public void toElement(Document document, Element element) {
+		element.setAttribute(XMLObjectLoader.LIST_ATTRIBUTE, "");
 		for (SerializedValue value : list) {
 			Element elem = document.createElement(XMLObjectLoader.LIST_ENTRY_TAG);
 			value.toElement(document, elem);
