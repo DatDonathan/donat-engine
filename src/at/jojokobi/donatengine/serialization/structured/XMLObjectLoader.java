@@ -86,26 +86,26 @@ public class XMLObjectLoader implements ObjectLoader{
 	private SerializedValue load (Element element) throws ClassNotFoundException {
 		SerializedValue value = null;
 		NodeList list = element.getChildNodes();
-		if (element.getAttribute(NULL_ATTRIBUTE) != null) {
+		if (element.hasAttribute(NULL_ATTRIBUTE)) {
 			value = new SerializeNullValue();
 		}
-		else if (element.getAttribute(LIST_ATTRIBUTE) != null) {
+		else if (element.hasAttribute(LIST_ATTRIBUTE)) {
 			List<SerializedValue> values = new ArrayList<SerializedValue>();
 			for (int i = 0; i < list.getLength(); i++) {
 				Node node = list.item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
-					values.add(load(element));
+					values.add(load((Element) node));
 				}
 			}
 			value = new SerializedList(values);
 		}
-		else if (element.getAttribute(CLASS_ATTRIBUTE) != null) {
+		else if (element.hasAttribute(CLASS_ATTRIBUTE)) {
 			XMLSerializationEntry entry = new XMLSerializationEntry();
 			entry.setSerializedClass(Class.forName(element.getAttribute(CLASS_ATTRIBUTE)));
 			for (int i = 0; i < list.getLength(); i++) {
 				Node node = list.item(i);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
-					entry.getData().putValue(node.getNodeName(), load(element));
+					entry.getData().putValue(node.getNodeName(), load((Element) node));
 				}
 			}
 			value = new SerializedObject(entry);
@@ -191,12 +191,12 @@ class XMLSerializationData implements SerializedData {
 
 	@Override
 	public Object getObject(String key) {
-		return StructuredSerialization.getInstance().deserialize(Object.class, (SerializationEntry) objects.get(key));
+		return objects.get(key).get();
 	}
 
 	@Override
 	public <T> T getObject(String key, Class<T> clazz) {
-		return StructuredSerialization.getInstance().deserialize(clazz, (SerializationEntry) objects.get(key));
+		return objects.get(key).get(clazz);
 	}
 
 	@Override
