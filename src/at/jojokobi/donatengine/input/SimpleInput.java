@@ -14,6 +14,7 @@ public class SimpleInput implements Input {
 	private Set<String> keys = new HashSet<>();
 	private Map<String, Vector2D> axis = new HashMap<>();
 	private Set<String> pressed = new HashSet<>();
+	private Set<String> released = new HashSet<>();
 	
 	private Map<String, Boolean> changedButtons = new HashMap<>();
 	private Map<String, Vector2D> changedAxis = new HashMap<>();
@@ -44,9 +45,11 @@ public class SimpleInput implements Input {
 	public boolean setButton(String code, boolean pressed) {
 		if (pressed) {
 			this.keys.add(code);
+			this.pressed.add(code);
 		}
 		else {
 			this.keys.remove(code);
+			this.released.add(code);
 		}
 		changedButtons.put(code, pressed);
 		return true;
@@ -81,11 +84,17 @@ public class SimpleInput implements Input {
 	@Override
 	public void updateBuffers() {
 		pressed.clear();
+		released.clear();
 	}
 
 	@Override
 	public boolean isPressed(String button) {
 		return pressed.contains(button);
+	}
+	
+	@Override
+	public boolean isReleased(String button) {
+		return released.contains(button);
 	}
 
 }

@@ -40,7 +40,7 @@ public abstract class Node {
 	}
 
 	public void update(Input input, double delta) {
-		if ((state.isSelected() && input.getSubmit()) || (state.isHovered() && input.getPrimary())) {
+		if ((state.isSelected() && input.getSubmit()) || (state.isHovered() && input.isReleased(Input.PRIMARY_BUTTON))) {
 			fire();
 		}
 		if (state.isSelected()) {

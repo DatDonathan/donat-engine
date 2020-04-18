@@ -83,5 +83,11 @@ public interface Input {
 	 * @return			Returns true if the button was pressed down in this frame
 	 */
 	public boolean isPressed (String button);
-
+	
+	/**
+	 * 
+	 * @param button	The button to be checked
+	 * @return			Returns true if the button was released in this frame
+	 */
+	public boolean isReleased (String button);
 }
