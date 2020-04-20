@@ -44,10 +44,10 @@ public abstract class Parent extends Node{
 	}
 	
 	@Override
-	public void updateStyle(double mouseX, double mouseY, Node selected, FixedStyle parent) {
-		super.updateStyle(mouseX, mouseY, selected, parent);
+	public void updateStyle(double mouseX, double mouseY, double dx, double dy, Node selected, FixedStyle parent) {
+		super.updateStyle(mouseX, mouseY, dx , dy, selected, parent);
 		for (Node node : children) {
-			node.updateStyle(mouseX, mouseY, selected, getStyle());
+			node.updateStyle(mouseX, mouseY, getX() + dx, getY() + dy, selected, getStyle());
 		}
 	}
 	

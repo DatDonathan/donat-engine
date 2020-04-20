@@ -41,8 +41,8 @@ public class Text extends Node {
 	}
 	
 	@Override
-	public void updateStyle(double mouseX, double mouseY, Node selected, FixedStyle parent) {
-		super.updateStyle(mouseX, mouseY, selected, parent);
+	public void updateStyle(double mouseX, double mouseY, double dx, double dy, Node selected, FixedStyle parent) {
+		super.updateStyle(mouseX, mouseY, dx, dy, selected, parent);
 		//TODO use Engine Font Calculator
 //		javafx.scene.text.Text text = new javafx.scene.text.Text(this.text);
 //		text.setFont(getStyle().getFont());

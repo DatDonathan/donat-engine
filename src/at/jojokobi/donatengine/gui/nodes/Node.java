@@ -55,11 +55,11 @@ public abstract class Node {
 	}
 	
 	public Node determineSelected (double dx, double dy, double mouseX, double mouseY) {
-		return checkHovered(mouseX - dx, mouseY - dy) && isSelectable() ? this : null;
+		return checkHovered(mouseX, mouseY, dx, dy) && isSelectable() ? this : null;
 	}
 	
-	public boolean checkHovered(double mouseX, double mouseY) {
-		Rect rect = toRect();
+	public boolean checkHovered(double mouseX, double mouseY, double dx, double dy) {
+		Rect rect = new Rect(x + dx, y + dy, width, height);
 		return rect.isColliding(mouseX, mouseY, 0, 0);
 	}
 
@@ -82,8 +82,8 @@ public abstract class Node {
 		return style;
 	}
 	
-	public void updateStyle (double mouseX, double mouseY, Node selected, FixedStyle parent) {
-		this.state = new NodeState(checkHovered(mouseX, mouseY), selected == this);
+	public void updateStyle (double mouseX, double mouseY, double dx, double dy, Node selected, FixedStyle parent) {
+		this.state = new NodeState(checkHovered(mouseX, mouseY, dx, dy), selected == this);
 		this.style = getStyle(state, parent);
 	}
 	

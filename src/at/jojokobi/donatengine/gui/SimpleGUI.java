@@ -45,13 +45,13 @@ public class SimpleGUI implements GUI{
 	public void update(long clientId, GUISystem system, Input input, double width, double height, double delta) {
 		if (client == clientId) {
 			if (!started) {
-				parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
+				parent.updateStyle(input.getCursorX(), input.getCursorY(), 0, 0, selected, style);
 				parent.updateDimensions(0, 0, width, height);
-				parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
+				parent.updateStyle(input.getCursorX(), input.getCursorY(), 0, 0, selected, style);
 				started  = true;
 			}
 			parent.update(input, delta);
-			parent.updateStyle(input.getCursorX(), input.getCursorY(), selected, style);
+			parent.updateStyle(input.getCursorX(), input.getCursorY(), 0, 0, selected, style);
 			parent.updateDimensions(0, 0, width, height);
 			if (input.getPrimary()) {
 				selected = parent.determineSelected(0, 0, input.getCursorX(), input.getCursorY());
